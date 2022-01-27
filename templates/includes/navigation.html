@@ -1,0 +1,121 @@
+{% load static %}
+<ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <div class="sidebar-brand-icon">
+      <img src="{% static 'assets/img/logo/logo2.png' %}">
+    </div>
+    <div class="sidebar-brand-text mx-3">SMND</div>
+  </a>
+  <hr class="sidebar-divider my-0">
+  <li class="nav-item active">
+    <a class="nav-link" href="index.html">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a>
+  </li>
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    Features
+  </div>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#metadata"
+      aria-expanded="true" aria-controls="metadata">
+      <i class="far fa-fw fa-window-maximize"></i>
+      <span>회원</span>
+    </a>
+    <div id="metadata" class="collapse" aria-labelledby="metadata" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">환경 정보 입력</h6>
+        <a class="collapse-item" href="#">회원 관리</a>
+        <a class="collapse-item" href="#">주문 관리</a>
+        <a class="collapse-item" href="#">배송 관리</a>
+        <a class="collapse-item" href="#">문의 관리</a>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#diagnostics" aria-expanded="true"
+      aria-controls="diagnostics">
+      <i class="fab fa-fw fa-wpforms"></i>
+      <span>판매자</span>
+    </a>
+    <div id="diagnostics" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">진단 데이터 입력</h6>
+        <a class="collapse-item" href="#">점포 관리</a>
+        <a class="collapse-item" href="#">상품 관리</a>
+        <a class="collapse-item" href="#">상품 문의 관리</a>
+        <a class="collapse-item" href="#">리뷰 관리</a>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#analysis" aria-expanded="true"
+      aria-controls="analysis">
+      <i class="fas fa-fw fa-table"></i>
+      <span>혜택 및 이벤트</span>
+    </a>
+    <div id="analysis" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <div>
+          <h6 class="collapse-header">혜택</h6>
+          <a class="collapse-item" href="#">쿠폰 관리</a>
+          <a class="collapse-item" href="#">포인트 관리</a>
+        </div>
+        <div>
+          <h6 class="collapse-header">이벤트</h6>
+          <a class="collapse-item" href="#">할인 행사</a>
+          <a class="collapse-item" href="#">공연 안내?</a>
+        </div>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ai_engineering" aria-expanded="true"
+      aria-controls="ai_engineering">
+      <i class="fas fa-fw fa-table"></i>
+      <span>정산 관리</span>
+    </a>
+    <div id="ai_engineering" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">정산</h6>
+        <a class="collapse-item" href="#">매출 현황</a>
+        <a class="collapse-item" href="#">매입 관리</a>
+        <a class="collapse-item" href="#">고객 분석</a>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#a" aria-expanded="true"
+      aria-controls="a">
+      <i class="fas fa-fw fa-table"></i>
+      <span>고객 응대</span>
+    </a>
+    <div id="a" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">메시지 관리/온라인문의랑 문의 관리가 뭐가 달라? </h6>
+        <a class="collapse-item" href="#">온라인 문의</a>
+        <a class="collapse-item" href="#">메시지 관리?</a>
+      </div>
+    </div>
+  </li>
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    System
+  </div>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+      aria-controls="collapsePage">
+      <i class="fas fa-fw fa-columns"></i>
+      <span>설정</span>
+    </a>
+    <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">시스템 관리</h6>
+        <a class="collapse-item" href="#">카테고리 관리</a>
+        <a class="collapse-item" href="#">배송비 관리</a>
+      </div>
+    </div>
+  </li>
+  <hr class="sidebar-divider">
+  <div class="version" id="version-ruangadmin"></div>
+</ul>

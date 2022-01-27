@@ -1,9 +1,13 @@
-from django.conf.urls import include
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include 
+from django.conf.urls.static import static
+from django.conf import settings
+from config.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     
-    path('', include('products.urls')),
-]
+    path('', index.as_view()),
+    path('products/', include('products.urls')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_URL)
+

@@ -1,0 +1,34 @@
+{% load static %}
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+{% comment %} <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script> {% endcomment %}
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+<script src="{% static 'assets/js/ruang-admin.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+<script src="{% static 'assets/js/demo/chart-area-demo.js' %}"></script>  
+
+<script  type="text/javascript">
+// https://docs.djangoproject.com/en/3.1/ref/csrf/
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+var csrftoken = getCookie('csrftoken');
+
+var xhr; 
+
+
+</script>
