@@ -1,0 +1,41 @@
+import json
+import os
+from django.http.request import QueryDict
+from django.http import HttpRequest, JsonResponse 
+from django.shortcuts import render, redirect, get_object_or_404
+from config import settings
+
+from django.views.generic.base import View
+
+from management.models import shop,shop_category
+
+class PageView(View):
+    template_name = 'shop_info.html' 
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        context = {}
+        context['ShopCategories'] = shop_category.objects.filter(DeleteFlag='0')
+        context['table'] = shop.objects.filter(DeleteFlag='0')
+        
+        return render(request, self.template_name, context)
+
+    def post(self, request: HttpRequest, *args, **kwargs):
+        context={}
+        context['ShopCategories'] = shop_category.objects.filter(DeleteFlag='0')
+
+        ShopName = request.POST.get('ShopName')
+        ShopCategoryId = request.POST.get('ShopCategoryId')
+        ShopCategory = shop_category.objects.get(id=ShopCategoryId)
+        Manager = request.POST.get('Manager')
+        ShopPhone = request.POST.get('ShopPhone')
+
+        shop.objects.create(
+            shop_name=ShopName,
+            shop_category=ShopCategory,
+            manager=Manager,
+            shop_phone=ShopPhone,
+            )
+
+        context['table'] = shop.objects.filter(DeleteFlag='0')
+
+        return render(request, self.template_name, context)
