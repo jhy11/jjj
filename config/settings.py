@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'config',
     'webrtc',
     'products',
+    'management',
 ]
 
 MIDDLEWARE = [
