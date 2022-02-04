@@ -18,8 +18,9 @@ class ShopView(View):
         return render(request, self.template_name, context)
 
     def post(self, request: HttpRequest, *args, **kwargs):
+        context = {}
         request.POST = json.loads(request.body)
-        
+
         ShopName = request.POST.get('ShopName')
         ShopCategoryId = request.POST.get('ShopCategoryId')
         ShopCategory = shop_category.objects.get(id=ShopCategoryId)
@@ -33,7 +34,14 @@ class ShopView(View):
           manager=Manager,
           shop_phone=ShopPhone,
         )
-        return JsonResponse(data={ 'success': True })
+        
+        context['ShopId'] = shop.objects.get(shop_name=ShopName).id
+        context['ShopName'] = ShopName
+        context['ShopCategory'] = ShopCategory.name
+        context['Manager'] = Manager
+        context['ShopPhone'] = ShopPhone
+        context['success'] = True
+        return JsonResponse(context, content_type='application/json')
 
 class ShopEditView(View):
     template_name = 'shop_info.html'
