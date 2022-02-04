@@ -4,7 +4,6 @@ from django.shortcuts import redirect, render
 
 
 class index(View):
-
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
         

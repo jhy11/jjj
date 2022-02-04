@@ -1,10 +1,7 @@
-import json
-import os
 from django.http.request import QueryDict
+from typing import Any, Dict
 from django.http import HttpRequest, JsonResponse 
 from django.shortcuts import render, redirect, get_object_or_404
-from config import settings
-
 from django.views.generic.base import View
 
 from management.models import shop,shop_category
@@ -30,11 +27,11 @@ class PageView(View):
         ShopPhone = request.POST.get('ShopPhone')
 
         shop.objects.create(
-            shop_name=ShopName,
-            shop_category=ShopCategory,
-            manager=Manager,
-            shop_phone=ShopPhone,
-            )
+          shop_name=ShopName,
+          shop_category=ShopCategory,
+          manager=Manager,
+          shop_phone=ShopPhone,
+        )
 
         context['table'] = shop.objects.filter(DeleteFlag='0')
 
