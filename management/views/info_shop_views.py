@@ -1,3 +1,4 @@
+import json
 from django.http.request import QueryDict
 from typing import Any, Dict
 from django.http import HttpRequest, JsonResponse 
@@ -17,19 +18,21 @@ class ShopView(View):
         return render(request, self.template_name, context)
 
     def post(self, request: HttpRequest, *args, **kwargs):
+        request.POST = json.loads(request.body)
+        
         ShopName = request.POST.get('ShopName')
         ShopCategoryId = request.POST.get('ShopCategoryId')
         ShopCategory = shop_category.objects.get(id=ShopCategoryId)
         Manager = request.POST.get('Manager')
         ShopPhone = request.POST.get('ShopPhone')
 
+        # Create new item
         shop.objects.create(
           shop_name=ShopName,
           shop_category=ShopCategory,
           manager=Manager,
           shop_phone=ShopPhone,
         )
-
         return redirect('/management/shop')
 
 class ShopEditView(View):
