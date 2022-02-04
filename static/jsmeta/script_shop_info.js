@@ -2,13 +2,11 @@ $(document).ready(function () {
   $('#dataTableHover').DataTable(); // ID From dataTable with Hover
 });
 
-
 $('#btn-submit').click(function(){
   submitStart();
 });
 
 function submitStart(){
-  // console.log( $('#site').val());
   fetch('shop',{
       method: "POST",
       headers:{
@@ -23,5 +21,8 @@ function submitStart(){
           Manager: $('#Manager').val(),
           ShopPhone: $('#ShopPhone').val(),
       })
-  });
+  }).then((response)=>response.json())
+  .then((json)=>console.log(json))
+  .catch(err=>console.error(err));
 }
+

@@ -33,7 +33,7 @@ class ShopView(View):
           manager=Manager,
           shop_phone=ShopPhone,
         )
-        return redirect('/management/shop')
+        return JsonResponse(data={ 'success': True })
 
 class ShopEditView(View):
     template_name = 'shop_info.html'
