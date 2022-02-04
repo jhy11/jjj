@@ -5,5 +5,6 @@ from .views import info_shop_views
 app_name = 'management'
 
 urlpatterns=[
-     path('info-shop', info_shop_views.PageView.as_view(), name='info-shop'),
+    path('shop', info_shop_views.ShopView.as_view(), name='shop'),
+    path('shop-edit', info_shop_views.ShopEditView.as_view(), name='shop-edit'),
 ]

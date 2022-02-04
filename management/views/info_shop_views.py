@@ -6,7 +6,7 @@ from django.views.generic.base import View
 
 from management.models import shop,shop_category
 
-class PageView(View):
+class ShopView(View):
     template_name = 'shop_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
@@ -19,7 +19,9 @@ class PageView(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         context={}
         context['ShopCategories'] = shop_category.objects.filter(DeleteFlag='0')
-
+        context['table'] = shop.objects.filter(DeleteFlag='0')
+        
+        print(request.POST)
         ShopName = request.POST.get('ShopName')
         ShopCategoryId = request.POST.get('ShopCategoryId')
         ShopCategory = shop_category.objects.get(id=ShopCategoryId)
@@ -33,6 +35,13 @@ class PageView(View):
           shop_phone=ShopPhone,
         )
 
-        context['table'] = shop.objects.filter(DeleteFlag='0')
-
         return render(request, self.template_name, context)
+
+class ShopEditView(View):
+    template_name = 'shop_info.html'
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+
+        return context
+  
