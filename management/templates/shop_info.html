@@ -21,13 +21,17 @@
     <div class="col">
       <div class="card mb-4">
         <div class="card-body">
-          <form 
+          <form method="post"
+            action="shop"
+            class="row g-3 needs-validation" novalidate="" enctype="multipart/form-data">
+            <!--
             {% if table %}
             action="shop-edit"
             {% else %}
             action="shop"
             {% endif %}
-            method="post" class="row g-3 needs-validation" novalidate="" enctype="multipart/form-data">
+            -->
+            
             {% csrf_token %}
             <div class="col-md-6 mb-3">
               <label class="form-label" for="ShopCategoryId">점포 카테고리</label>
@@ -60,7 +64,7 @@
             <div class="col-md-6 mb-3">
               <br/>
               <button class="btn btn-outline-primary" type="submit">등록</button>
-              <button class="btn btn-outline-primary">새로고침</button>
+              <button class="btn btn-outline-primary" type="button">새로고침</button>
             </div>
           </form>
         </div>

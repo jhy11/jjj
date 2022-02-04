@@ -17,11 +17,6 @@ class ShopView(View):
         return render(request, self.template_name, context)
 
     def post(self, request: HttpRequest, *args, **kwargs):
-        context={}
-        context['ShopCategories'] = shop_category.objects.filter(DeleteFlag='0')
-        context['table'] = shop.objects.filter(DeleteFlag='0')
-        
-        print(request.POST)
         ShopName = request.POST.get('ShopName')
         ShopCategoryId = request.POST.get('ShopCategoryId')
         ShopCategory = shop_category.objects.get(id=ShopCategoryId)
@@ -35,7 +30,7 @@ class ShopView(View):
           shop_phone=ShopPhone,
         )
 
-        return render(request, self.template_name, context)
+        return redirect('/management/shop')
 
 class ShopEditView(View):
     template_name = 'shop_info.html'
