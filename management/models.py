@@ -33,11 +33,12 @@ class pro_category(BaseModel):
 
 #상품
 class product(BaseModel):
-    pro_category_id = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    shop_id = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
     price = models.CharField(db_column='price', max_length=50, blank=True, null=True)
     stock = models.CharField(db_column='stock', max_length=50, blank=True, null=True)
+    status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
     description = models.CharField(db_column='description', max_length=50, blank=True, null=True)
     #image = models.CharField(db_column='image', max_length=50, blank=True, null=True)
 
