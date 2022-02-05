@@ -43,11 +43,12 @@ class ShopView(View):
         context['success'] = True
         return JsonResponse(context, content_type='application/json')
 
-class ShopEditView(View):
-    template_name = 'shop_info.html'
+    def delete(self, request: HttpRequest):
+        request.DELETE = json.loads(request.body)
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        context =  super().get_context_data(**kwargs)
+        ShopName = request.DELETE.get('ShopName', None)
+        if ShopName is not None:
+            shop.delete(shop.objects.filter(DeleteFlag='0').get(shop_name=ShopName))
 
-        return context
-  
+            return JsonResponse(data={ 'success': True })
+        return JsonResponse(data={ 'success': False })

@@ -19,12 +19,13 @@ async function submitStart() {
       ShopCategoryId: $('#ShopCategoryId').val(),
       Manager: $('#Manager').val(),
       ShopPhone: $('#ShopPhone').val(),
-  })
+    })
   }).catch((error) => {
     alert(error);
-  })
+  });
 
-  const result = await response.json()
+  const result = await response.json();
+  
   if(result.success){
     const ShopTable = document.getElementById('bulk-select-body');
     const row = ShopTable.insertRow(ShopTable.rows.length);
@@ -44,5 +45,31 @@ async function submitStart() {
     cell6.innerHTML = '<td class="align-middle"><button class="btn btn-outline-success mb-1" type="button">수정</button></td>';
     cell7.innerHTML = '<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>';
     }
+
+async function deleteShop(shop_name) {
+
+  const response = await fetch('shop', {
+    method: 'DELETE',
+    mode: 'cors',
+    cache: 'no-cache', 
+    credentials: 'same-origin', 
+    headers: new Headers({
+      'X-CSRFToken': getCookie('csrftoken'),
+      "Content-Type": "application/json",
+    }),
+    redirect: 'follow',
+    body: JSON.stringify({
+      ShopName: shop_name,
+    }),
+  }).catch((error) => {
+    alert(error);
+  });
+
+  const result = await response.json();
+  
+  //reload only table after deleting
+  if(result.success){
+    $( "#shopTable" ).load( "shop #shopTable" );
+  }
 }
 

@@ -6,5 +6,4 @@ app_name = 'management'
 
 urlpatterns=[
     path('shop', info_shop_views.ShopView.as_view(), name='shop'),
-    path('shop-edit', info_shop_views.ShopEditView.as_view(), name='shop-edit'),
 ]
