@@ -23,24 +23,69 @@ class ShopView(View):
 
         ShopName = request.POST.get('ShopName')
         ShopCategoryId = request.POST.get('ShopCategoryId')
-        ShopCategory = shop_category.objects.get(id=ShopCategoryId)
+        ShopCategory = shop_category.objects.filter(DeleteFlag='0').get(id=ShopCategoryId)
         Manager = request.POST.get('Manager')
         ShopPhone = request.POST.get('ShopPhone')
 
+        # Check if shop already exists
+        if shop.objects.filter(shop_name=ShopName).exists() is True:
+            context['success'] = False
+            context['message'] = '존재하는 점포입니다.'
+            return JsonResponse(context, content_type='application/json')
+
         # Create new item
         shop.objects.create(
-          shop_name=ShopName,
-          shop_category=ShopCategory,
-          manager=Manager,
-          shop_phone=ShopPhone,
+            shop_name=ShopName,
+            shop_category=ShopCategory,
+            manager=Manager,
+            shop_phone=ShopPhone,
         )
         
-        context['ShopId'] = shop.objects.get(shop_name=ShopName).id
-        context['ShopName'] = ShopName
-        context['ShopCategory'] = ShopCategory.name
-        context['Manager'] = Manager
-        context['ShopPhone'] = ShopPhone
-        context['success'] = True
+        context = {
+            'ShopId': shop.objects.get(shop_name=ShopName).id,
+            'ShopCategory': ShopCategory.name,
+            'ShopName': ShopName,
+            'Manager': Manager,
+            'ShopPhone' : ShopPhone,
+            'success': True,
+        }
+        return JsonResponse(context, content_type='application/json')
+
+    def put(self, request: HttpRequest, *args, **kwargs):
+        context = {}
+        request.PUT = json.loads(request.body)
+        print(request.PUT)
+
+        ShopName = request.PUT.get('ShopName')
+        ShopCategoryId = request.PUT.get('ShopCategoryId')
+        ShopCategory = shop_category.objects.filter(DeleteFlag='0').get(id=ShopCategoryId)
+        Manager = request.PUT.get('Manager')
+        ShopPhone = request.PUT.get('ShopPhone')
+
+        # Check if shop already exists
+        if shop.objects.filter(shop_name=ShopName).count() > 1:
+            context['success'] = False
+            context['message'] = '존재하는 점포입니다.'
+            print('exi')
+            return JsonResponse(context, content_type='application/json')
+
+        # Update item
+        shop.objects.filter(shop_name=ShopName, DeleteFlag='0').update(
+            shop_name=ShopName,
+            shop_category=ShopCategory,
+            manager=Manager,
+            shop_phone=ShopPhone,
+        )
+        
+        context = {
+            'ShopId': shop.objects.get(shop_name=ShopName).id,
+            'ShopCategory': ShopCategory.name,
+            'ShopName': ShopName,
+            'Manager': Manager,
+            'ShopPhone' : ShopPhone,
+            'success': True,
+        }
+
         return JsonResponse(context, content_type='application/json')
 
     def delete(self, request: HttpRequest):

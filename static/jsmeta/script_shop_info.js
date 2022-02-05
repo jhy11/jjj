@@ -27,24 +27,48 @@ async function submitStart() {
   const result = await response.json();
   
   if(result.success){
-    const ShopTable = document.getElementById('bulk-select-body');
-    const row = ShopTable.insertRow(ShopTable.rows.length);
-    const cell1 = row.insertCell(0);
-    const cell2 = row.insertCell(1);
-    const cell3 = row.insertCell(2);
-    const cell4 = row.insertCell(3);
-    const cell5 = row.insertCell(4);
-    const cell6 = row.insertCell(5);
-    const cell7 = row.insertCell(6);
+    const array = Object.values(result);
+    const index = Object.values(result);
+    
+    const shopTable = $('#bulk-select-body');
+    shopTable.append('<tr></tr>');
 
-    cell1.innerHTML = result.ShopId;
-    cell2.innerHTML = result.ShopCategory;
-    cell3.innerHTML = result.ShopName;
-    cell4.innerHTML = result.Manager;
-    cell5.innerHTML = '<td type="tel" class="align-middle Phone" pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" maxlength="13">'+result.ShopPhone+'</td>';
-    cell6.innerHTML = '<td class="align-middle"><button class="btn btn-outline-success mb-1" type="button">수정</button></td>';
-    cell7.innerHTML = '<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>';
+    for(let i = 0; i<array.length-1; i++){
+      shopTable.append($('<td class="align-middle"'+ array[i] +'id=' + index[i] + 'required>'+ array[i] +'</td>'));
     }
+    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-success mb-1" type="button">수정</button></td>'));
+    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
+  }
+  else{
+    alert(result.message);
+  }
+}
+
+async function updateShop() {
+  const response = await fetch('shop', {
+    method: "PUT",
+    headers: {
+      'Accept': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify({
+      csrfmiddlewaretoken: window.CSRF_TOKEN,
+      ShopName:$('#shopModal #ShopName').val(),
+      ShopCategoryId: $('#shopModal #ShopCategoryId').val(),
+      Manager: $('#shopModal#Manager').val(),
+      ShopPhone: $('#shopModal #ShopPhone').val(),
+    })
+  }).catch((error) => {
+    alert(error);
+  });
+
+  const result = await response.json();
+  console.log(result);
+  if(result.success){
+    console.log(result);
+
+  }
+}
 
 async function deleteShop(shop_name) {
 
@@ -73,3 +97,15 @@ async function deleteShop(shop_name) {
   }
 }
 
+//pass data to modal and set value
+$('#shopModal').on('show.bs.modal', function(event) {          
+  cat = $(event.relatedTarget).data('cat');
+  shopName = $(event.relatedTarget).data('shop');
+  manager = $(event.relatedTarget).data('manager');
+  phone = $(event.relatedTarget).data('phone');
+  console.log(cat);
+  $('#shopModal #ShopCategoryId').val(cat);
+  $('#shopModal #ShopName').attr('value', shopName);
+  $('#shopModal #Manager').attr('value', manager);
+  $('#shopModal #ShopPhone').attr('value', phone);
+});
