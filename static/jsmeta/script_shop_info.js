@@ -27,17 +27,7 @@ async function submitStart() {
   const result = await response.json();
   
   if(result.success){
-    const array = Object.values(result);
-    const index = Object.values(result);
-    
-    const shopTable = $('#bulk-select-body');
-    shopTable.append('<tr></tr>');
-
-    for(let i = 0; i<array.length-1; i++){
-      shopTable.append($('<td class="align-middle"'+ array[i] +'id=' + index[i] + 'required>'+ array[i] +'</td>'));
-    }
-    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-success mb-1" type="button">수정</button></td>'));
-    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
+    $( "#shopTable" ).load( "shop #shopTable" );
   }
   else{
     alert(result.message);

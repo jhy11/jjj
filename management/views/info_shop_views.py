@@ -41,14 +41,7 @@ class ShopView(View):
             shop_phone=ShopPhone,
         )
         
-        context = {
-            'ShopId': shop.objects.get(shop_name=ShopName).id,
-            'ShopCategory': ShopCategory.name,
-            'ShopName': ShopName,
-            'Manager': Manager,
-            'ShopPhone' : ShopPhone,
-            'success': True,
-        }
+        context['success'] = True
         return JsonResponse(context, content_type='application/json')
 
     def put(self, request: HttpRequest, *args, **kwargs):
