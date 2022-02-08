@@ -1,3 +1,12 @@
+//판매자 판매 승인 신청
+const Requested = '0'
+//판매 승인된 상품 (판매중)
+const OnSale = '1'
+//판매 승인 신청 반려된 상품
+const Rejected = '2'
+//판매 중지된 상품
+const Stopped = '3'
+
 //pro-RequestedTable
 $(document).ready(function() {
   var table = $('#dataTableHover1').DataTable(); 
@@ -71,7 +80,6 @@ $(document).ready(function () {
     });
 });
 
-
 //Approve the sale of products (product.status: 1)
 async function approvePro(id, category, shop, name, price, stock, description) {
     const response = await fetch('product', {
@@ -85,7 +93,7 @@ async function approvePro(id, category, shop, name, price, stock, description) {
         ProductId:id,
         Category:category,
         Shop:shop,
-        Status:'1',
+        Status:OnSale,
         Name:name,
         Price:price,
         Stock:stock,
@@ -117,7 +125,7 @@ async function rejectPro(id, category, shop, name, price, stock, description) {
         ProductId:id,
         Category:category,
         Shop:shop,
-        Status:'2',
+        Status:Rejected,
         Name:name,
         Price:price,
         Stock:stock,
@@ -151,7 +159,7 @@ async function suspendPro(id, category, shop, name, price, stock, description) {
       ProductId:id,
       Category:category,
       Shop:shop,
-      Status:'3',
+      Status:Stopped,
       Name:name,
       Price:price,
       Stock:stock,
