@@ -40,7 +40,6 @@ class ShopView(View):
             manager=Manager,
             shop_phone=ShopPhone,
         )
-
         context = {
             'ShopCategory': ShopCategory.name,
             'ShopName': ShopName,
@@ -48,6 +47,7 @@ class ShopView(View):
             'ShopPhone' : ShopPhone,
             'success': True,
         }
+
         return JsonResponse(context, content_type='application/json')
 
     def put(self, request: HttpRequest, *args, **kwargs):

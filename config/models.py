@@ -24,7 +24,7 @@ class BaseModel(models.Model):
 
 # 회원
 class member(models.Model):
-    #user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="user")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="member", null=True)
     mem_authority = models.CharField(db_column='mem_authority', max_length=100, blank=True, null=True)
     mem_name = models.CharField(db_column='mem_name', max_length=100, blank=True, null=True)
     mem_phone = models.CharField(db_column='mem_phone', max_length=100, blank=True, null=True)

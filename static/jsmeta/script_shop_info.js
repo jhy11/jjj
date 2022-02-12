@@ -35,6 +35,7 @@ async function submitStart() {
   const result = await response.json();
   
   if(result.success){
+
     const array = Object.values(result);
     const index = Object.values(result);
     $('#shopa').find('input').each(function(){
@@ -51,11 +52,11 @@ async function submitStart() {
     dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-primary mb-1" type="button">수정</button></td>'));
     dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
     */
+    $( "#shopTable" ).load( "shop #shopTable" );
   }
   else{
     alert(result.message);
   }
-  $( "#dataTableHover" ).load( "shop #dataTableHover" );
   /*
   $('#example').dataTable( {
     "paging": true
