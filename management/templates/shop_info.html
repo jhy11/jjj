@@ -22,7 +22,10 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-6 mb-3" id="shopa">
+              <div display="none">
+                <div id="Id" name="Id">{{ i.id }}</div>
+              </div>
               <label class="form-label" for="ShopCategoryId">점포 카테고리</label>
               <select class="form-control" id="ShopCategoryId" name="ShopCategoryId" required>
                 {% if ShopCategories %}
@@ -51,7 +54,7 @@
             </div>
             <div class="col-md-6 mb-3">
               <br>
-              <button class="btn btn-outline-primary" id="btn-submit" type="button">등록</button>
+              <button class="btn btn-outline-primary" id="btn-submit" type="submit">등록</button>
               <button class="btn btn-outline-primary" type="button">새로고침</button>
             </div>
           </div>
@@ -61,12 +64,12 @@
   </div>
 
   <div class="row">
-    <div class="col"  id="shopTable">
+    <div class="col">
       <div class="card mb-3 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">점포 관리</h6>
         </div>
-        <div class="table-responsive p-3">
+        <div class="table-responsive p-3" id="aaa">
           <table class="table align-items-center table-flush table-hover" id="dataTableHover">
             <thead class="thead-light">
               <tr>
@@ -94,18 +97,18 @@
               {% if table %} 
               {% for i in table %}
               <tr>
-                <td class="align-middle" id="Id" required>{{ i.id }}</td>
-                <td class="align-middle" id="Category" required>{{ i.shop_category.name }}</td>
-                <td class="align-middle" id="Name" required>{{ i.shop_name }}</td>
-                <td class="align-middle" id="Manager" required>{{ i.manager }}</td>
+                <td class="align-middle" id="Id">{{ i.id }}</td>
+                <td class="align-middle" id="Category">{{ i.shop_category.name }}</td>
+                <td class="align-middle" id="Name">{{ i.shop_name }}</td>
+                <td class="align-middle" id="Manager">{{ i.manager }}</td>
                 <td type="tel" class="align-middle" id="Phone">{{ i.shop_phone }}</td>
                 <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary mb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
-                    id="#modalCenter" data-id="{{ i.id }}" data-cat="{{ i.shop_category.name }}" data-shop="{{ i.shop_name }}" data-manager="{{ i.manager }}" data-phone="{{ i.shop_phone }}"
+                  <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#shopModal" id="#modalCenter"
+                  data-id="{{i.id}}" data-cat="{{ i.shop_category.name }}" data-shop="{{ i.shop_name }}" data-manager="{{ i.manager }}" data-phone="{{ i.shop_phone }}" 
                   >수정</button>
                 </td>
                 <td class="align-middle">
-                  <button class="btn btn-outline-danger mb-1" type="button" onclick="deleteShop('{{i.shop_name}}')">
+                  <button class="btn btn-outline-danger mb-1" type="button" onclick="deleteShop('{{i.id}}')">
                     삭제
                   </button>
                 </td>
@@ -124,7 +127,7 @@
   </div>
 </div>
 
-
+<!--Modal-->
 <div class="modal fade" id="shopModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -136,9 +139,12 @@
       </div>
       <div class="modal-body">
         <div class ="row g-3 needs-validation">
+          <div display="none">
+            <div id="modal-Id" name="Id"></div>
+          </div>
           <div class="col-md-6 mb-3">
             <label class="form-label" for="ShopCategoryId">점포 카테고리</label>
-            <select class="form-control" id="ShopCategoryId" name="ShopCategoryId" required>
+            <select class="form-control" id="modal-ShopCategoryId" name="ShopCategoryId" required>
               {% if ShopCategories %}
               <option value="" disabled selected>점포 카테고리를 선택하세요.</option>
               {% for i in ShopCategories %}
@@ -150,24 +156,24 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label" for="ShopName">점포명</label>
-            <input class=" form-control" id="ShopName" name="ShopName" type="text" placeholder="점표명을 입력하세요." required/>
+            <input class=" form-control" id="modal-ShopName" name="ShopName" type="text" placeholder="점표명을 입력하세요." required/>
             <div class="valid-feedback">Complete</div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label" for="Manager">담당자</label>
-            <input class="form-control" id="Manager" name="Manager" type="text" placeholder="담당자명을 입력하세요." required/>
+            <input class="form-control" id="modal-Manager" name="Manager" type="text" placeholder="담당자명을 입력하세요." required/>
             <div class="valid-feedback">Complete</div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label" for="ShopPhone"  pattern="[0-9]{2,3}-[0-9]{3,4}-[0-9]{4}" maxlength="13">연락처</label>
-            <input class="form-control" id="ShopPhone" name="ShopPhone" type="text" placeholder="점포 연락처를 입력하세요." required/>
+            <input class="form-control" id="modal-ShopPhone" name="ShopPhone" type="text" placeholder="점포 연락처를 입력하세요." required/>
             <div class="valid-feedback">Complete</div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">닫기</button>
-        <button type="button" class="btn btn-primary" onclick="updateShop('{{i.shop_name}}')">완료</button>
+        <button type="button" class="btn btn-outline-primary" >닫기</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateShop()">완료</button>
       </div>
     </div>
   </div>

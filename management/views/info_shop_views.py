@@ -28,7 +28,7 @@ class ShopView(View):
         ShopPhone = request.POST.get('ShopPhone')
 
         # Check if shop already exists
-        if shop.objects.filter(shop_name=ShopName).exists() is True:
+        if shop.objects.filter(DeleteFlag='0', shop_name=ShopName).exists() is True:
             context['success'] = False
             context['message'] = '존재하는 점포입니다.'
             return JsonResponse(context, content_type='application/json')
@@ -40,9 +40,8 @@ class ShopView(View):
             manager=Manager,
             shop_phone=ShopPhone,
         )
-        
+
         context = {
-            'ShopId': shop.objects.get(shop_name=ShopName).id,
             'ShopCategory': ShopCategory.name,
             'ShopName': ShopName,
             'Manager': Manager,
@@ -54,23 +53,16 @@ class ShopView(View):
     def put(self, request: HttpRequest, *args, **kwargs):
         context = {}
         request.PUT = json.loads(request.body)
-        print(request.PUT)
 
-        ShopName = request.PUT.get('ShopName')
-        ShopCategoryId = request.PUT.get('ShopCategoryId')
+        Id = request.PUT.get('Id', None)
+        ShopName = request.PUT.get('ShopName', None)
+        ShopCategoryId = request.PUT.get('ShopCategoryId', None)
         ShopCategory = shop_category.objects.filter(DeleteFlag='0').get(id=ShopCategoryId)
-        Manager = request.PUT.get('Manager')
-        ShopPhone = request.PUT.get('ShopPhone')
-
-        # Check if shop already exists
-        if shop.objects.filter(shop_name=ShopName).count() > 1:
-            context['success'] = False
-            context['message'] = '존재하는 점포입니다.'
-            print('exi')
-            return JsonResponse(context, content_type='application/json')
+        Manager = request.PUT.get('Manager', None)
+        ShopPhone = request.PUT.get('ShopPhone', None)
 
         # Update item
-        shop.objects.filter(shop_name=ShopName, DeleteFlag='0').update(
+        shop.objects.filter(id=Id).update(
             shop_name=ShopName,
             shop_category=ShopCategory,
             manager=Manager,
@@ -78,7 +70,7 @@ class ShopView(View):
         )
         
         context = {
-            'ShopId': shop.objects.get(shop_name=ShopName).id,
+            'Id': Id,
             'ShopCategory': ShopCategory.name,
             'ShopName': ShopName,
             'Manager': Manager,
@@ -91,9 +83,9 @@ class ShopView(View):
     def delete(self, request: HttpRequest):
         request.DELETE = json.loads(request.body)
 
-        ShopName = request.DELETE.get('ShopName', None)
-        if ShopName is not None:
-            shop.delete(shop.objects.filter(DeleteFlag='0').get(shop_name=ShopName))
+        Id = request.DELETE.get('Id', None)
+        if Id is not None:
+            shop.delete(shop.objects.filter(DeleteFlag='0').get(id=Id))
 
             return JsonResponse(data={ 'success': True })
         return JsonResponse(data={ 'success': False })

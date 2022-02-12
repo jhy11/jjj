@@ -1,10 +1,18 @@
-$(document).ready(function () {
-  $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+let getbyId = function(id){
+  return document.getElementById(id);
+}
+
+const btn_submit = getbyId("btn-submit");    
+
+document.addEventListener("DOMContentLoaded", function(){
+  $('#dataTableHover').DataTable(); 
 });
 
-$('#btn-submit').click(function(){
+btn_submit.addEventListener("click", function(){
   submitStart();
-});
+  $('#dataTableHover').DataTable(); 
+
+})
 
 async function submitStart() {
   const response = await fetch('shop', {
@@ -15,10 +23,10 @@ async function submitStart() {
     },
     body: JSON.stringify({
       csrfmiddlewaretoken: window.CSRF_TOKEN,
-      ShopName:$('#ShopName').val(),
-      ShopCategoryId: $('#ShopCategoryId').val(),
-      Manager: $('#Manager').val(),
-      ShopPhone: $('#ShopPhone').val(),
+      ShopName:getbyId('ShopName').value,
+      ShopCategoryId: getbyId('ShopCategoryId').value,
+      Manager: getbyId('Manager').value,
+      ShopPhone: getbyId('ShopPhone').value,
     })
   }).catch((error) => {
     alert(error);
@@ -29,22 +37,44 @@ async function submitStart() {
   if(result.success){
     const array = Object.values(result);
     const index = Object.values(result);
-    
-    const shopTable = $('#bulk-select-body');
-    shopTable.append('<tr></tr>');
+    $('#shopa').find('input').each(function(){
+      $(this).val('');
+    });
+    /*
+    //Create table row
+    const dataTableHover = $('#bulk-select-body');
+    dataTableHover.append('<tr></tr>');
 
     for(let i = 0; i<array.length-1; i++){
-      shopTable.append($('<td class="align-middle"'+ array[i] +'id=' + index[i] + 'required>'+ array[i] +'</td>'));
+      dataTableHover.append($('<td class="align-middle"'+ array[i] +'id=' + index[i] + 'required>'+ array[i] +'</td>'));
     }
-    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-success mb-1" type="button">수정</button></td>'));
-    shopTable.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
+    dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-primary mb-1" type="button">수정</button></td>'));
+    dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
+    */
   }
   else{
     alert(result.message);
   }
+  $( "#dataTableHover" ).load( "shop #dataTableHover" );
+  /*
+  $('#example').dataTable( {
+    "paging": true
+  } );
+  */
+  //$('#dataTableHover').dataTable().fnClearTable(); 
+  //$('#dataTableHover').DataTable().ajax.reload();
+  //$('#dataTableHover').DataTable().draw();
+  //clear inputs
+  //$("#shopa").trigger('reset')
+  //document.getElementById("dataTableHover").reset();
+  //getbyId('table-shop').reset();
+  //$(':input', '#shopa').val('')
+
+  //console.log($(':input', '#dataTableHover').val());
 }
 
 async function updateShop() {
+  console.log(getbyId('ShopName').value);
   const response = await fetch('shop', {
     method: "PUT",
     headers: {
@@ -53,24 +83,29 @@ async function updateShop() {
     },
     body: JSON.stringify({
       csrfmiddlewaretoken: window.CSRF_TOKEN,
-      ShopName:$('#shopModal #ShopName').val(),
-      ShopCategoryId: $('#shopModal #ShopCategoryId').val(),
-      Manager: $('#shopModal#Manager').val(),
-      ShopPhone: $('#shopModal #ShopPhone').val(),
+      Id: getbyId('modal-Id').getAttribute('value'),
+      ShopName:getbyId('modal-ShopName').value,
+      ShopCategoryId: getbyId('modal-ShopCategoryId').value,
+      Manager: getbyId('modal-Manager').value,
+      ShopPhone: getbyId('modal-ShopPhone').value,
     })
   }).catch((error) => {
     alert(error);
   });
 
   const result = await response.json();
-  console.log(result);
+
   if(result.success){
-    console.log(result);
+    //$( "#dataTableHover" ).load( "shop #dataTableHover" );
+    //$('#dataTableHover').DataTable().ajax.reload();
+
+    //$( "#aaa" ).load(" #aaa > *" );
+    $("#dataTableHover").load(window.location.href + " #dataTableHover" );
 
   }
 }
 
-async function deleteShop(shop_name) {
+async function deleteShop(id) {
 
   const response = await fetch('shop', {
     method: 'DELETE',
@@ -83,7 +118,7 @@ async function deleteShop(shop_name) {
     }),
     redirect: 'follow',
     body: JSON.stringify({
-      ShopName: shop_name,
+      Id: id,
     }),
   }).catch((error) => {
     alert(error);
@@ -93,19 +128,25 @@ async function deleteShop(shop_name) {
   
   //reload only table after deleting
   if(result.success){
-    $( "#shopTable" ).load( "shop #shopTable" );
+    $( "#dataTableHover" ).load( "shop #dataTableHover" );
   }
 }
 
 //pass data to modal and set value
-$('#shopModal').on('show.bs.modal', function(event) {          
+$('#shopModal').on('show.bs.modal', function(event) {  
+  id = $(event.relatedTarget).data('id');
   cat = $(event.relatedTarget).data('cat');
   shopName = $(event.relatedTarget).data('shop');
   manager = $(event.relatedTarget).data('manager');
   phone = $(event.relatedTarget).data('phone');
-  console.log(cat);
-  $('#shopModal #ShopCategoryId').val(cat);
-  $('#shopModal #ShopName').attr('value', shopName);
-  $('#shopModal #Manager').attr('value', manager);
-  $('#shopModal #ShopPhone').attr('value', phone);
+
+  $("#modal-ShopCategoryId option").filter(function() {
+    return $(this).text() == cat;
+  }).prop('selected', true);
+
+  $('#modal-Id').attr('value', id);
+  $('#modal-ShopName').attr('value', shopName);
+  $('#modal-Manager').attr('value', manager);
+  $('#modal-ShopPhone').attr('value', phone);
+  
 });
