@@ -65,7 +65,9 @@ class order(BaseModel):
     date = models.CharField(db_column='date', max_length=50, blank=True, null=True)
     type = models.CharField(db_column='type', max_length=50, blank=True, null=True)
     transport_no = models.CharField(db_column='transport_no', max_length=50, blank=True, null=True)
-
+    total_price = models.CharField(db_column='total_price', max_length=50, blank=True, null=True)
+    order_no = models.CharField(db_column='order_no', max_length=50, blank=True, null=True)
+    
     class Meta:
             db_table = 'order'
 
