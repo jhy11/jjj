@@ -75,7 +75,7 @@ async function submitStart() {
 }
 
 async function updateShop() {
-  console.log(getbyId('ShopName').value);
+
   const response = await fetch('shop', {
     method: "PUT",
     headers: {

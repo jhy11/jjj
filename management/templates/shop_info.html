@@ -22,10 +22,10 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
+            <div class="col-md-6 mb-3" display="none">
+              <div id="Id" name="Id">{{ i.id }}</div>
+            </div>
             <div class="col-md-6 mb-3" id="shopa">
-              <div display="none">
-                <div id="Id" name="Id">{{ i.id }}</div>
-              </div>
               <label class="form-label" for="ShopCategoryId">점포 카테고리</label>
               <select class="form-control" id="ShopCategoryId" name="ShopCategoryId" required>
                 {% if ShopCategories %}
@@ -139,7 +139,7 @@
       </div>
       <div class="modal-body">
         <div class ="row g-3 needs-validation">
-          <div display="none">
+          <div class="col-md-6 mb-3" display="none">
             <div id="modal-Id" name="Id"></div>
           </div>
           <div class="col-md-6 mb-3">

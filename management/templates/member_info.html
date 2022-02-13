@@ -1,0 +1,124 @@
+{% extends 'layouts/base.html' %} {% load static %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">회원 관리</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">판매자</li>
+      <li class="breadcrumb-item active" aria-current="page">회원 관리</li>
+    </ol>
+  </div>
+    
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="Authority">회원 카테고리</label>
+              <select class="form-control" id="Authority" name="Authority" required>
+                <option value="" disabled selected>회원 등급을 선택하세요.</option>
+                <option value="Basic">Basic</option>
+                <option value="VIP">VIP</option>
+              </select>
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="Username">아이디</label>
+              <input class=" form-control" id="Username" name="Username" type="text" placeholder="아이디를 입력하세요." required/>
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="Name">회원명</label>
+              <input class="form-control" id="Name" name="Name" type="text" placeholder="회원명을 입력하세요." required/>
+              <div class="valid-feedback">Complete</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">회원 관리</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-member">
+            <thead class="thead-light">
+              <tr>
+                <th>No.</th>
+                <th>등급</th>
+                <th>아이디</th>
+                <th>회원명</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>주소</th>
+                <th>가입일</th>
+                <th>적립금</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>No.</th>
+                <th>등급</th>
+                <th>아이디</th>
+                <th>회원명</th>
+                <th>연락처</th>
+                <th>이메일</th>
+                <th>주소</th>
+                <th>가입일</th>
+                <th>적립금</th>
+              </tr>
+            </tfoot>
+            <tbody class="list" id="bulk-select-body">
+              {% if members %} 
+              {% for i in members %}
+              <tr>
+                <td class="align-middle" id="Id">{{ i.id }}</td>
+                <td class="align-middle" id="Authority">{{ i.mem_authority }}</td>
+                <td class="align-middle" id="Username">{{ i.user_id__username }}</td>
+                <td class="align-middle" id="Name">{{ i.mem_name }}</td>
+                <td class="align-middle" id="Phone">{{ i.mem_phone }}</td>
+                <td class="align-middle" id="Email">{{ i.user_id__email }}</td>
+                <td class="align-middle" id="Address">{{ i.address }}</td>
+                <td class="align-middle" id="Date_Joined">{{ i.user_id__date_joined|date:'Y-m-d' }}</td>
+                <td class="align-middle" id="Point">{{ i.mem_point }}</td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'jsmeta/script_member_info.js' %}"></script>
+
+{% endblock javascripts %}
