@@ -27,8 +27,9 @@
               <label class="form-label" for="Authority">회원 카테고리</label>
               <select class="form-control" id="Authority" name="Authority" required>
                 <option value="" disabled selected>회원 등급을 선택하세요.</option>
-                <option value="Basic">Basic</option>
-                <option value="VIP">VIP</option>
+                {% for l in levels %}
+                <option value="Basic">{{ l.level }}</option>
+                {% endfor %}
               </select>
               <div class="valid-feedback">Complete</div>
             </div>

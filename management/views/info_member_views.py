@@ -15,4 +15,5 @@ class MemberView(View):
         context = {}
         context['members'] = member.objects.values('id', 'mem_authority', 'user_id__username', 'mem_name', 'mem_phone', 'user_id__email', 'address','user_id__date_joined', 'mem_point') 
 
+        context['levels'] = membership.objects.values('level')
         return render(request, self.template_name, context)
