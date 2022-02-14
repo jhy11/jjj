@@ -1,8 +1,30 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from config.models import BaseModel
-from config.models import member
+from django.contrib.auth.models import User
 
+
+#회원등급
+class membership(BaseModel):
+    level = models.CharField(db_column='level', max_length=50, blank=True, null=True)
+    condition = models.IntegerField(db_column='condition', blank=True, null=True)
+    acc_rate = models.IntegerField(db_column='acc_rate', blank=True, null=True)
+
+    class Meta:
+            db_table = 'membership'
+
+
+# 회원
+class member(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="member", null=True)
+    mem_level =  models.ForeignKey(membership, on_delete=models.CASCADE, verbose_name='membership', default=1)
+    mem_name = models.CharField(db_column='mem_name', max_length=100, blank=True, null=True)
+    mem_phone = models.CharField(db_column='mem_phone', max_length=100, blank=True, null=True)
+    mem_point = models.IntegerField(db_column='mem_point', blank=True, null=True)
+    monthtly_price = models.IntegerField(db_column='monthtly_price', blank=True, null=True)
+
+    class Meta:
+        db_table = "member"
 
 
 #상점 카테고리
@@ -40,8 +62,9 @@ class product(BaseModel):
     stock = models.CharField(db_column='stock', max_length=50, blank=True, null=True)
     status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
     description = models.CharField(db_column='description', max_length=50, blank=True, null=True)
-    #image = models.CharField(db_column='image', max_length=50, blank=True, null=True)
-
+    #image = models.CharField(db_column='image', max_length=1024, blank=True, null=True)
+    #image_type = models.CharField(db_column='image_type', max_length=50)
+    
     class Meta:
         db_table = 'product'
 
@@ -65,7 +88,7 @@ class order(BaseModel):
     date = models.CharField(db_column='date', max_length=50, blank=True, null=True)
     type = models.CharField(db_column='type', max_length=50, blank=True, null=True)
     transport_no = models.CharField(db_column='transport_no', max_length=50, blank=True, null=True)
-    total_price = models.CharField(db_column='total_price', max_length=50, blank=True, null=True)
+    total_price = models.IntegerField(db_column='total_price', blank=True, null=True)
     order_no = models.CharField(db_column='order_no', max_length=50, blank=True, null=True)
     
     class Meta:
@@ -75,7 +98,7 @@ class order(BaseModel):
 class order_product(BaseModel):
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
     order = models.ForeignKey(order, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    amount = models.CharField(db_column='amount', max_length=50, blank=True, null=True)
+    amount = models.IntegerField(db_column='amount', blank=True, null=True)
  
     class Meta:
             db_table = 'order-product'
