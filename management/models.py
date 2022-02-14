@@ -79,7 +79,7 @@ class option(BaseModel):
 
 #주문
 class order(BaseModel):
-    member = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     address = models.CharField(db_column='address', max_length=50, blank=True, null=True)
     code = models.CharField(db_column='code', max_length=50, blank=True, null=True)
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
