@@ -12,7 +12,7 @@
     <h1 class="h3 pl-2 text-gray-800">회원 관리</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="./">Home</a></li>
-      <li class="breadcrumb-item">판매자</li>
+      <li class="breadcrumb-item">회원</li>
       <li class="breadcrumb-item active" aria-current="page">회원 관리</li>
     </ol>
   </div>
@@ -65,7 +65,6 @@
                 <th>회원명</th>
                 <th>연락처</th>
                 <th>이메일</th>
-                <th>주소</th>
                 <th>가입일</th>
                 <th>적립금</th>
               </tr>
@@ -78,7 +77,6 @@
                 <th>회원명</th>
                 <th>연락처</th>
                 <th>이메일</th>
-                <th>주소</th>
                 <th>가입일</th>
                 <th>적립금</th>
               </tr>
@@ -88,13 +86,12 @@
               {% for i in members %}
               <tr>
                 <td class="align-middle" id="Id">{{ i.id }}</td>
-                <td class="align-middle" id="Authority">{{ i.mem_authority }}</td>
-                <td class="align-middle" id="Username">{{ i.user_id__username }}</td>
+                <td class="align-middle" id="Authority">{{ i.mem_level__level }}</td>
+                <td class="align-middle" id="Username">{{ i.user__username }}</td>
                 <td class="align-middle" id="Name">{{ i.mem_name }}</td>
                 <td class="align-middle" id="Phone">{{ i.mem_phone }}</td>
-                <td class="align-middle" id="Email">{{ i.user_id__email }}</td>
-                <td class="align-middle" id="Address">{{ i.address }}</td>
-                <td class="align-middle" id="Date_Joined">{{ i.user_id__date_joined|date:'Y-m-d' }}</td>
+                <td class="align-middle" id="Email">{{ i.user__email }}</td>
+                <td class="align-middle" id="Date_Joined">{{ i.user__date_joined|date:'Y-m-d' }}</td>
                 <td class="align-middle" id="Point">{{ i.mem_point }}</td>
               </tr>
               {% endfor %} 
