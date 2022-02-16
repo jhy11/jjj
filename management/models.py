@@ -37,8 +37,8 @@ class shop_category(BaseModel):
 #상점
 class shop(BaseModel):
     shop_category = models.ForeignKey(shop_category, on_delete=models.CASCADE, verbose_name='shop_category', default=1)
+    manager = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='manager', default=1)
     shop_name = models.CharField(db_column='shop_name', max_length=50, blank=True, null=True)
-    manager = models.CharField(db_column='manager', max_length=50, blank=True, null=True)
     shop_phone = models.CharField(db_column='shop_phone', max_length=50, blank=True, null=True)
     
     class Meta:
@@ -55,8 +55,8 @@ class pro_category(BaseModel):
 
 #상품
 class product(BaseModel):
-    pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='pro_category', default=1)
+    shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='shop', default=1)
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
     price = models.CharField(db_column='price', max_length=50, blank=True, null=True)
     stock = models.CharField(db_column='stock', max_length=50, blank=True, null=True)
@@ -70,7 +70,7 @@ class product(BaseModel):
 
 #상품옵션
 class option(BaseModel):
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     opt_name = models.CharField(db_column='opt_name', max_length=50, blank=True, null=True)
  
     class Meta:
@@ -96,18 +96,27 @@ class order(BaseModel):
 
 #상품-주문
 class order_product(BaseModel):
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    order = models.ForeignKey(order, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdoduct', default=1)
+    order = models.ForeignKey(order, on_delete=models.CASCADE, verbose_name='order', default=1)
     amount = models.IntegerField(db_column='amount', blank=True, null=True)
  
     class Meta:
             db_table = 'order-product'
 
 
-#큐앤에이
+#상품 문의 카테고리
+class qna_category(BaseModel):
+    name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
+
+    class Meta:
+            db_table = 'qna_category'
+
+
+#상품 문의
 class qna(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
+    category = models.ForeignKey(qna_category, on_delete=models.CASCADE, verbose_name='category', default=1)
     title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
@@ -117,7 +126,7 @@ class qna(BaseModel):
 
 #결제
 class payment(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
     pay_method = models.CharField(db_column='pay_method', max_length=50, blank=True, null=True)
 
     class Meta:
@@ -126,8 +135,8 @@ class payment(BaseModel):
 
 #후기
 class comment(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     rate = models.CharField(db_column='rate', max_length=50, blank=True, null=True)
 
@@ -138,15 +147,15 @@ class comment(BaseModel):
             
 #장바구니
 class cart(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
 
     class Meta:
             db_table = 'cart'
 
 #장바구니-상품
 class cart_product(BaseModel):
-    cart = models.ForeignKey(cart, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    cart = models.ForeignKey(cart, on_delete=models.CASCADE, verbose_name='cart', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     amount = models.CharField(db_column='amount', max_length=50, blank=True, null=True)
 
     class Meta:
@@ -154,7 +163,7 @@ class cart_product(BaseModel):
 
 #배송주소
 class address(BaseModel):
-    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='prdo?', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     ad_name = models.CharField(db_column='ad_name', max_length=50, blank=True, null=True)
     code = models.CharField(db_column='code', max_length=50, blank=True, null=True)
     ad_detail = models.CharField(db_column='ad_detail', max_length=50, blank=True, null=True)
