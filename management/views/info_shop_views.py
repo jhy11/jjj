@@ -40,13 +40,8 @@ class ShopView(View):
             manager=Manager,
             shop_phone=ShopPhone,
         )
-        context = {
-            'ShopCategory': ShopCategory.name,
-            'ShopName': ShopName,
-            'Manager': Manager,
-            'ShopPhone' : ShopPhone,
-            'success': True,
-        }
+        context['shops'] = list(shop.objects.filter(DeleteFlag='0').values('id', 'shop_category__name', 'shop_name', 'manager', 'shop_phone'))
+        context['success'] = True
 
         return JsonResponse(context, content_type='application/json')
 
@@ -69,23 +64,22 @@ class ShopView(View):
             shop_phone=ShopPhone,
         )
         
-        context = {
-            'Id': Id,
-            'ShopCategory': ShopCategory.name,
-            'ShopName': ShopName,
-            'Manager': Manager,
-            'ShopPhone' : ShopPhone,
-            'success': True,
-        }
+        context['shops'] = list(shop.objects.filter(DeleteFlag='0').values('id', 'shop_category__name', 'shop_name', 'manager', 'shop_phone'))
+        context['success'] = True
 
         return JsonResponse(context, content_type='application/json')
 
     def delete(self, request: HttpRequest):
+        context={}
         request.DELETE = json.loads(request.body)
 
         Id = request.DELETE.get('Id', None)
         if Id is not None:
             shop.delete(shop.objects.filter(DeleteFlag='0').get(id=Id))
 
-            return JsonResponse(data={ 'success': True })
+            context['shops'] = list(shop.objects.filter(DeleteFlag='0').values('id', 'shop_category__name', 'shop_name', 'manager', 'shop_phone'))
+            context['success'] = True
+            
+            return JsonResponse(context, content_type='application/json')
+
         return JsonResponse(data={ 'success': False })

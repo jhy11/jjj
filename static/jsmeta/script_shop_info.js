@@ -5,14 +5,14 @@ let getbyId = function(id){
 const btn_submit = getbyId("btn-submit");    
 
 document.addEventListener("DOMContentLoaded", function(){
-  $('#dataTableHover').DataTable(); 
+  $('#dataTableHover').dataTable({
+    "bPaginate": true,
+  }); 
 });
 
 btn_submit.addEventListener("click", function(){
   submitStart();
-  $('#dataTableHover').DataTable(); 
-
-})
+});
 
 async function submitStart() {
   const response = await fetch('shop', {
@@ -35,43 +35,11 @@ async function submitStart() {
   const result = await response.json();
   
   if(result.success){
-
-    const array = Object.values(result);
-    const index = Object.values(result);
-    $('#shopa').find('input').each(function(){
-      $(this).val('');
-    });
-    /*
-    //Create table row
-    const dataTableHover = $('#bulk-select-body');
-    dataTableHover.append('<tr></tr>');
-
-    for(let i = 0; i<array.length-1; i++){
-      dataTableHover.append($('<td class="align-middle"'+ array[i] +'id=' + index[i] + 'required>'+ array[i] +'</td>'));
-    }
-    dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-primary mb-1" type="button">수정</button></td>'));
-    dataTableHover.append($('<td class="align-middle"><button class="btn btn-outline-danger mb-1" type="button">삭제</button></td>'));
-    */
-    $( "#shopTable" ).load( "shop #shopTable" );
+    loadNewData(result);
   }
   else{
     alert(result.message);
   }
-  /*
-  $('#example').dataTable( {
-    "paging": true
-  } );
-  */
-  //$('#dataTableHover').dataTable().fnClearTable(); 
-  //$('#dataTableHover').DataTable().ajax.reload();
-  //$('#dataTableHover').DataTable().draw();
-  //clear inputs
-  //$("#shopa").trigger('reset')
-  //document.getElementById("dataTableHover").reset();
-  //getbyId('table-shop').reset();
-  //$(':input', '#shopa').val('')
-
-  //console.log($(':input', '#dataTableHover').val());
 }
 
 async function updateShop() {
@@ -97,12 +65,12 @@ async function updateShop() {
   const result = await response.json();
 
   if(result.success){
-    //$( "#dataTableHover" ).load( "shop #dataTableHover" );
-    //$('#dataTableHover').DataTable().ajax.reload();
-
-    //$( "#aaa" ).load(" #aaa > *" );
-    $("#dataTableHover").load(window.location.href + " #dataTableHover" );
-
+    loadNewData(result);
+  }
+}
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
   }
 }
 
@@ -129,7 +97,7 @@ async function deleteShop(id) {
   
   //reload only table after deleting
   if(result.success){
-    $( "#dataTableHover" ).load( "shop #dataTableHover" );
+    loadNewData(result);
   }
 }
 
@@ -151,3 +119,66 @@ $('#shopModal').on('show.bs.modal', function(event) {
   $('#modal-ShopPhone').attr('value', phone);
   
 });
+
+function loadNewData(result){
+  $('#dataTableHover-shop').dataTable({
+    destroy: true,
+    data: result.shops,
+    searching: false,
+
+    columnDefs: [{
+      "targets": 5,
+      "render": function (data) {
+          let td = document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+
+          let btn_update = document.createElement('button');
+          setAttributes(btn_update, {
+            'type': 'button',
+            'class': "btn btn-outline-primary mb-1",
+            'data-toggle': 'modal',
+            'data-target': '#shopModal',
+            'id': '#modalCenter',
+            'data-id': data.id,
+            'data-cat': data.shop_category__name,
+            'data-shop': data.shop_name,
+            'data-manager': data.manager,
+            'data-phone': data.shop_phone
+          });
+
+          btn_update.innerText = '수정';
+          td.appendChild(btn_update);
+
+          return td.innerHTML;
+      },
+    },
+    {
+      "targets": 6,
+      "render": function (data) {
+          let td = document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+
+          let btn_delete = document.createElement('button');
+          setAttributes(btn_delete, {
+            'type': 'button',
+            'class': "btn btn-outline-danger mb-1",
+            'onClick': "deleteShop(" + data.id + ")"
+          });
+
+          btn_delete.innerText = '삭제';
+          td.appendChild(btn_delete);
+
+          return td.innerHTML;
+      }
+  }],
+    "columns": [
+      {data: "id"},
+      {data: "shop_category__name"},
+      {data: "shop_name"},
+      {data: "manager"},
+      {data: "shop_phone"},
+      {data: null},
+      {data: null},
+    ],
+  });
+}

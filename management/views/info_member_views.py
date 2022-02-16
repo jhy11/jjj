@@ -16,3 +16,8 @@ class MemberView(View):
         context['levels'] = membership.objects.values('level')
         
         return render(request, self.template_name, context)
+    
+    def put(self, request:HttpRequest):
+        context={}
+
+        return JsonResponse(context, content_type="application/json")
