@@ -97,6 +97,25 @@
       </div>
     </div>
   </li>
+
+  
+  <hr class="sidebar-divider">
+  <div class="sidebar-heading">
+    User
+  </div>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+      aria-controls="collapsePage">
+      <i class="fas fa-fw fa-columns"></i>
+      <span>판매자페이지</span>
+    </a>
+    <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">나의 판매</h6>
+        <a class="collapse-item" href="{% url 'seller:seller_product' %}">판매 등록</a>
+    </div>
+  </li>
+
   <hr class="sidebar-divider">
   <div class="sidebar-heading">
     System
