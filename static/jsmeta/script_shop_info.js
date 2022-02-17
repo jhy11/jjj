@@ -25,7 +25,7 @@ async function submitStart() {
       csrfmiddlewaretoken: window.CSRF_TOKEN,
       ShopName:getbyId('ShopName').value,
       ShopCategoryId: getbyId('ShopCategoryId').value,
-      Manager: getbyId('Manager').value,
+      ManagerId: getbyId('ManagerId').value,
       ShopPhone: getbyId('ShopPhone').value,
     })
   }).catch((error) => {
@@ -55,7 +55,7 @@ async function updateShop() {
       Id: getbyId('modal-Id').getAttribute('value'),
       ShopName:getbyId('modal-ShopName').value,
       ShopCategoryId: getbyId('modal-ShopCategoryId').value,
-      Manager: getbyId('modal-Manager').value,
+      ManagerId: getbyId('modal-ManagerId').value,
       ShopPhone: getbyId('modal-ShopPhone').value,
     })
   }).catch((error) => {
@@ -113,9 +113,12 @@ $('#shopModal').on('show.bs.modal', function(event) {
     return $(this).text() == cat;
   }).prop('selected', true);
 
+  $("#modal-ManagerId option").filter(function() {
+    return $(this).text() == manager;
+  }).prop('selected', true);
+
   $('#modal-Id').attr('value', id);
   $('#modal-ShopName').attr('value', shopName);
-  $('#modal-Manager').attr('value', manager);
   $('#modal-ShopPhone').attr('value', phone);
   
 });
@@ -175,7 +178,7 @@ function loadNewData(result){
       {data: "id"},
       {data: "shop_category__name"},
       {data: "shop_name"},
-      {data: "manager"},
+      {data: "manager__user_id__username"},
       {data: "shop_phone"},
       {data: null},
       {data: null},
