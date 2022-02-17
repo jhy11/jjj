@@ -14,12 +14,12 @@ class index(View):
         return render(request, 'index.html', context)
 
 
-class LogoutView(View):
-    # post로 고쳐야함
-    def get(self, request: HttpRequest, *args, **kwargs):
-        logout(request)
+# class LogoutView(View):
+#     # post로 고쳐야함
+#     def get(self, request: HttpRequest, *args, **kwargs):
+#         logout(request)
 
-        return redirect('/')
+#         return redirect('/')
 
 
 class LoginView(View):

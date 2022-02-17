@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path, include 
 from django.conf.urls.static import static
 from django.conf import settings
-from config.views import LogoutView, index, LoginView, RegisterView, CheckSameId, CheckSameEmail
+from config.views import index, LoginView, RegisterView, CheckSameId, CheckSameEmail
+from django.contrib.auth.views import LogoutView
 from . import views
 
 urlpatterns = [
@@ -14,7 +15,7 @@ urlpatterns = [
     path('register', RegisterView.as_view(), name='register'),
     path('check-same-id', CheckSameId.as_view(), name='check-same-id'),
     path('check-same-email', CheckSameEmail.as_view(), name='check-same-email'),
-    path('logout',LogoutView.as_view(), name='logout'),
+    path('logout',LogoutView.as_view(next_page='./'), name='logout'),
     
     path('products/', include('products.urls')),
     path('management/', include('management.urls')),
