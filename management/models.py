@@ -120,6 +120,7 @@ class qna(BaseModel):
     title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
+    answer_flag = models.CharField(db_column='answer_flag', max_length=10, blank=True, null=True, default='0')
 
     class Meta:
             db_table = 'qna'
