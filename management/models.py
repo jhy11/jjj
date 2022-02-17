@@ -124,6 +124,14 @@ class qna(BaseModel):
     class Meta:
             db_table = 'qna'
 
+#상품 문의 답변
+class qna_answer(BaseModel):
+    qna = models.ForeignKey(qna, on_delete=models.CASCADE, verbose_name='qna', default=1)
+    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+
+    class Meta:
+            db_table = 'qna_answer'
+
 #결제
 class payment(BaseModel):
     memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
