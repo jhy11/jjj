@@ -114,7 +114,7 @@ class qna_category(BaseModel):
 
 #상품 문의
 class qna(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     category = models.ForeignKey(qna_category, on_delete=models.CASCADE, verbose_name='category', default=1)
     title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
