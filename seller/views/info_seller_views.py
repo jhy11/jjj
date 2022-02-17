@@ -24,22 +24,19 @@ class SellerProductView(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
         request.POST = json.loads(request.body)
-
+        
+       
         ProCategoryId = request.POST.get('ProductCategoryId')
-        ProCategory = pro_category.objects.filter(DeleteFlag='0').get(id=ProCategoryId)
+        ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
+        print(ProCategory)
+        print(ProCategoryId)
         Name = request.POST.get('ProductName')
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
         Description = request.POST.get('ProductDescription')
 
-        if shop.objects.filter(DeleteFlag='0', name=Name).exists() is True:
-            context['success'] = False
-            context['message'] = '존재하는 상품입니다.'
-            return JsonResponse(context, content_type='application/json')
-
-
         product.objects.create(
-            pro_category =  ProCategory,      
+            pro_category=ProCategory,      
             name = Name,
             price = Price,
             stock = Stock,
@@ -47,15 +44,8 @@ class SellerProductView(View):
             shop_id = 3,
             status = 0,
         )
-        context = {
-             'ProCategory': ProCategory.name,
-             'Name': Name,
-             'Price': Price,
-             'Stock': Stock,
-             'Description': Description,
-             'success': True,
-        }
-
+    
+        context['success']=True
         return JsonResponse(context, content_type='application/json')
 
     def put(self, request: HttpRequest, *args, **kwargs):
@@ -88,12 +78,15 @@ class SellerProductView(View):
         
         return JsonResponse(context, content_type='application/json')
 
-    def delete(self, request: HttpRequest):
+    def delete(self, request: HttpRequest):     
         request.DELETE = json.loads(request.body)
 
-        productId = request.DELETE.get('productId', None)
-        if productId is not None:
-            product.delete(product.objects.filter(DeleteFlag='0').get(id=productId))
-
+        Id = request.DELETE.get('Id', None)
+        print(Id)
+        if Id is not None:
+            product.delete(product.objects.filter(DeleteFlag='0').get(id=Id))
             return JsonResponse(data={ 'success': True })
         return JsonResponse(data={ 'success': False })
+
+
+        
