@@ -26,10 +26,10 @@ btnCheckId.addEventListener('click',async() => {
 
     const result = await response.json()
     if (result.success){
-        document.getElementById('idError').innerText = '';
-        document.getElementById('idRight').innerText = '사용 가능한 아이디입니다';
+        document.getElementById('username').setAttribute('class', 'form-control is-valid');
+        document.getElementById('idValid').innerText = '사용 가능한 아이디입니다';
     }else{
-        document.getElementById('idRight').innerText = '';
+      document.getElementById('username').setAttribute('class', 'form-control is-invalid');
         document.getElementById('idError').innerText = '이미 사용 중인 아이디입니다';
     }
 })
@@ -58,10 +58,10 @@ btnCheckEmail.addEventListener('click',async() => {
 
     const result = await response.json()
     if (result.success){
-        document.getElementById('emailError').innerText = '';
+        document.getElementById('register-email').setAttribute('class', 'form-control is-valid');
         document.getElementById('emailRight').innerText = '사용 가능한 이메일입니다';
     }else{
-        document.getElementById('emailRight').innerText = '';
+        document.getElementById('register-email').setAttribute('class', 'form-control is-invalid');
         document.getElementById('emailError').innerText = '이미 사용 중인 이메일입니다';
     }
 })
@@ -167,11 +167,12 @@ function CheckID(str){
     var reg_id = /^[a-z]+[a-z0-9]{5,19}$/g;
 
     if( !reg_id.test(str)) {
+        document.getElementById('username').setAttribute('class', 'form-control is-invalid');
         document.getElementById('idError').innerText = '아이디는 영문자로 시작하는 6~20자 영문자 또는 숫자이어야 합니다';
         return false;
     }
     else{
-        document.getElementById('idError').innerText = '';
+        document.getElementById('username').setAttribute('class', 'form-control');
         return true;
     }
 }
@@ -182,12 +183,12 @@ function CheckEmail(str){
      var reg_email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
 
      if(!reg_email.test(str)){
-        document.getElementById('emailRight').innerText = '';
+        document.getElementById('register-email').setAttribute('class', 'form-control is-invalid');
         document.getElementById('emailError').innerText = '잘못된 이메일 형식입니다';
         return false;
     }         
      else{
-        document.getElementById('emailError').innerText = '';
+        document.getElementById('register-email').setAttribute('class', 'form-control');
         return true;
     }             
 }
@@ -198,12 +199,13 @@ function CheckPhone(str){
     var reg_phone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
 
     if(!reg_phone.test(str)){
-       document.getElementById('phoneError').innerText = '잘못된 핸드폰 번호입니다';
-       return false;
+      document.getElementById('register-phone').setAttribute('class', 'form-control is-invalid');
+      document.getElementById('phoneError').innerText = '잘못된 휴대폰 번호입니다';
+      return false;
    }         
     else{
-       document.getElementById('phoneError').innerText = '';
-       return true;
+      document.getElementById('register-phone').setAttribute('class', 'form-control');
+      return true;
    }             
 }
 
@@ -211,11 +213,12 @@ function CheckPhone(str){
 //비밀번호 정규식
 function CheckPassword(str){
     if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/.test(str)){
+        document.getElementById('password').setAttribute('class', 'form-control is-invalid');
         document.getElementById('passwordError').innerText = '숫자와 영문자 조합으로 8~16자리를 사용해야 합니다';
         return false;
     }
     else{
-        document.getElementById('passwordError').innerText="";
+        document.getElementById('password').setAttribute('class', 'form-control');
         return true;
     }
 }
@@ -225,19 +228,15 @@ function SamePassword(){
     var password = document.getElementById('password').value;
     var confirm_password = document.getElementById('confirm-password').value;
     if(password== '' || confirm_password =='')
-        return
+        return;
     if(password != confirm_password){
-        document.getElementById('passwordRight').innerText="";
+        document.getElementById('confirm-password').setAttribute('class', 'form-control is-invalid');
         document.getElementById('confirmPasswordError').innerText="비밀번호가 일치하지 않습니다";
         return false;
     }
     else{
-        document.getElementById('confirmPasswordError').innerText="";
+        document.getElementById('confirm-password').setAttribute('class', 'form-control is-valid');
         document.getElementById('passwordRight').innerText="비밀번호가 일치합니다";
         return true;
     }
 }
-
-
-  
-  
