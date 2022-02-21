@@ -46,13 +46,15 @@
                 <option value="Pending">배송지연</option>
               </select>
             </div>
+            <!--
             <div class="col-md-4 mb-3">
               <label class="form-label" for="Id">주문자 아이디</label>
               <input class=" form-control" id="Id" name="Id" type="text" placeholder="주문자 아이디를 입력하세요."/>
             </div>
+          -->
             <div class="col-md-4 mb-3">
               <label class="form-label" for="Name">주문자명</label>
-              <input class=" form-control" id="Name" name="Name" type="text" placeholder="주문자명 입력하세요."/>
+              <input class=" form-control" id="Name" name="Name" type="text" placeholder="주문자명을 입력하세요."/>
             </div>
           </div>
         </div>
@@ -75,8 +77,8 @@
                 <th>주문자명</th>
                 <th>연락처</th>
                 <th>운송장번호</th>
-                <th>주문상태</th>
                 <th>금액</th>
+                <th>주문상태</th>
               </tr>
             </thead>
             <tbody class="list" id="list-order">
@@ -90,7 +92,7 @@
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
                 <td class="align-middle" id="Total">{{ i.total_price|intcomma }}</td>
-                <td class="align-middle" id="Status-td" value='{{i.status}}'></td>
+                <td class="align-middle status" id="Status" value='{{i.status}}'></td>
               </tr>
               {% endfor %} 
               {% else %}
@@ -112,8 +114,8 @@
                 <th>주문자명</th>
                 <th>연락처</th>
                 <th>운송장번호</th>
-                <th>주문상태</th>
                 <th>금액</th>
+                <th>주문상태</th>
               </tr>
             </tfoot>
           </table>

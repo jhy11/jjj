@@ -1,7 +1,23 @@
 document.addEventListener("DOMContentLoaded", function(){
-  let status = document.getElementById('Status-td');
+  let status = document.getElementsByClassName('status');
+  [].forEach.call(status, function(status) {
+      status.innerHTML=showStatus(status.getAttribute('value'));
+  })
+
+  let table = $('#dataTableHover-order').DataTable(); 
   
-  status.innerHTML=showStatus(status.getAttribute('value'));
+  $('#No').on('keyup', function () {
+    table.columns(0).search( this.value ).draw();
+  });
+  $('#Type').on('change', function () {
+    table.columns(1).search( this.value ).draw();
+  });
+  $('#Status').on('change', function () {
+    table.columns(6).search( this.value ).draw();
+  });
+  $('#Name').on('keyup', function () {
+    table.columns(2).search( this.value ).draw();
+  });
 });
 
 function showStatus(status){
@@ -22,4 +38,3 @@ function showStatus(status){
   }
   return result;
 }
-
