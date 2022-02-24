@@ -47,9 +47,7 @@ async function deleteProduct2(id) {
 
     //reload only table after deleting
     if(result.success){
-        console.log("before");
         loadNewData2(result);
-        console.log("after");
     }
 }
 
@@ -83,7 +81,7 @@ async function reapplyProduct(id) {
 }
 
 //pass data to modal and set value
-$('#shopModal').on('show.bs.modal', function(event) {  
+$('#shopModal2').on('show.bs.modal', function(event) {  
     //html 값을 data-value 형태로 가져와서 
     id = $(event.relatedTarget).data('id');
     cat = $(event.relatedTarget).data('cat');
@@ -122,8 +120,8 @@ function loadNewData2(result){
                     'type': 'button',
                     'class': "btn btn-outline-primary mb-1",
                     'data-toggle': 'modal',
-                    'data-target': '#shopModal',
-                    'id': '#modalCenter',
+                    'data-target': '#shopModal2',
+                    'id': '#modalCenter2',
                     'data-id': data.id,
                     'data-cat': data.pro_category__name,
                     'data-proname': data.name,

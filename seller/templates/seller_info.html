@@ -182,8 +182,8 @@
                 <td class="align-middle" id="Stock" required>{{ i.stock }}</td>
                 <td class="align-middle" id="Description" required>{{ i.description }}</td>
                 <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary mb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
-                    id="#modalCenter" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-name="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}"
+                  <button type="button" class="btn btn-outline-primary mb-1 btn-edit" data-toggle="modal" data-target="#shopModal2"
+                    id="#modalCenter2" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
                   >수정</button>
                 </td>
                 <td class="align-middle">
@@ -212,6 +212,62 @@
   </div>
 </div>
 
+
+
+<div class="modal fade" id="shopModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">상품 데이터 수정</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class ="row g-3 needs-validation">
+          <div display="none">
+            <div id="modal-Id" name="Id"></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
+            <select class="form-control" id="modal-ProductCategoryId" name="ProductCategoryId" required>
+                {% if ProCategories %}
+                <option value="" disabled selected>상품 카테고리 선택</option>
+                {% for i in ProCategories %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>   
+          <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductName">상품명</label>
+            <input class=" form-control" id="modal-ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요." required/>
+            <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductPrice">상품 가격</label>
+            <input class="form-control" id="modal-ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요." required/>
+            <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label class="form-label" for="ProductStock">상품 재고</label>
+              <input class="form-control" id="modal-ProductStock" name="ProductStock" type="text" placeholder="상품 재고를 입력하세요." required/>
+              <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label class="form-label" for="ProductDescription">상품 설명</label>
+              <input class="form-control" id="modal-ProductDescription" name="ProductDescription" type="text" placeholder="상품 설명을 입력하세요." required/>
+              <div class="valid-feedback">Complete</div>
+          </div>   
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" >닫기</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateProduct2()">완료</button>
+        </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade" id="shopModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -267,6 +323,8 @@
     </div>
   </div>
 </div>
+
+
 
 
 {% endblock content %}
