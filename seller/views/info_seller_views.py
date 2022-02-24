@@ -52,16 +52,11 @@ class SellerProductView(View):
         Id = request.PUT.get('Id')
         ProCategoryId = request.PUT.get('ProductCategoryId')
         ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
-        #Status = request.PUT.get('status')
         Name = request.PUT.get('ProductName')
         Price = request.PUT.get('ProductPrice')
         Stock = request.PUT.get('ProductStock')
         Description = request.PUT.get('ProductDescription')
-        print(ProCategoryId)
-        print(ProCategory)
-        
-
-        # Update status
+    
         product.objects.filter(id=Id).update(
             pro_category=ProCategory,      
             name = Name,
@@ -71,6 +66,12 @@ class SellerProductView(View):
             shop_id = '3',
 
         )
+        statusValue = product.objects.filter(id=Id).values('status')
+        if (statusValue[0].get('status') == '0'):
+            context['statusValue'] = 0
+        else: 
+            context['statusValue'] = 2
+        
         context['products'] = list(product.objects.filter(shop_id ='3', status='0', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['products2'] = list(product.objects.filter(shop_id ='3', status='2', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['success'] = True

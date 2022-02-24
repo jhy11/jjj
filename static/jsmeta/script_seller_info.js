@@ -30,7 +30,6 @@ async function submitStart() {
   const result = await response.json();
   
   if(result.success){
-    //$("#sellerRequestedTable").load( "seller_product #sellerRequestedTable" );
     loadNewData(result);
   }
   else{
@@ -61,8 +60,15 @@ async function updateProduct(){
   const result = await response.json();
 
   if(result.success){
-    loadNewData(result);
-  }
+    if(result.statusValue == 0){
+      loadNewData(result);
+    }
+    else{
+      console.log("2");
+      loadNewData2(result);
+    }
+   
+}
 }
 
 async function deleteProduct(id) {
@@ -183,3 +189,4 @@ function loadNewData(result){
     ],
   });
 }
+

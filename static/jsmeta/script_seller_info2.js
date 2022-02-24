@@ -1,30 +1,3 @@
-async function updateProduct2(){
-    const response = await fetch('seller_product',{
-        method: "PUT",
-        headers: {
-            'Accept': 'application/json',
-            'X-CSRFToken': getCookie('csrftoken')
-        },
-        body: JSON.stringify({
-        csrfmiddlewaretoken: window.CSRF_TOKEN,
-        Id: getbyId('modal-Id').getAttribute('value'),
-        ProductCategoryId:getbyId('modal-ProductCategoryId').value,
-        ProductName:getbyId('modal-ProductName').value,
-        ProductPrice: getbyId('modal-ProductPrice').value,
-        ProductStock: getbyId('modal-ProductStock').value,
-        ProductDescription: getbyId('modal-ProductDescription').value,
-        })
-    }).catch((error) => {
-        alert(error);
-    });
-
-    const result = await response.json();
-
-    if(result.success){
-        loadNewData2(result);
-    }
-}
-  
 async function deleteProduct2(id) {
     const response = await fetch('seller_product', {
         method: 'DELETE',
@@ -81,7 +54,7 @@ async function reapplyProduct(id) {
 }
 
 //pass data to modal and set value
-$('#shopModal2').on('show.bs.modal', function(event) {  
+$('#shopModal').on('show.bs.modal', function(event) {  
     //html 값을 data-value 형태로 가져와서 
     id = $(event.relatedTarget).data('id');
     cat = $(event.relatedTarget).data('cat');
@@ -120,8 +93,8 @@ function loadNewData2(result){
                     'type': 'button',
                     'class': "btn btn-outline-primary mb-1",
                     'data-toggle': 'modal',
-                    'data-target': '#shopModal2',
-                    'id': '#modalCenter2',
+                    'data-target': '#shopModal',
+                    'id': '#modalCenter',
                     'data-id': data.id,
                     'data-cat': data.pro_category__name,
                     'data-proname': data.name,
