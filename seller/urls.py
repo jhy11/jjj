@@ -10,4 +10,5 @@ urlpatterns=[
     path('qna-post/<str:id>', info_qna_views.QnaPostView.as_view(), name='qna-post'),
     path('qna-edit/<str:id>', info_qna_views.QnaEditView.as_view(), name='qna-edit'),
 
+    path('reapply', info_seller_views.reapplyView.as_view(), name='reapply'),
 ]

@@ -118,9 +118,9 @@ $('#shopModal').on('show.bs.modal', function(event) {
   }).prop('selected', true);
 
   $('#modal-Id').attr('value', id);
-  $('#modal-ShopName').attr('value', shopName);
-  $('#modal-ShopPhone').attr('value', phone);
-  
+
+  $('#modal-ShopName').val(shopName);
+  $('#modal-ShopPhone').val(phone);  
 });
 
 function loadNewData(result){
@@ -145,7 +145,7 @@ function loadNewData(result){
             'data-id': data.id,
             'data-cat': data.shop_category__name,
             'data-shop': data.shop_name,
-            'data-manager': data.manager,
+            'data-manager': data.manager__user_id__username,
             'data-phone': data.shop_phone
           });
 
