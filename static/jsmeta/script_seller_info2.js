@@ -67,10 +67,10 @@ $('#shopModal').on('show.bs.modal', function(event) {
       return $(this).text() == cat;
     }).prop('selected', true);
     $('#modal-Id').attr('value', id);
-    $('#modal-ProductName').attr('value', proname);
-    $('#modal-ProductPrice').attr('value', price);
-    $('#modal-ProductStock').attr('value', stock);
-    $('#modal-ProductDescription').attr('value', description);
+    $('#modal-ProductName').val(proname);
+    $('#modal-ProductPrice').val(price);  
+    $('#modal-ProductStock').val(stock);
+    $('#modal-ProductDescription').val(description);
 
   });
 
