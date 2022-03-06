@@ -31,7 +31,7 @@
                 {% if ShopCategories %}
                 <option value="" disabled selected>점포 카테고리를 선택하세요.</option>
                 {% for i in ShopCategories %}
-                <option value="{{i.id}}">{{i.name}}</option>
+                <option value="{{i.name}}">{{i.name}}</option>
                 {% endfor %}
                 {% endif %}
               </select>
@@ -48,7 +48,7 @@
                 {% if Sellers %}
                 <option value="" disabled selected>담당자 아이디를 선택하세요.</option>
                 {% for i in Sellers %}
-                <option value="{{i.id}}">{{i.user.username}}</option>
+                <option value="{{i.user.username}}">{{i.user.username}}</option>
                 {% endfor %}
                 {% endif %}
               </select>
@@ -61,8 +61,8 @@
             </div>
             <div class="col-md-6 mb-3">
               <br>
-              <button class="btn btn-outline-primary" id="btn-submit" type="submit">등록</button>
-              <button class="btn btn-outline-primary" type="button">새로고침</button>
+              <button class="btn btn-outline-primary pb-1" id="btn-submit" type="submit">등록</button>
+              <button class="btn btn-outline-primary pb-1" type="button">새로고침</button>
             </div>
           </div>
         </div>
@@ -110,12 +110,12 @@
                 <td class="align-middle" id="Manager">{{ i.manager.user.username }}</td>
                 <td type="tel" class="align-middle" id="Phone">{{ i.shop_phone }}</td>
                 <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary mb-1" data-toggle="modal" data-target="#shopModal" id="#modalCenter"
+                  <button type="button" class="btn btn-outline-primary pb-1" data-toggle="modal" data-target="#shopModal" id="#modalCenter"
                   data-id="{{i.id}}" data-cat="{{ i.shop_category.name }}" data-shop="{{ i.shop_name }}" data-manager="{{ i.manager.user.username }}" data-phone="{{ i.shop_phone }}" 
                   >수정</button>
                 </td>
                 <td class="align-middle">
-                  <button class="btn btn-outline-danger mb-1" type="button" onclick="deleteShop('{{i.id}}')">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteShop('{{i.id}}')">
                     삭제
                   </button>
                 </td>
@@ -186,8 +186,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" >닫기</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateShop()">완료</button>
+        <button type="button" class="btn btn-outline-primary pb-1" >닫기</button>
+        <button type="button" class="btn btn-primary pb-1" data-dismiss="modal" onclick="updateShop()">완료</button>
       </div>
     </div>
   </div>

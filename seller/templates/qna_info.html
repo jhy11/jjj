@@ -29,7 +29,7 @@
                 <option value="" disabled selected>문의 종류를 선택하세요.</option>
                 {% if qnaCategories %}
                 {% for i in qnaCategories %}
-                <option value="{{i.id}}">{{i.name}}</option>
+                <option value="{{i.name}}">{{i.name}}</option>
                 {% endfor %}
                 {% endif %}
               </select>

@@ -20,30 +20,26 @@
     
   <div class="row">
     <div class="col">
-      <div class="card mb-4">
+      <div class="card mb-3">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
-            <div class="col-md-4 mb-3">
-              <label class="form-label" for="No">주문 번호</label>
-              <input class=" form-control" id="No" name="No" type="text" placeholder="주문번호를 입력하세요."/>
-            </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label" for="Type">수령 방법</label>
               <select class="form-control" id="Type" name="Type">
                 <option value="" disabled selected>수령 방법을 선택하세요.</option>
-                <option value="">배달</option>
-                <option value="">포장</option>
-                <option value="">드라이브스루?</option>
+                <option value="배달">배달</option>
+                <option value="포장">포장</option>
+                <option value="드라이브스루">드라이브스루?</option>
               </select>
             </div>
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label" for="Status">주문 상태</label>
               <select class="form-control" id="Status" name="Status">
                 <option value="" disabled selected>주문 상태를 선택하세요.</option>
-                <option value="Processing">배송준비중</option>
-                <option value="Shipping">배송중</option>
-                <option value="Delivered">배송완료</option>
-                <option value="Pending">배송지연</option>
+                <option value="배송준비중">배송준비중</option>
+                <option value="배송중">배송중</option>
+                <option value="배송완료">배송완료</option>
+                <option value="배송지연">배송지연</option>
               </select>
             </div>
             <!--
@@ -52,9 +48,13 @@
               <input class=" form-control" id="Id" name="Id" type="text" placeholder="주문자 아이디를 입력하세요."/>
             </div>
           -->
-            <div class="col-md-4 mb-3">
+            <div class="col-md-3 mb-3">
               <label class="form-label" for="Name">주문자명</label>
               <input class=" form-control" id="Name" name="Name" type="text" placeholder="주문자명을 입력하세요."/>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label class="form-label" for="No">주문 번호</label>
+              <input class=" form-control" id="No" name="No" type="text" placeholder="주문번호를 입력하세요."/>
             </div>
           </div>
         </div>

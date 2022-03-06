@@ -5,9 +5,25 @@ let getbyId = function(id){
 const btn_submit = getbyId("btn-submit");    
 
 document.addEventListener("DOMContentLoaded", function(){
-  $('#dataTableHover').dataTable({
+  $('#dataTableHover-shop').dataTable({
     "bPaginate": true,
-  }); 
+  });
+  let table = $('#dataTableHover-shop').DataTable();
+  
+  $('#ShopCategoryId').on('change', function () {
+    console.log(this.value);
+    table.columns(1).search( this.value ).draw();
+  });
+  $('#ShopName').on('keyup', function () {
+    table.columns(2).search( this.value ).draw();
+  });
+  $('#ManagerId').on('change', function () {
+    table.columns(3).search( this.value ).draw();
+  });
+  $('#ShopPhone').on('keyup', function () {
+    table.columns(4).search( this.value ).draw();
+  });
+
 });
 
 btn_submit.addEventListener("click", function(){
@@ -138,7 +154,7 @@ function loadNewData(result){
           let btn_update = document.createElement('button');
           setAttributes(btn_update, {
             'type': 'button',
-            'class': "btn btn-outline-primary mb-1",
+            'class': "btn btn-outline-primary pb-1",
             'data-toggle': 'modal',
             'data-target': '#shopModal',
             'id': '#modalCenter',
@@ -164,7 +180,7 @@ function loadNewData(result){
           let btn_delete = document.createElement('button');
           setAttributes(btn_delete, {
             'type': 'button',
-            'class': "btn btn-outline-danger mb-1",
+            'class': "btn btn-outline-danger pb-1",
             'onClick': "deleteShop(" + data.id + ")"
           });
 
@@ -179,7 +195,11 @@ function loadNewData(result){
       {data: "shop_category__name"},
       {data: "shop_name"},
       {data: "manager__user_id__username"},
-      {data: "shop_phone"},
+      {data: "shop_phone",
+        render: function (data) {
+          return data.slice(0, 3) + "-" + data.slice(3, 6) + "-" + data.slice(6, 10);
+        },
+      },
       {data: null},
       {data: null},
     ],
