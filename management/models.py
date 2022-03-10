@@ -61,7 +61,7 @@ class product(BaseModel):
     price = models.CharField(db_column='price', max_length=50, blank=True, null=True)
     stock = models.CharField(db_column='stock', max_length=50, blank=True, null=True)
     status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
-    # description = models.CharField(db_column='description', max_length=50, blank=True, null=True)
+    # comment = models.CharField(db_column='comment', max_length=50, blank=True, null=True) #short comment
     description = models.TextField(db_column='description',blank=True, null=True) 
     main_img = models.ImageField(blank=True, null=True, upload_to='product/main')
     #image = models.CharField(db_column='image', max_length=1024, blank=True, null=True)

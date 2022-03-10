@@ -69,6 +69,18 @@
   </div>
 
   <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            <button type="button" class="btn btn-outline-primary" onclick="location.href='/seller/product-post'">새 상품 등록</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col" id="sellerRequestedTable">
       <div class="card mb-3 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
@@ -103,7 +115,7 @@
             <tbody class="list" id="bulk-select-body">
               {% if requestTable %} 
               {% for i in requestTable %}
-              <tr>
+              <tr class="list-order-row" onclick="location.href='/seller/product-detail/{{i.id}}'">
                 <td class="align-middle" id="Id" required>{{ i.id }}</td>
                 <td class="align-middle" id="ProCategory" required>{{ i.pro_category.name }}</td>
                 <td class="align-middle" id="Name" required>{{ i.name }}</td>

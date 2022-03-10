@@ -1,5 +1,5 @@
 async function deleteProduct2(id) {
-    const response = await fetch('seller_product', {
+    const response = await fetch('seller-product', {
         method: 'DELETE',
         mode: 'cors',
         cache: 'no-cache', 

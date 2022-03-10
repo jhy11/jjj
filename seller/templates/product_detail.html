@@ -1,0 +1,67 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">판매 상품 개별 페이지</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">판매자페이지</li>
+      <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
+    </ol>
+  </div>
+    
+  <div class="row">
+    <div class="col-xl-6 col-lg-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="needs-validation px-3 pt-3 pb-4">
+            <div class="py-4 px-5">대표 이미지</div>
+            <div class="py-4 px-5">
+              <img src="{{product.main_img.url}}" width="300" height="400"><br>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-lg-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class ="needs-validation px-3 pt-3 pb-4">
+              <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_category.name}}</div>
+              <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
+              <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
+              <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4 p-3">
+        <div class="card-body">
+            <div class="py-4 px-5">상세 설명 {{product.description}}</div>
+            <div class="py-4 px-5">
+                <button type="button" class="btn btn-outline-primary mb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
+                <button type="button" class="btn btn-outline-danger mb-1" onclick="deleteProduct('{{i.id}}')">삭제</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}

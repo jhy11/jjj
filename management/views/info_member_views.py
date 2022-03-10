@@ -4,7 +4,7 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 
-from management.models import member, membership
+from management.models import member, membership, shop
 
 
 class MemberView(View):

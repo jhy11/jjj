@@ -1,0 +1,108 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">판매 상품 수정</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">판매자페이지</li>
+      <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
+    </ol>
+  </div>
+    
+  <div class="row">
+    <div class="col-xl-6 col-lg-6">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="needs-validation px-3 pt-3 pb-4">
+            <div class="py-4 px-5">대표 이미지</div>
+            <div class="py-4 px-5">
+              <img src="{{product.main_img.url}}" width="300" height="400"><br>
+            </div>
+            <form id="uploadImgForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="py-4 px-5">
+                    <input class="form-control" id="mainImg" name="mainImg" type="file" multiple="multiple" required/>
+                    <div class="valid-feedback">Complete</div>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-6 col-lg-6">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class ="needs-validation px-3 pt-3 pb-4">
+              <div class="py-4 px-5">
+                <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
+                <select class="form-control" id="ProductCategoryId" name="ProductCategoryId" required>
+                    {% if ProCategories %}
+                    <option value="" disabled selected>상품 카테고리 선택</option>
+                    <option value="{{product.pro_category.id}}" selected>{{product.pro_category.name}}</option>
+                    {% for i in ProCategories %}
+                    <option value="{{i.id}}">{{i.name}}</option>
+                    {% endfor %}
+                    {% endif %}
+                </select>
+              <div class="valid-feedback">Complete</div>
+              </div>
+
+              <div class="py-4 px-5">
+                <label class="form-label" for="ProductName">상품명</label>
+                <input class=" form-control" id="ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요." value="{{product.name}}" required/>
+                <div class="valid-feedback">Complete</div>
+              </div>
+
+              <div class="py-4 px-5">
+                <label class="form-label" for="ProductPrice">상품 가격</label>
+                <input class="form-control" id="ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요." value="{{product.price}}" required/>
+                <div class="valid-feedback">Complete</div>
+              </div>
+
+              <div class="py-4 px-5">
+                <label class="form-label" for="ProductStock">상품 재고</label>
+                <input class="form-control" id="ProductStock" name="ProductStock" type="text" placeholder="상품 재고를 입력하세요." value="{{product.stock}}" required/>
+                <div class="valid-feedback">Complete</div>
+            </div>
+
+            <hidden><input class="form-control" id="ProductId" name="ProductId" value="{{product.id}}"></hidden>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4 p-3">
+        <div class="card-body">
+            <div class="py-4 px-5">
+                <label class="form-label" for="ProductDescription">상품 상세 설명</label>
+                <textarea class="form-control" id="ProductDescription" name="ProductDescription" rows="30" placeholder="상품 상세 설명을 입력하세요.">{{product.description}}</textarea>
+                <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="py-4 px-5">
+                <button type="button" class="btn btn-outline-primary mb-1 btn-edit" id="btnEdit">수정</button>
+                <button type="button" class="btn btn-outline-danger mb-1">취소</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="{% static 'jsmeta/script_seller_product_edit.js' %}"></script>
+{% endblock javascripts %}

@@ -13,15 +13,6 @@ class index(View):
         
         return render(request, 'index.html', context)
 
-
-# class LogoutView(View):
-#     # post로 고쳐야함
-#     def get(self, request: HttpRequest, *args, **kwargs):
-#         logout(request)
-
-#         return redirect('/')
-
-
 class LoginView(View):
     '''
     로그인 기능
@@ -29,7 +20,6 @@ class LoginView(View):
     def get(self, request: HttpRequest, *args, **kwargs):
         #이미 로그인한 상태
         if request.user.id:
-            print("lll")
             print(request.user)
             return redirect('/')
 
@@ -58,9 +48,9 @@ class RegisterView(View):
     회원가입 기능, 이메일 전송
     '''
     def get(self, request: HttpRequest, *args, **kwargs):
-        #context = {}
-        #if request.user.id:
-        #    return redirect('/')
+        context = {}
+        if request.user.id:
+           return redirect('/')
 
         return render(request, 'register.html')
 

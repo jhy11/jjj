@@ -9,7 +9,7 @@ btn_submit.addEventListener("click", function(){
 });
 
 async function submitStart() {
-  const response = await fetch('seller_product', {
+  const response = await fetch('seller-product', {
     method: "POST",
     headers: {
       'Accept': 'application/json',
@@ -38,7 +38,7 @@ async function submitStart() {
 }
 
 async function updateProduct(){
-  const response = await fetch('seller_product',{
+  const response = await fetch('seller-product',{
     method: "PUT",
     headers: {
       'Accept': 'application/json',
@@ -73,7 +73,7 @@ async function updateProduct(){
 
 async function deleteProduct(id) {
 
-  const response = await fetch('seller_product', {
+  const response = await fetch('seller-product', {
     method: 'DELETE',
     mode: 'cors',
     cache: 'no-cache', 
