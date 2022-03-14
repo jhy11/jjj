@@ -14,8 +14,17 @@ body {
   height: 100%
 }
 
+a {
+  text-decoration: none;
+  color: #757575;
+}
+
 a:focus {
   outline: 0
+}
+
+a:hover{
+  background-color: #757575;
 }
 
 #wrapper {
