@@ -1,5 +1,39 @@
 const btnSubmit = document.getElementById('btnSubmit');
 
+let toolbarOptions = [
+  [{ 'font': [] }],
+  ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+  ['blockquote', 'code-block'],
+
+  [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+  [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+  [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  [{ 'direction': 'rtl' }],                         // text direction
+
+  [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+  [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+
+  [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+  [{ 'align': '' }, { 'align': 'center' }, { 'align': 'right' }, { 'align': 'justify' }],
+  ['clean']                                         // remove formatting button
+];
+
+let quill = new Quill('#editor-container', {
+  modules: {
+    toolbar: toolbarOptions,
+  },
+  //placeholder: '상품 상세 설명을 작성해주세요.',
+  theme: 'snow'
+});
+
+document.getElementById('mainImg').onchange = function () {
+  let file = $('#mainImg')[0].files[0];
+  if (file){
+    document.getElementById('mainImg-label').innerText=file.name;
+  }
+};
+
 btnSubmit.addEventListener('click', async() => {
 
     const formData = new FormData(document.getElementById('uploadImgForm'));
@@ -24,3 +58,4 @@ btnSubmit.addEventListener('click', async() => {
         location.href='/seller/seller-product'
     }
 })
+
