@@ -15,8 +15,6 @@ class index(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        print(context)
-        print(request.user.groups.all())
             
         return render(request, 'index.html', context)
 

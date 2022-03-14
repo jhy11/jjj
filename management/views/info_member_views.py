@@ -12,6 +12,11 @@ class MemberView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+            
         context['members'] = member.objects.values('id', 'mem_level__level', 'user__username', 'mem_name', 'mem_phone', 'user__email', 'user__date_joined', 'mem_point') 
         context['levels'] = membership.objects.values('level')
         

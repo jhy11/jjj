@@ -17,6 +17,10 @@ class ProductView(LoginRequiredMixin, View):
             'onSaleTable': product.objects.filter(status='1', DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
         
         return render(request, self.template_name, context)
 

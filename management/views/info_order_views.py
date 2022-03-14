@@ -11,6 +11,10 @@ class OrderView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
         context['orders'] = order.objects.values('order_no', 'type', 'status', 'name', 'call', 'code', 'address', 'member__mem_name', 'member__user__username', 'total_price', 'transport_no') 
 
         return render(request, self.template_name, context)

@@ -14,6 +14,10 @@ class ShopView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
 
         # SellerGroup = Group.objects.get(name__exact="seller")
         SellerGroup = Group.objects.get(id=1)

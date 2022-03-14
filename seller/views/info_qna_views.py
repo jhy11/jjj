@@ -12,6 +12,10 @@ class QnaView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
         context['qnaCategories'] = qna_category.objects.values('name')
         context['qnas'] = qna.objects.values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
 
