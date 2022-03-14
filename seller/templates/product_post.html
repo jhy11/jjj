@@ -29,17 +29,20 @@
   </div>
     
   <div class="row">
-    <div class="col-xl-4 col-lg-4">
+    <div class="col-xl-4 col-md-12">
       <div class="card mb-4">
-        <div class="card-body">
-          <div class ="needs-validation px-3 pt-3 pb-4">
+        <div class="card-body pb-0">
+          <div class ="needs-validation p-2 pb-0 mb-0">
             <form id="uploadImgForm" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group">
-                  <label class="form-label" for="mainImg">대표이미지</label>
+                  <label class="form-label" for="mainImg">대표 이미지</label>
                   <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="mainImg" name="mainImg"multiple="multiple" required>
+                    <input type="file" class="custom-file-input" id="mainImg" name="mainImg" multiple="multiple" required>
                     <label class="custom-file-label" for="customFile" id="mainImg-label">이미지를 선택해주세요</label>
+                  </div>
+                  <div class="d-flex justify-content-center mt-4 mb-0">
+                    <img src="" id="preview">
                   </div>
                 </div>
             </form>
@@ -47,10 +50,10 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-8 col-lg-8">
+    <div class="col-xl-8 col-md-12">
       <div class="card mb-4">
         <div class="card-body">
-          <form class="row needs-validation px-3 pt-3 pb-4" id="uploadForm" enctype="multipart/form-data">
+          <form class="row needs-validation p-2" id="uploadForm" enctype="multipart/form-data">
               {% csrf_token %}
               <div class="col-xl-6 col-lg-6 mb-3">
                 <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
@@ -85,7 +88,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="card mb-4 pt-3">
+      <div class="card mb-4 p-3">
         <div class="card-header pb-0">
           <h5 class="m-0 font-weight-bold text-primary"></h5>
           <p><b>상품의 상세 설명</b>을 작성해주세요.</p>

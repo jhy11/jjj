@@ -27,12 +27,27 @@ let quill = new Quill('#editor-container', {
   theme: 'snow'
 });
 
-document.getElementById('mainImg').onchange = function () {
-  let file = $('#mainImg')[0].files[0];
-  if (file){
-    document.getElementById('mainImg-label').innerText=file.name;
+let input = document.getElementById("mainImg"),
+    preview = document.getElementById("preview");
+    
+input.addEventListener("change", function() {
+  changeImage(this);
+});
+
+function changeImage(input) {
+  let reader;
+
+  if (input.files && input.files[0]) {
+    reader = new FileReader();
+
+    reader.onload = function(e) {
+      preview.setAttribute('src', e.target.result);
+    }
+    reader.readAsDataURL(input.files[0]);
+    
+    document.getElementById('mainImg-label').innerText=input.files[0].name;
   }
-};
+}
 
 btnSubmit.addEventListener('click', async() => {
 

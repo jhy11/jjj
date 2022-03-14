@@ -1,3 +1,4 @@
+from ast import Delete
 import json
 from django.views.generic import View
 from django.http import HttpRequest, JsonResponse
@@ -6,16 +7,29 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from management.models import member, membership
+from management.models import member, membership, order_product, product
 
 class index(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
         if request.user.is_staff:
             context['staff'] = True
-        if request.user.groups.filter(name='seller').exists():
+
+        elif request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-            
+
+            context={
+              'Paid': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Paid').count(),
+              'Processing': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Processing').count(),
+              'Shipping': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Shipping').count(),
+              'Delivered': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Delivered').count(),
+
+              'Requested': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='0').count(),
+              'OnSale': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='1').count(),
+              'Rejected': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='2').count(),
+              'Stopped': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='3').count(),
+            }
+
         return render(request, 'index.html', context)
 
 class LoginView(View):

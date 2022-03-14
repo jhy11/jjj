@@ -16,65 +16,16 @@
       <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
     </ol>
   </div>
-    
   <div class="row">
     <div class="col">
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class ="row g-3 needs-validation">
-            <div display="none">
-              <div id="Id" name="Id">{{ i.id }}</div>
-            </div>
-            <div class="col-md-6 mb-3" id="shopa">
-                <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
-                <select class="form-control" id="ProductCategoryId" name="ProductCategoryId" required>
-                    {% if ProCategories %}
-                    <option value="" disabled selected>상품 카테고리 선택</option>
-                    {% for i in ProCategories %}
-                    <option value="{{i.id}}">{{i.name}}</option>
-                    {% endfor %}
-                    {% endif %}
-                </select>   
-              <div class="valid-feedback">Complete</div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label" for="ProductName">상품명</label>
-              <input class=" form-control" id="ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요." required/>
-              <div class="valid-feedback">Complete</div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label" for="ProductPrice">상품 가격</label>
-              <input class="form-control" id="ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요." required/>
-              <div class="valid-feedback">Complete</div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="ProductStock">상품 재고</label>
-                <input class="form-control" id="ProductStock" name="ProductStock" type="text" placeholder="상품 재고를 입력하세요." required/>
-                <div class="valid-feedback">Complete</div>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label" for="ProductDescription">상품 설명</label>
-                <input class="form-control" id="ProductDescription" name="ProductDescription" type="text" placeholder="상품 설명을 입력하세요." required/>
-                <div class="valid-feedback">Complete</div>
-            </div>   
-            <div class="col-md-6 mb-3">
-              <br>
-              <button class="btn btn-outline-primary" id="btn-submit" type="button">등록</button>
-              <button class="btn btn-outline-primary" type="button">새로고침</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col">
-      <div class="card mb-4">
-        <div class="card-body">
-          <div class ="row g-3 needs-validation">
-            <button type="button" class="btn btn-outline-primary" onclick="location.href='/seller/product-post'">새 상품 등록</button>
-          </div>
+      <div class="card mb-4 p-2">
+        <div class="card-header pb-3">
+          <h5 class="m-0 font-weight-bold text-primary"></h5>
+          <p><b>새로운 상품</b>을 등록해주세요.</p>
+          <button type="button" class="btn btn-primary pb-1" onclick="location.href='/seller/product-post'">
+            <span class="fas fa-plus" data-fa-transform="shrink-3 down-2"></span>
+            <span>새 상품 등록</span>
+          </button>
         </div>
       </div>
     </div>
