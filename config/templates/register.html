@@ -1,12 +1,20 @@
-{% extends 'layouts/base.html' %} {% load static %}
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link href="{% static 'assets/img/logo/logo.png' %}" rel="icon">
+  <title>JJJ - Login</title>
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+  <link href="{% static 'assets/css/ruang-admin.min.css' %}" rel="stylesheet">
+</head>
 
-{% endblock stylesheets %}
-
-{% block content %}
 <div>
   <div class="container-login">
     <div class="row justify-content-center">
@@ -89,9 +97,6 @@
 </div>
 
 
-{% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
 <script src="{% static 'jsmeta/user/script_register.js' %}"></script> 
-{% endblock javascripts %}
+
+</html>
