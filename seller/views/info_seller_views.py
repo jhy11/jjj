@@ -7,10 +7,12 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 from django.core.files.storage import FileSystemStorage, default_storage
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 from management.models import product, pro_category, shop
 
-class SellerProductView(View):
+class SellerProductView(LoginRequiredMixin, View):
     template_name = 'seller_info.html' 
 
 
@@ -88,15 +90,15 @@ class SellerProductView(View):
         if Id is not None:
             product.delete(product.objects.filter(DeleteFlag='0').get(id=Id))
 
-            context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-            context['products2'] = list(product.objects.filter(shop_id ='3', status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+            # context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+            # context['products2'] = list(product.objects.filter(shop_id ='3', status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
             context['success'] = True
 
             return JsonResponse(context, content_type='application/json')
           
         return JsonResponse(data={ 'success': False })
 
-class reapplyView(View):
+class reapplyView(LoginRequiredMixin, View):
     template_name = 'seller_info.html' 
 
     def put(self, request: HttpRequest, *args, **kwargs):
@@ -115,7 +117,7 @@ class reapplyView(View):
         return JsonResponse(context, content_type='application/json')
 
 
-class ProductDetailView(View):
+class ProductDetailView(LoginRequiredMixin, View):
     template_name = 'product_detail.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         id = kwargs.get('id')
@@ -123,7 +125,7 @@ class ProductDetailView(View):
 
         return render(request, self.template_name, {'product':seller_product})
 
-class ProductPostView(View):
+class ProductPostView(LoginRequiredMixin, View):
     template_name = 'product_post.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         context={}
@@ -156,7 +158,7 @@ class ProductPostView(View):
         context['success']=True
         return JsonResponse(context, content_type='application/json')
 
-class ProductEditView(View):
+class ProductEditView(LoginRequiredMixin, View):
     template_name = 'product_edit.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         id = kwargs.get('id')

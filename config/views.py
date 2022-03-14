@@ -4,13 +4,20 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import member, membership
 
-class index(View):
+class index(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
-        
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+        print(context)
+        print(request.user.groups.all())
+            
         return render(request, 'index.html', context)
 
 class LoginView(View):

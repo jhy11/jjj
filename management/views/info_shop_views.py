@@ -5,10 +5,11 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import Group
 from django.views.generic.base import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import shop, shop_category, member
 
-class ShopView(View):
+class ShopView(LoginRequiredMixin, View):
     template_name = 'shop_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):

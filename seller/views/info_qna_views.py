@@ -3,10 +3,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View, TemplateView
 from typing import Any, Dict
 from datetime import datetime
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import qna, qna_category, qna_answer
 
-class QnaView(View):
+class QnaView(LoginRequiredMixin, View):
     template_name = 'qna_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
@@ -17,7 +18,7 @@ class QnaView(View):
         return render(request, self.template_name, context)
 #회원번호
 
-class QnaPostView(TemplateView):
+class QnaPostView(LoginRequiredMixin, TemplateView):
     template_name = 'qna-post.html'
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -48,7 +49,7 @@ class QnaPostView(TemplateView):
 
         return redirect('/seller/qna')
 
-class QnaEditView(View):
+class QnaEditView(LoginRequiredMixin, View):
     template_name = 'qna-post.html'
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:

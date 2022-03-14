@@ -4,10 +4,11 @@ from typing import Any, Dict
 from django.http import HttpRequest, JsonResponse 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import product, pro_category, shop
 
-class ProductView(View):
+class ProductView(LoginRequiredMixin, View):
     template_name = 'product_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
