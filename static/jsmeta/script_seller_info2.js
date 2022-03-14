@@ -91,7 +91,7 @@ function loadNewData2(result){
                 let btn_update = document.createElement('button');
                 setAttributes(btn_update,{
                     'type': 'button',
-                    'class': "btn btn-outline-primary mb-1",
+                    'class': "btn btn-outline-primary pb-1",
                     'data-toggle': 'modal',
                     'data-target': '#shopModal',
                     'id': '#modalCenter',
@@ -118,7 +118,7 @@ function loadNewData2(result){
                 let btn_delete = document.createElement('button');
                 setAttributes(btn_delete, {
                 'type': 'button',
-                'class': "btn btn-outline-danger mb-1",
+                'class': "btn btn-outline-danger pb-1",
                 'onClick': "deleteProduct2(" + data.id + ")"
                 });
     
@@ -138,7 +138,7 @@ function loadNewData2(result){
                 let btn_reapply = document.createElement('button');
                 setAttributes(btn_reapply, {
                 'type': 'button',
-                'class': "btn btn-outline-danger mb-1",
+                'class': "btn btn-outline-danger pb-1",
                 'onClick': "reapplyProduct(" + data.id + ")"
                 });
     

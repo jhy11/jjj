@@ -123,12 +123,12 @@
                 <td class="align-middle" id="Stock" required>{{ i.stock }}</td>
                 <td class="align-middle" id="Description" required>{{ i.description }}</td>
                 <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary mb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
+                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
                     id="#modalCenter" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
                   >수정</button>
                 </td>
                 <td class="align-middle">
-                  <button class="btn btn-outline-danger mb-1" type="button" onclick="deleteProduct('{{i.id}}')">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteProduct('{{i.id}}')">
                     삭제
                   </button>
                 </td>
@@ -194,17 +194,17 @@
                 <td class="align-middle" id="Stock" required>{{ i.stock }}</td>
                 <td class="align-middle" id="Description" required>{{ i.description }}</td>
                 <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary mb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
+                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
                     id="#modalCenter" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
                   >수정</button>
                 </td>
                 <td class="align-middle">
-                  <button class="btn btn-outline-danger mb-1" type="button" onclick="deleteProduct2('{{i.id}}')">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteProduct2('{{i.id}}')">
                     삭제
                   </button>
                 </td>
                 <td class="align-middle">
-                  <button class="btn btn-outline-danger mb-1" type="button" onclick="reapplyProduct('{{i.id}}')">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="reapplyProduct('{{i.id}}')">
                     재신청
                   </button>
                 </td>
