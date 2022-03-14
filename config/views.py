@@ -16,8 +16,6 @@ class index(LoginRequiredMixin, View):
             context['staff'] = True
 
         elif request.user.groups.filter(name='seller').exists():
-            context['seller'] = True
-
             context={
               'Paid': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Paid').count(),
               'Processing': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Processing').count(),
@@ -28,7 +26,9 @@ class index(LoginRequiredMixin, View):
               'OnSale': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='1').count(),
               'Rejected': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='2').count(),
               'Stopped': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='3').count(),
+              'seller' : True
             }
+
 
         return render(request, 'index.html', context)
 

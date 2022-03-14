@@ -126,13 +126,23 @@ class ProductDetailView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         id = kwargs.get('id')
         seller_product = product.objects.get(id=id)
+        context={}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+        context['product'] = seller_product
 
-        return render(request, self.template_name, {'product':seller_product})
+        return render(request, self.template_name,  context)
 
 class ProductPostView(LoginRequiredMixin, View):
     template_name = 'product_post.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         context={}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
 
         return render(request, self.template_name, context)
@@ -168,6 +178,10 @@ class ProductEditView(LoginRequiredMixin, View):
         id = kwargs.get('id')
      
         context={}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
         context['product'] = product.objects.get(id=id)
 
