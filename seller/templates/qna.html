@@ -13,7 +13,7 @@
     <h1 class="h3 pl-2 text-gray-800">문의 관리</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="./">Home</a></li>
-      <li class="breadcrumb-item">회원</li>
+      <li class="breadcrumb-item">문의/리뷰 관리</li>
       <li class="breadcrumb-item active" aria-current="page">문의 관리</li>
     </ol>
   </div>
@@ -23,24 +23,18 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
-            <div class="col-md-4 mb-3">
-              <label class="form-label" for="category">문의 종류</label>
-              <select class="form-control" id="Category" name="Category">
-                <option value="" disabled selected>문의 종류를 선택하세요.</option>
-                {% if qnaCategories %}
-                {% for i in qnaCategories %}
-                <option value="{{i.name}}">{{i.name}}</option>
-                {% endfor %}
-                {% endif %}
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label" for="product">상품명</label>
-              <input class=" form-control" id="Product" name="Product" type="text" placeholder="상품명을 입력하세요."/>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label class="form-label" for="title">문의 제목</label>
-              <input class=" form-control" id="Title" name="Title" type="text" placeholder="문의 제목을 입력하세요."/>
+            <div class="row col-md-12">
+              <label class="form-label col-md-1" for="state" >답변 상태</label>
+              <fieldset class="row col-md-8" id="state">
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio1" name="state" class="custom-control-input" value="미답변" checked="checked">
+                  <label class="custom-control-label" for="customRadio1">미답변</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio2" name="state" class="custom-control-input" value="답변완료">
+                  <label class="custom-control-label" for="customRadio2">답변완료</label>
+                </div>
+              </fieldset>
             </div>
           </div>
         </div>
@@ -74,8 +68,69 @@
                 <td class="align-middle" id="Product">{{ i.product__name }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Title">{{ i.title }}</td>
-                <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d' }}</td>
-                <td class="align-middle status" id="Flag" value='{{i.answer_flag}}'></td>
+                <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d h:m' }}</td>
+                <td class="align-middle status" id="Flag" value='{{i.answer_flag}}'>
+                  {% if i.answer_flag == '1' %} 답변완료
+                  {% else %}미답변
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>문의 종류</th>
+                <th>상품명</th>
+                <th>회원명</th>
+                <th>제목</th>
+                <th>날짜</th>
+                <th>답변 여부</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">답변 완료 문의</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-answered">
+            <thead class="thead-light">
+              <tr>
+                <th>문의 종류</th>
+                <th>상품명</th>
+                <th>회원명</th>
+                <th>제목</th>
+                <th>날짜</th>
+                <th>답변 여부</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if qnas %} 
+              {% for i in qnas %}
+              <tr class="list-order-row" onclick="location.href='/seller/qna-post/{{i.id}}'">
+                <td class="align-middle" id="Category">{{ i.category__name }}</td>
+                <td class="align-middle" id="Product">{{ i.product__name }}</td>
+                <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
+                <td class="align-middle" id="Title">{{ i.title }}</td>
+                <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d h:m' }}</td>
+                <td class="align-middle status" id="Flag" value='{{i.answer_flag}}'>답변완료</td>
               </tr>
               {% endfor %} 
               {% else %}

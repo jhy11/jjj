@@ -8,7 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from management.models import qna, qna_category, qna_answer
 
 class QnaView(LoginRequiredMixin, View):
-    template_name = 'qna_info.html' 
+    template_name = 'qna.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
@@ -16,18 +16,22 @@ class QnaView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['qnaCategories'] = qna_category.objects.values('name')
-        context['qnas'] = qna.objects.values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
+        context['qnas'] = qna.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
+        context['answered_questions'] = qna.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id, answer_flag='1').values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
 
         return render(request, self.template_name, context)
-#회원번호
 
 class QnaPostView(LoginRequiredMixin, TemplateView):
-    template_name = 'qna-post.html'
+    template_name='qna-post.html'
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = {}
-        question = get_question(kwargs.get('id'))
+        if self.request.user.is_staff:
+            context['staff'] = True
+        if self.request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+
+        question = get_question(kwargs.get('id'), self.request.user.id)
 
         context['question'] = question[0]
         context['answer'] = list(qna_answer.objects.filter(qna__id=kwargs.get('id')).values('id', 'content'))[0]
@@ -35,13 +39,10 @@ class QnaPostView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:
-        print(request.POST)
         context = {}
         id = kwargs.get('id')
         content = request.POST.get('Content', None)
 
-        print(id)
-        print(content)
         if content is not None:
           qna_answer.objects.create(
             content=content,
@@ -70,5 +71,5 @@ class QnaEditView(LoginRequiredMixin, View):
 
         return redirect('/seller/qna')
   
-def get_question(id):
-    return list(qna.objects.filter(id=id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))
+def get_question(id, user_id):
+    return list(qna.objects.filter(id=id, product_id__shop_id__manager_id__user_id=user_id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))
