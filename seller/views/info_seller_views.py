@@ -9,7 +9,6 @@ from django.views.generic.base import View
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-
 from management.models import product, pro_category, shop
 
 class SellerProductView(LoginRequiredMixin, View):
