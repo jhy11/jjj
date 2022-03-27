@@ -1,6 +1,7 @@
 from django.urls import path
+
 from . import views
-from .views import info_shop_views, info_product_views, info_member_views, info_order_views, info_qna_views
+from .views import info_product_views, info_member_views, info_order_views, info_qna_views, info_shop_views
 
 app_name = 'management'
 
