@@ -1,0 +1,94 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">문의 등록</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">회원</li>
+      <li class="breadcrumb-item active" aria-current="page">문의 관리</li>
+    </ol>
+  </div>
+    
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="needs-validation px-3 pt-3 pb-4">
+            <table class="table align-items-center table-flush border-bottom">
+              <thead class="thead-light">
+                <tr>
+                  <th>카테고리</th>
+                  <th>상품명</th>
+                  <th>제목</th>
+                  <th>회원명</th>
+                  <th>등록일</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ question.category__name }}</td>
+                  <td>{{ question.product__name }}</td>
+                  <td>{{ question.title }}</td>
+                  <td>{{ question.member__mem_name }}</td>
+                  <td>{{ question.created_at|date:'Y-m-d' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="py-4 px-5">{{question.content}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4 p-3">
+        <div class="card-body">
+          <form
+            class="row g-3 needs-validation"
+            novalidate=""
+            {% if answer %}
+            action="/seller/qna-edit/{{answer.id}}"
+            {% else %}
+            action="/seller/qna-post/{{question.id}}"
+            {% endif %}
+            method="post"
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}
+            {% if answer %}
+            <div class="col-md-12 py-3 px-5">
+              <textarea class="form-control p-3" id="Content" name="Content" rows="10">{{answer.content}}</textarea>
+            </div>
+            <div class="col-md-12 px-5 text-right">
+              <button class="btn btn-outline-primary px-4 py-2" id="btn-submit" type="submit">수정</button>
+            </div>
+            {% else %} 
+            <div class="col-md-12 py-3 px-5">
+              <textarea class="form-control p-3" id="Content" name="Content" rows="10"></textarea>
+            </div>
+            <div class="col-md-12 px-5 text-right">
+              <button class="btn btn-outline-primary px-4 py-2" id="btn-submit" type="submit">등록</button>
+            </div>
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+{% endblock javascripts %}
