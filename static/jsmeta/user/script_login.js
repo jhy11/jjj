@@ -26,10 +26,10 @@ btnLogin.addEventListener('click', async() => {
         alert(error);
     })
 
-    const result = await response.json()
+    const result = await response.json();
     if (result.success){
         alert(result.message);
-        location.href='/'
+        location.href='/';
     }else{
         alert(result.message);
     }

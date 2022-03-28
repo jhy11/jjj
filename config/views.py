@@ -64,7 +64,7 @@ class LoginView(View):
 
 class RegisterView(View):
     '''
-    회원가입 기능, 이메일 전송
+    회원가입 기능
     '''
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
