@@ -74,3 +74,10 @@ btnSubmit.addEventListener('click', async() => {
     }
 })
 
+$('#ProductStock').TouchSpin({
+  min: 0,
+  max: 100,                
+  boostat: 5,
+  maxboostedstep: 10,        
+  initval: 0
+});
