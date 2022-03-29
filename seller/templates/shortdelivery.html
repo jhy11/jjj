@@ -70,8 +70,8 @@
                 <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
                 <td class="align-middle status" id="Status" value='{{i.order__status}}'>결제완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="Completed">
-                  <label class="custom-control-label" for="Completed"></label>
+                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
+                  <label class="custom-control-label" for="{i.order__order_no}"></label>
                 </td>
               </tr>
               {% endfor %} 
@@ -83,8 +83,8 @@
                 <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
                 <td class="align-middle status" id="Status" value='{{i.order__status}}'>상품준비완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="Completed">
-                  <label class="custom-control-label" for="Completed"></label>
+                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
+                  <label class="custom-control-label" for="{i.order__order_no}"></label>
                 </td>
               </tr>
               {% endfor %} 
@@ -145,7 +145,7 @@
     <div class="col">
       <div class="card mb-3 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">택배 배송 관리</h6>
+          <h6 class="m-0 font-weight-bold text-primary">근거리배송 관리</h6>
         </div>
         <div class="table-responsive p-3" id="aaa">
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivered">
