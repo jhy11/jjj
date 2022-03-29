@@ -23,15 +23,15 @@
       <div class="card mb-4">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
-            <div class="row col-md-12">
-              <label class="form-label col-md-1" for="state" >답변 상태</label>
-              <fieldset class="row col-md-8" id="state">
+            <div class="row col-md-12 mx-1 pt-2">
+              <label class="form-label col-md-1" for="status" >답변 상태</label>
+              <fieldset class="row col-md-8" id="status">
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio1" name="state" class="custom-control-input" value="미답변" checked="checked">
+                  <input type="radio" id="customRadio1" name="status" class="custom-control-input" value="미답변" checked="checked">
                   <label class="custom-control-label" for="customRadio1">미답변</label>
                 </div>
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio2" name="state" class="custom-control-input" value="답변완료">
+                  <input type="radio" id="customRadio2" name="status" class="custom-control-input" value="답변완료">
                   <label class="custom-control-label" for="customRadio2">답변완료</label>
                 </div>
               </fieldset>
@@ -130,7 +130,7 @@
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Title">{{ i.title }}</td>
                 <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d h:m' }}</td>
-                <td class="align-middle status" id="Flag" value='{{i.answer_flag}}'>답변완료</td>
+                <td class="align-middle status" id="Flag" value='{{i.answer_flag}}'></td>
               </tr>
               {% endfor %} 
               {% else %}
