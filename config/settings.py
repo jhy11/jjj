@@ -10,12 +10,48 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import os
+import os, json
 from pathlib import Path
+
+#from decouple import config
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# access secrets.json
+secret_file = os.path.join(BASE_DIR, 'config', 'secrets.json')
+
+with open(secret_file) as f:
+    secrets = json.loads(f.read())
+
+def get_env_variable(key):
+    try:
+        return secrets[key]
+    except KeyError:
+        error_msg = f"Set the {key} environment variable"
+        raise ImproperlyConfigured(error_msg)
+
+
+# access key and secrete access key for aws
+AWS_ACCESS_KEY_ID = get_env_variable("JJJ_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = get_env_variable("JJJ_AWS_SECRET_ACCESS_KEY")
+
+AWS_REGION = 'ap-northeast-2'
+
+AWS_STORAGE_BUCKET_NAME = 'jjjtttbucket'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.%s.amazonaws.com' % (
+    AWS_STORAGE_BUCKET_NAME, AWS_REGION)
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_DEFAULT_ACL = 'public-read'
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -28,6 +64,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
+#NUMB_TURN_CREDENTIAL = config('NUMB_TURN_CREDENTIAL', default=None)
+#NUMB_TURN_USERNAME = config('NUMB_TURN_USERNAME', default=None)
+
+
+# set storage for media files
+DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage' 
 
 # Application definition
 
@@ -44,6 +87,7 @@ INSTALLED_APPS = [
     'products',
     'management',
     'seller',
+    'storages',
 ]
 
 MIDDLEWARE = [
