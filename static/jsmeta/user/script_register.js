@@ -24,12 +24,12 @@ btnCheckId.addEventListener('click',async() => {
         alert(error);
     })
 
-    const result = await response.json()
+    const result = await response.json();
     if (result.success){
         document.getElementById('username').setAttribute('class', 'form-control is-valid');
         document.getElementById('idValid').innerText = '사용 가능한 아이디입니다';
     }else{
-      document.getElementById('username').setAttribute('class', 'form-control is-invalid');
+        document.getElementById('username').setAttribute('class', 'form-control is-invalid');
         document.getElementById('idError').innerText = '이미 사용 중인 아이디입니다';
     }
 })
@@ -151,9 +151,10 @@ btnRegister.addEventListener('click', async() => {
         alert(error);
     })
 
-    const result = await response.json()
+    const result = await response.json();
     if (result.success){
         alert(result.message);
+        location.href='/';
     }else{
         alert(result.message);
     }
@@ -173,6 +174,7 @@ function CheckID(str){
     }
     else{
         document.getElementById('username').setAttribute('class', 'form-control');
+        document.getElementById('idError').innerText = '';
         return true;
     }
 }
@@ -189,6 +191,7 @@ function CheckEmail(str){
     }         
      else{
         document.getElementById('register-email').setAttribute('class', 'form-control');
+        document.getElementById('emailError').innerText = '';
         return true;
     }             
 }
@@ -205,6 +208,7 @@ function CheckPhone(str){
    }         
     else{
       document.getElementById('register-phone').setAttribute('class', 'form-control');
+      document.getElementById('phoneError').innerText = '';
       return true;
    }             
 }
@@ -219,6 +223,7 @@ function CheckPassword(str){
     }
     else{
         document.getElementById('password').setAttribute('class', 'form-control');
+        document.getElementById('passwordError').innerText = '';
         return true;
     }
 }
@@ -240,3 +245,22 @@ function SamePassword(){
         return true;
     }
 }
+
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+  
+  
