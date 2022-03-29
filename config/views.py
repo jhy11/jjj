@@ -4,6 +4,7 @@ from django.views.generic import View
 from django.http import HttpRequest, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -118,6 +119,9 @@ class RegisterView(View):
             )
             user.is_active = True
             user.save()
+            #add user to seller group
+            group = Group.objects.get(name='seller')
+            user.groups.add(group)
 
             userid = user.id
             mem = member.objects.create(
