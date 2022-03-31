@@ -101,6 +101,7 @@ class order_product(BaseModel):
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='prdoduct', default=1)
     order = models.ForeignKey(order, on_delete=models.CASCADE, verbose_name='order', default=1)
     amount = models.IntegerField(db_column='amount', blank=True, null=True)
+    status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
  
     class Meta:
             db_table = 'order-product'
