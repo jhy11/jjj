@@ -26,6 +26,15 @@ let quill = new Quill('#editor-container', {
   //placeholder: '상품 상세 설명을 작성해주세요.',
   theme: 'snow'
 });
+var justTextContent = document.getElementById('justText');
+var justHtmlContent = document.getElementById('justHtml');
+ quill.on('text-change', function() {
+    var text = quill.getText();
+    var justHtml = editor.root.innerHTML;
+    justTextContent.innerHTML = text;
+    justHtmlContent.innerHTML = justHtml;
+   
+ });
 
 let input = document.getElementById("mainImg"),
     preview = document.getElementById("preview");
@@ -56,7 +65,7 @@ btnSubmit.addEventListener('click', async() => {
     formData.append('ProductName', document.getElementById('ProductName').value);
     formData.append('ProductPrice', document.getElementById('ProductPrice').value);
     formData.append('ProductStock', document.getElementById('ProductStock').value);
-    formData.append('ProductDescription', document.getElementById('ProductDescription').value);
+    formData.append('ProductDescription',  justHtmlContent.innerHTML);
     
     const response = await fetch('product-post', {
         method: 'POST',
