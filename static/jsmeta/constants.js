@@ -1,6 +1,6 @@
 //Order status
 
-/* 결제완료, 상품준비완료, 배송준비중, 배송지연, 배송중, 배송완료 */
+/* 결제완료, 상품준비완료, 배송준비중, 배송중, 배송완료 */
 const Paid = '0';
 const Completed = '1';
 const Processing = '2';
@@ -17,6 +17,8 @@ const CancelRecieved = '8';
 const CancelProcessing = '9';
 const Canceled = '10';
 
+/* 배송지연 */
+const Pending = '11';
 
 //Order type
 
