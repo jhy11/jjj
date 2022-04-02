@@ -9,7 +9,7 @@
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
       <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="./">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
       </ol>
     </div>
@@ -195,8 +195,10 @@
           <div class="card-header">
             <div class="row mx-2">
               <span class="fas fa-phone text-primary mr-2 pt-1"></span>
-              <div class="h6 mr-3 pt-1 font-weight-bold text-primary">미답변 문의</div>
-              <a href="./">
+              <a href="{% url 'seller:qna' %}">
+                <div class="h6 mr-3 pt-1 font-weight-bold text-primary">미답변 문의</div>
+              </a>
+              <a href="{% url 'index' %}">
                 <span class="fas fa-sync-alt text-secondary pt-1" data-fa-transform="shrink-3 down-2" style="cursor:pointer;"></span>
               </a>
             </div>
@@ -221,8 +223,10 @@
           <div class="card-header">
             <div class="row mx-2">
               <span class="fas fa-ban text-primary mr-2 pt-1"></span>
-              <div class="h6 mr-3 pt-1 font-weight-bold text-primary">취소/반품</div>
-              <a href="./">
+              <a href="{% url 'seller:cancel' %}">
+                <div class="h6 mr-3 pt-1 font-weight-bold text-primary">취소/반품</div>
+              </a>
+              <a href="{% url 'index' %}">
                 <span class="fas fa-sync-alt text-secondary pt-1" data-fa-transform="shrink-3 down-2" style="cursor:pointer;"></span>
               </a>
             </div>
@@ -266,8 +270,10 @@
           <div class="card-header">
             <div class="row mx-2">
               <span class="fas fa-list text-primary mr-2 pt-1"></span>
-              <div class="h6 mr-3 pt-1 font-weight-bold text-primary">상품</div>
-              <a href="./">
+              <a href="{% url 'seller:product-list' %}">
+                <div class="h6 mr-3 pt-1 font-weight-bold text-primary">상품</div>
+              </a>
+              <a href="{% url 'index' %}">
                 <span class="fas fa-sync-alt text-secondary pt-1" data-fa-transform="shrink-3 down-2" style="cursor:pointer;"></span>
               </a>
             </div>
