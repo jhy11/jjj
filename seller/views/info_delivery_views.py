@@ -19,7 +19,7 @@ class DeliveryView(LoginRequiredMixin, View):
             'Shipping': get_delivery(user_id, constants.SHIPPING),
             'Delivered': get_delivery(user_id, constants.DELIVERED),
         }
-        print(context)
+
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():

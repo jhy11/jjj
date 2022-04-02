@@ -106,7 +106,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#seller" aria-expanded="true"
       aria-controls="collapsePage">
-      <i class="fas fa-fw fa-columns"></i>
+      <i class="fas fa-fw fa-truck"></i>
       <span>판매 관리</span>
     </a>
     <div id="seller" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
@@ -136,13 +136,16 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#product" aria-expanded="true"
       aria-controls="collapsePage">
-      <i class="fas fa-fw fa-columns"></i>
+      <i class="fas fa-fw fa-list"></i>
       <span>상품 관리</span>
     </a>
     <div id="product" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
         <h6 class="collapse-header">나의 상품</h6>
-        <a class="collapse-item" href="{% url 'seller:product-list' %}">상품 목록</a>
+        <a class="collapse-item" href="{% url 'seller:product-list' %}">판매 중 상품</a>
+        <a class="collapse-item" href="{% url 'seller:seller-product' %}">승인 요청/반려 상품</a>
+        <a class="collapse-item" href="{% url 'seller:seller-product' %}">판매 중지 상품</a>
+        <h6 class="collapse-header">새로운 상품</h6>
         <a class="collapse-item" href="{% url 'seller:seller-product' %}">상품 등록</a>
     </div>
   </li>

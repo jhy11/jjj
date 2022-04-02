@@ -13,20 +13,21 @@ from management.models import member, membership, order_product, product
 class index(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
+        user_id = request.user.id
         if request.user.is_staff:
             context['staff'] = True
 
         elif request.user.groups.filter(name='seller').exists():
             context={
-              'Paid': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Paid').count(),
-              'Processing': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Processing').count(),
-              'Shipping': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Shipping').count(),
-              'Delivered': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=request.user.id, order_id__status='Delivered').count(),
+              'Paid': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Paid').count(),
+              'Processing': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Processing').count(),
+              'Shipping': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Shipping').count(),
+              'Delivered': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Delivered').count(),
 
-              'Requested': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='0').count(),
-              'OnSale': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='1').count(),
-              'Rejected': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='2').count(),
-              'Stopped': product.objects.filter(shop_id__manager_id__user_id=request.user.id, DeleteFlag='0', status='3').count(),
+              'Requested': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='0').count(),
+              'OnSale': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='1').count(),
+              'Rejected': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='2').count(),
+              'Stopped': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='3').count(),
               'seller' : True
             }
 
