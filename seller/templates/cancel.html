@@ -1,0 +1,239 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">취소 관리</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">판매 관리</li>
+      <li class="breadcrumb-item active" aria-current="page">취소 관리</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            <div class="row col-md-12 mx-1 pt-2">
+              <label class="form-label col-md-1" for="status1" >취소 상태</label>
+              <fieldset class="row col-md-8" id="status1">
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio1" name="status1" class="custom-control-input" value="취소요청" checked="checked">
+                  <label class="custom-control-label" for="customRadio1">취소요청</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio2" name="status1" class="custom-control-input" value="취소요청완료">
+                  <label class="custom-control-label" for="customRadio2">취소요청완료</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">취소 요청 목록</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-cancel">
+            <thead class="thead-light">
+              <tr>
+                <th>주문번호</th>
+                <th>수령방법</th>
+                <th>연락처</th>
+                <th>가격</th>
+                <th>상태</th>
+                <th>준비완료</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if CancelReceived or NotCompletelyCanceled %} 
+              {% for i in CancelReceived %}
+              {% load humanize %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
+                <td class="align-middle" id="Type">
+                  {% if i.order__type == '0' %}택배배송
+                  {% elif i.order__type == '1' %}근거리배송
+                  {% elif i.order__type == '2' %}포장
+                  {% else %}드라이브스루
+                  {% endif %}
+                </td>
+                <td class="align-middle" id="Call">{{ i.order__call }}</td>
+                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
+                <td class="align-middle status" id="Status" value='취소요청'>취소요청</td>
+                <td class="align-middle custom-control custom-switch ml-5">
+                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
+                  <label class="custom-control-label" for="{i.order__order_no}"></label>
+                </td>
+              </tr>
+              {% endfor %} 
+              {% for i in NotCompletelyCanceled %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
+                <td class="align-middle" id="Type">
+                  {% if i.order__type == '0' %}택배배송
+                  {% elif i.order__type == '1' %}근거리배송
+                  {% elif i.order__type == '2' %}포장
+                  {% else %}드라이브스루
+                  {% endif %}
+                </td>
+                <td class="align-middle" id="Call">{{ i.order__call }}</td>
+                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
+                <td class="align-middle status" id="Status" value='취소요청완료'>취소요청완료</td>
+                <td class="align-middle custom-control custom-switch ml-5">
+                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
+                  <label class="custom-control-label" for="{i.order__order_no}"></label>
+                </td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>주문번호</th>
+                <th>수령방법</th>
+                <th>연락처</th>
+                <th>가격</th>
+                <th>상태</th>
+                <th>준비완료</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            <div class="row col-md-12 mx-1 pt-2">
+              <label class="form-label col-md-1" for="status" >취소 상태</label>
+              <fieldset class="row col-md-8" id="status">
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio3" name="status" class="custom-control-input" value="취소처리중" checked="checked">
+                  <label class="custom-control-label" for="customRadio3">취소처리중</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio4" name="status" class="custom-control-input" value="취소완료">
+                  <label class="custom-control-label" for="customRadio4">취소완료</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">취소 관리</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-canceled">
+            <thead class="thead-light">
+              <tr>
+                <th>주문번호</th>
+                <th>수령방법</th>
+                <th>연락처</th>
+                <th>가격</th>
+                <th>배송상태</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if CancelProcessing or Canceled %} 
+              {% for i in CancelProcessing %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
+                <td class="align-middle" id="Type">
+                  {% if i.order__type == '0' %}택배배송
+                  {% elif i.order__type == '1' %}근거리배송
+                  {% elif i.order__type == '2' %}포장
+                  {% else %}드라이브스루
+                  {% endif %}
+                </td>
+                <td class="align-middle" id="Call">{{ i.order__call }}</td>
+                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
+                <td class="align-middle status" id="Status" value="취소처리중">취소처리중</td>
+              </tr>
+              {% endfor %} 
+              {% for i in Canceled %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
+                <td class="align-middle" id="Type">
+                  {% if i.order__type == '0' %}택배배송
+                  {% elif i.order__type == '1' %}근거리배송
+                  {% elif i.order__type == '2' %}포장
+                  {% else %}드라이브스루
+                  {% endif %}
+                </td>
+                <td class="align-middle" id="Call">{{ i.order__call }}</td>
+                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
+                <td class="align-middle status" id="Status" value="취소완료">취소완료</td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>주문번호</th>
+                <th>수령방법</th>
+                <th>연락처</th>
+                <th>가격</th>
+                <th>배송상태</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'jsmeta/constants.js' %}"></script>
+<script src="{% static 'jsmeta/seller/script_cancel_info.js' %}"></script>
+
+{% endblock javascripts %}

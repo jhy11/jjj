@@ -13,7 +13,7 @@ urlpatterns=[
     path('shortdelivery', info_shortdelivery_views.ShortdeliveryView.as_view(), name='shortdelivery'),
     path('takeout', info_takeout_views.TakeoutView.as_view(), name='takeout'),
 
-    #path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
+    path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
 
