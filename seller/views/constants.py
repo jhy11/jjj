@@ -20,6 +20,7 @@ CANCELED = '10'
 #배송지연
 PENDING = '11'
 
+
 '''Order type'''
 
 # 택배배송, 근거리배송, 포장, 드라이브스루
@@ -28,5 +29,11 @@ SHORTDELIVERY = '1'
 PICKUP = '2'
 DRIVETHRU = '3'
 
-'''Order-product status'''
-# 상품준비완료
+
+'''Product status'''
+
+# 승인신청, 판매중(승인완료), 승인반려, 판매중지
+REQUESTED  = '0'
+ONSALE = '1'
+REJECTED = '2'
+STOPPED = '3'
