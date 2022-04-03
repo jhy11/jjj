@@ -1,0 +1,244 @@
+{% extends 'layouts/base.html' %} {% load static %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">상품 관리</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+      <li class="breadcrumb-item">상품 관리</li>
+      <li class="breadcrumb-item active" aria-current="page">승인 요청/반려 상품</li>
+    </ol>
+  </div>
+
+  <div class="row">
+    <div class="col" id="sellerRequestedTable">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">승인 요청 관리</h6>
+        </div>
+        <div class="table-responsive p-3">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover1">
+            <thead class="thead-light">
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+                <th>수정</th>
+                <th>삭제</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+                <th>수정</th>
+                <th>삭제</th>
+              </tr>
+            </tfoot>
+            <tbody class="list" id="bulk-select-body">
+              {% if requestTable %} 
+              {% for i in requestTable %}
+              <tr class="list-order-row" onclick="location.href='/seller/product-detail/{{i.id}}'">
+                <td class="align-middle" id="Id">{{ i.id }}</td>
+                <td class="align-middle" id="ProCategory">{{ i.pro_category.name }}</td>
+                <td class="align-middle" id="Name">{{ i.name }}</td>
+                <td class="align-middle" id="Price">{{ i.price }}</td>
+                <td class="align-middle" id="Stock">{{ i.stock }}</td>
+                <td class="align-middle" id="Description">{{ i.description }}</td>
+                <td class="align-middle">
+                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
+                    id="#modalCenter" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
+                  >수정</button>
+                </td>
+                <td class="align-middle">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteProduct('{{i.id}}')">
+                    삭제
+                  </button>
+                </td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col" id="reapplytable">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">반려 상품 관리</h6>
+        </div>
+        <div class="table-responsive p-3">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover2">
+            <thead class="thead-light">
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+                <th>수정</th>
+                <th>삭제</th>
+                <th>재신청</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+                <th>수정</th>
+                <th>삭제</th>
+                <th>재신청</th>
+              </tr>
+            </tfoot>
+            <tbody class="list" id="bulk-select-body2">
+              {% if onSaleTable %} 
+              {% for i in onSaleTable %}
+              <tr>
+                <td class="align-middle" id="Id">{{ i.id }}</td>
+                <td class="align-middle" id="ProCategory">{{ i.pro_category.name }}</td>
+                <td class="align-middle" id="Name">{{ i.name }}</td>
+                <td class="align-middle" id="Price">{{ i.price }}</td>
+                <td class="align-middle" id="Stock">{{ i.stock }}</td>
+                <td class="align-middle" id="Description">{{ i.description }}</td>
+                <td class="align-middle">
+                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" data-toggle="modal" data-target="#shopModal"
+                    id="#modalCenter" data-id="{{ i.id }}" data-cat="{{  i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
+                  >수정</button>
+                </td>
+                <td class="align-middle">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteProduct2('{{i.id}}')">
+                    삭제
+                  </button>
+                </td>
+                <td class="align-middle">
+                  <button class="btn btn-outline-danger pb-1" type="button" onclick="reapplyProduct('{{i.id}}')">
+                    재신청
+                  </button>
+                </td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="shopModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">상품 데이터 수정</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class ="row g-3 needs-validation">
+          <div display="none">
+            <div id="modal-Id" name="Id"></div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
+            <select class="form-control" id="modal-ProductCategoryId" name="ProductCategoryId">
+                {% if ProCategories %}
+                <option value="" disabled selected>상품 카테고리 선택</option>
+                {% for i in ProCategories %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+                {% endif %}
+            </select>   
+          <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductName">상품명</label>
+            <input class=" form-control" id="modal-ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요."/>
+            <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label" for="ProductPrice">상품 가격</label>
+            <input class="form-control" id="modal-ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요."/>
+            <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label class="form-label" for="ProductStock">상품 재고</label>
+              <input class="form-control" id="modal-ProductStock" name="ProductStock" type="text" placeholder="상품 재고를 입력하세요."/>
+              <div class="valid-feedback">Complete</div>
+          </div>
+          <div class="col-md-6 mb-3">
+              <label class="form-label" for="ProductDescription">상품 설명</label>
+              <input class="form-control" id="modal-ProductDescription" name="ProductDescription" type="text" placeholder="상품 설명을 입력하세요."/>
+              <div class="valid-feedback">Complete</div>
+          </div>   
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" >닫기</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="updateProduct()">완료</button>
+        </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'jsmeta/seller/script_seller_info.js' %}"></script>
+<script src="{% static 'jsmeta/seller/script_seller_info2.js' %}"></script>
+
+{% endblock javascripts %}
