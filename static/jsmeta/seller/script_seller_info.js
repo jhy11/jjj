@@ -64,7 +64,6 @@ async function updateProduct(){
       loadNewData(result);
     }
     else{
-      console.log("2");
       loadNewData2(result);
     }
    

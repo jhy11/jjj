@@ -18,7 +18,8 @@ urlpatterns=[
 
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
-
+    path('product-stop', info_product_views.ProductstoppedView.as_view(), name='product-stop'),
+    
 
     #상품 관리
     path('product-list', info_product_views.ProductListView.as_view(), name='product-list'),

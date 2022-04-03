@@ -1,0 +1,119 @@
+{% extends 'layouts/base.html' %} {% load static %}
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">상품 관리</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+      <li class="breadcrumb-item">상품 관리</li>
+      <li class="breadcrumb-item active" aria-current="page">판매 중지 상품</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="catSearch">상품 카테고리</label>
+              <select class="form-control" id="catSearch" name="catSearch">
+                  {% if categories %}
+                  <option value="" disabled selected>상품 카테고리 선택</option>
+                  {% for i in categories %}
+                  <option value="{{i.name}}">{{i.name}}</option>
+                  {% endfor %}
+                  {% endif %}
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="nameSearch">상품명</label>
+              <input class="form-control" id="nameSearch" name="nameSearch" type="text" placeholder="상품명"/>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label" for="minPrice">가격</label>
+              <div class="row px-3">
+                <input class="col-md-5 form-control" id="minPrice" name="minPrice" type="text" placeholder="최소 가격"/>
+                <div class="px-2 pt-1">~</div>
+                <input class="col-md-5 form-control" id="maxPrice" name="maxPrice" type="text" placeholder="최대 가격"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">판매 중지 상품</h6>
+        </div>
+        <div class="table-responsive p-3">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-products">
+            <thead class="thead-light">
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th>No.</th>
+                <th>상품 카테고리</th>
+                <th>상품명</th>
+                <th>상품가격</th>
+                <th>상품재고</th>
+                <th>상품설명</th>
+              </tr>
+            </tfoot>
+            <tbody class="list" id="bulk-select-body">
+              {% if productsStopped %} 
+              {% for i in productsStopped %}
+              <tr class="list-order-row" onclick="location.href='/seller/product-detail/{{i.id}}'">
+                <td class="align-middle" id="Id">{{ i.id }}</td>
+                <td class="align-middle" id="ProCategory">{{ i.pro_category.name }}</td>
+                <td class="align-middle" id="Name">{{ i.name }}</td>
+                <td class="align-middle" id="Price">{{ i.price }}</td>
+                <td class="align-middle" id="Stock">{{ i.stock }}</td>
+                <td class="align-middle" id="Description">{{ i.description }}</td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'jsmeta/seller/script_product_list.js' %}"></script>
+{% endblock javascripts %}
