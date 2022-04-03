@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.deletion import CASCADE
 from config.models import BaseModel
 from django.contrib.auth.models import User
+from django_quill.fields import QuillField
 
 
 #회원등급
@@ -62,7 +63,8 @@ class product(BaseModel):
     stock = models.CharField(db_column='stock', max_length=50, blank=True, null=True)
     status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
     # comment = models.CharField(db_column='comment', max_length=50, blank=True, null=True) #short comment
-    description = models.TextField(db_column='description',blank=True, null=True) 
+    description = models.TextField(db_column='description',blank=True, null=True)
+    content = QuillField(blank=True, null=True)
     main_img = models.ImageField(blank=True, null=True, upload_to='product/main')
     #image = models.CharField(db_column='image', max_length=1024, blank=True, null=True)
     #image_type = models.CharField(db_column='image_type', max_length=50)
