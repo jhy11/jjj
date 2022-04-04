@@ -42,6 +42,9 @@
         <div class="card mb-4">
           <div class="card-body">
             <div class ="needs-validation px-3 pt-3 pb-4">
+
+              <input type="hidden" id="ProductId" name="ProductId" value="{{product.id}}">
+              
               <div class="py-4 px-5">
                 <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
                 <select class="form-control" id="ProductCategoryId" name="ProductCategoryId" required>
@@ -74,7 +77,6 @@
                 <div class="valid-feedback">Complete</div>
             </div>
 
-            <hidden><input class="form-control" id="ProductId" name="ProductId" value="{{product.id}}"></hidden>
           </div>
         </div>
       </div>
