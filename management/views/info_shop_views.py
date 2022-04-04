@@ -10,6 +10,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from management.models import shop, shop_category, member
 
 class ShopView(LoginRequiredMixin, View):
+    '''
+    점포 정보 출력, 생성, 수정, 삭제
+    '''
     template_name = 'shop_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):

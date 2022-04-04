@@ -7,7 +7,7 @@ const Rejected = '2'
 //판매 중지된 상품
 const Stopped = '3'
 
-//pro-RequestedTable
+//pro-RequestedTable search
 $(document).ready(function() {
   var table = $('#dataTableHover1').DataTable(); 
   

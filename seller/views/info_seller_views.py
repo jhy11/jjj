@@ -13,6 +13,9 @@ from . import constants
 from management.models import member, product, pro_category, shop
 
 class SellerProductView(LoginRequiredMixin, View):
+    '''
+    판매자 상품 관리 - 생성, 수정, 삭제 (여기서 생성,수정 지워도 될듯)
+    '''
     template_name = 'seller_info.html' 
 
 
@@ -107,6 +110,9 @@ class SellerProductView(LoginRequiredMixin, View):
         return JsonResponse(data={ 'success': False })
 
 class reapplyView(LoginRequiredMixin, View):
+    '''
+    재신청
+    '''
     template_name = 'seller_info.html' 
 
     def put(self, request: HttpRequest, *args, **kwargs):
@@ -130,6 +136,9 @@ class reapplyView(LoginRequiredMixin, View):
 
 
 class ProductDetailView(LoginRequiredMixin, View):
+    '''
+    상품 상세 페이지
+    '''
     template_name = 'product_detail.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         id = kwargs.get('id')
@@ -144,6 +153,9 @@ class ProductDetailView(LoginRequiredMixin, View):
         return render(request, self.template_name,  context)
 
 class ProductPostView(LoginRequiredMixin, View):
+    '''
+    상품 등록
+    '''
     template_name = 'product_post.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         context={}
@@ -178,12 +190,15 @@ class ProductPostView(LoginRequiredMixin, View):
                 description = Description,
                 main_img = image,
                 shop_id = memberShopId,
-                status = '0',
+                status = constants.REQUESTED,
             )
         context['success']=True
         return JsonResponse(context, content_type='application/json')
 
 class ProductEditView(LoginRequiredMixin, View):
+    '''
+    상품 수정
+    '''
     template_name = 'product_edit.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         id = kwargs.get('id')

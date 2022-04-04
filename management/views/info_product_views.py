@@ -9,6 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from management.models import product, pro_category, shop
 
 class ProductView(LoginRequiredMixin, View):
+    '''
+    관리자 상품 관리
+    '''
     template_name = 'product_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
