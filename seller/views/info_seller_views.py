@@ -8,17 +8,21 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin
+from . import constants
 
-from management.models import product, pro_category, shop
+from management.models import member, product, pro_category, shop
 
 class SellerProductView(LoginRequiredMixin, View):
     template_name = 'seller_info.html' 
 
 
     def get(self, request: HttpRequest, *args, **kwargs):
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
+
         context = {
-            'requestTable': product.objects.filter(shop_id ='3', status='0', DeleteFlag='0'),
-            'onSaleTable': product.objects.filter(shop_id ='3',status='2', DeleteFlag='0'),
+            'requestTable': product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0'),
+            'onSaleTable': product.objects.filter(shop_id =memberShopId, status=constants.ONSALE, DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
         if request.user.is_staff:
@@ -31,6 +35,9 @@ class SellerProductView(LoginRequiredMixin, View):
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
         request.POST = json.loads(request.body)
+
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
         
         ProCategoryId = request.POST.get('ProductCategoryId')
         ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
@@ -45,16 +52,19 @@ class SellerProductView(LoginRequiredMixin, View):
             price = Price,
             stock = Stock,
             description = Description,
-            shop_id = '3',
-            status = '0',
+            shop_id = memberShopId,
+            status = constants.REQUESTED,
         )
-        context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['success']=True
         return JsonResponse(context, content_type='application/json')
 
     def put(self, request: HttpRequest, *args, **kwargs):
         context = {}
         request.PUT = json.loads(request.body)
+
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
         
         Id = request.PUT.get('Id')
         ProCategoryId = request.PUT.get('ProductCategoryId')
@@ -70,8 +80,6 @@ class SellerProductView(LoginRequiredMixin, View):
             price = Price,
             stock = Stock,
             description = Description,
-            shop_id = '3',
-
         )
         statusValue = product.objects.filter(id=Id).values('status')
         if (statusValue[0].get('status') == '0'):
@@ -79,8 +87,8 @@ class SellerProductView(LoginRequiredMixin, View):
         else: 
             context['statusValue'] = 2
         
-        context['products'] = list(product.objects.filter(shop_id ='3', status='0', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['products2'] = list(product.objects.filter(shop_id ='3', status='2', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status='2', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['success'] = True
         
         return JsonResponse(context, content_type='application/json')
@@ -93,12 +101,9 @@ class SellerProductView(LoginRequiredMixin, View):
         if Id is not None:
             product.delete(product.objects.filter(DeleteFlag='0').get(id=Id))
 
-            # context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-            # context['products2'] = list(product.objects.filter(shop_id ='3', status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
             context['success'] = True
 
             return JsonResponse(context, content_type='application/json')
-          
         return JsonResponse(data={ 'success': False })
 
 class reapplyView(LoginRequiredMixin, View):
@@ -109,12 +114,16 @@ class reapplyView(LoginRequiredMixin, View):
         request.PUT = json.loads(request.body)
         
         Id = request.PUT.get('Id')  
+
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
+
         # Update status
         product.objects.filter(id=Id).update(
             status = '0'
         )
-        context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['products2'] = list(product.objects.filter(shop_id ='3', status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['success'] = True
         
         return JsonResponse(context, content_type='application/json')
@@ -148,6 +157,9 @@ class ProductPostView(LoginRequiredMixin, View):
         
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
+
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
     
         mainImg = request.FILES.getlist('mainImg')
         ProductCategoryId = request.POST.get('ProductCategoryId')
@@ -165,7 +177,7 @@ class ProductPostView(LoginRequiredMixin, View):
                 stock = Stock,
                 description = Description,
                 main_img = image,
-                shop_id = '3',
+                shop_id = memberShopId,
                 status = '0',
             )
         context['success']=True
