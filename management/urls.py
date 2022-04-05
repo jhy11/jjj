@@ -17,6 +17,8 @@ urlpatterns=[
     path('member', info_member_views.MemberView.as_view(), name='member'),
     #주문 관리
     path('order', info_order_views.OrderView.as_view(), name='order'),
+    #주문 상세 내역
+    path('order-child/<str:orderNo>', info_order_views.OrderChild.as_view(), name='order-child'),
     #path('order-data', info_order_views.PassData.as_view(), name='order-data')
     #path('order-detail', info_order_views.GetDetail.as_view(), name='order-detail'),
 

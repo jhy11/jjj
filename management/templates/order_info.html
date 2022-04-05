@@ -73,6 +73,7 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-order">
             <thead class="thead-light">
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>수령방법</th>
                 <th>주문자명</th>
@@ -87,6 +88,7 @@
               {% for i in orders %}
               {% load humanize %}
               <tr class="list-order-row" style="cursor:pointer">
+                <td class="details-control"></td>
                 <td class="align-middle" id="No-td">{{ i.order_no }}</td>
                 <td class="align-middle" id="Type">{{ i.type }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
@@ -105,11 +107,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>수령방법</th>
                 <th>주문자명</th>

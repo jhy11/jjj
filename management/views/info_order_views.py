@@ -4,7 +4,7 @@ from django.views.generic.base import View
 import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from management.models import order
+from management.models import order, order_product
 
 class OrderView(LoginRequiredMixin, View):
     template_name = 'order_info.html' 
@@ -29,4 +29,14 @@ class GetDetail(LoginRequiredMixin, View):
         context['success'] = True
         context['detail'] = list(order.objects.filter(order_no=order_no).values('order_no', 'type', 'status', 'name', 'call', 'code', 'address', 'member__mem_name', 'member__user__username', 'total_price', 'transport_no'))
 
+        return JsonResponse(context, content_type="application/json")
+
+
+#data for child table of order table
+class OrderChild(LoginRequiredMixin, View):
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        context={}
+        orderNo = kwargs.get('orderNo')
+        context['data'] = list(order_product.objects.filter(order__order_no=orderNo).values('product__name', 'product__shop__shop_name', 'amount', 'status'))
         return JsonResponse(context, content_type="application/json")
