@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 function showStatus(status){
-
+  let result;
   switch(status){
     case 'Paid':
       result = '<span class="badge badge-secondary">결제완료</span>'
