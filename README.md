@@ -1,6 +1,4 @@
 # jjj
 
-pip install django
-
-pip install mysqlclient
+pip install -r requirements.txt
   
