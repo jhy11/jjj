@@ -35,6 +35,13 @@ btnLogin.addEventListener('click', async() => {
     }
 })
 
+function enterkey() {
+	if (window.event.keyCode == 13) {
+    	// 엔터키가 눌렸을 때
+        btnLogin.click();
+    }
+}
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -49,6 +56,6 @@ function getCookie(name) {
         }
     }
     return cookieValue;
-  }
-  
+}
+
   
