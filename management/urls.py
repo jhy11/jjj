@@ -23,6 +23,7 @@ urlpatterns=[
 
     # 판매관리
     path('delivery', info_delivery_views.DeliveryView.as_view(), name='delivery'),
+    path('shortdelivery', info_delivery_views.ShortdeliveryView.as_view(), name='shortdelivery'),
 
     #문의 관리
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),
