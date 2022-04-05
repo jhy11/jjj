@@ -8,10 +8,16 @@ document.addEventListener("DOMContentLoaded", function(){
   //포장 테이블
   let table_delivery = $('#dataTableHover-delivery').DataTable();
   let table_delivered = $('#dataTableHover-delivered').DataTable();
+  //드라이브스루 테이블
+  let table_drivethru = $('#dataTableHover-drivethru').DataTable();
+  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable();
 
   //검색 디폴트 옵션
   table_delivery.columns(2).search( '상품준비완료' ).draw();
   table_delivered.columns(2).search( '결제완료' ).draw();
+  table_drivethru.columns(2).search( '상품준비완료' ).draw();
+  table_drivethru1.columns(2).search( '결제완료' ).draw();
+
   //체크된 체크박스에 따라 데이터테이블 검색
   $('#status1').on('change', function () {
     let status_info = $("input[name='status1']:checked").val();
@@ -24,6 +30,15 @@ document.addEventListener("DOMContentLoaded", function(){
 
     //let status = getStatus(status_info);
     //table.columns(4).search( status ).draw();
+  });
+  $('#status3').on('change', function () {
+    let status_info = $("input[name='status3']:checked").val();
+    table_drivethru.columns(2).search( status_info ).draw();
+  });
+
+  $('#status4').on('change', function () {
+    let status_info = $("input[name='status4']:checked").val();
+    table_drivethru1.columns(2).search( status_info ).draw();
   });
 
 });
@@ -52,6 +67,30 @@ $('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async
   //reload datatable
 });
 
+
+//드라이브스루
+//Detect if checkbox is checked or not
+$('#dataTableHover-drivethru tbody').on('change', 'input[type="checkbox"]', async function(){
+  let id = $(this).attr('id');
+  let status = document.getElementById('Status-'+id).innerText;
+  status = getStatus(status);
+
+  const url = '/management/drivethru?id=' + encodeURIComponent(id);
+  const response = await fetch(url,{
+    method: 'PUT',
+    headers:{'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({
+      id: $(this).attr('id'),
+      status: status,
+    })
+  })
+  .catch((error)=>{
+    alert(error);
+  });
+
+  const result = await response.json();
+  //reload datatable
+});
 
 function showStatus(status){
   let result;

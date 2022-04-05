@@ -9,6 +9,9 @@ from seller.views import constants
 from management.models import order_product, order
 
 class DeliveryView(LoginRequiredMixin, View):
+    '''
+    판매관리/택배배송
+    '''
     template_name='delivery_info.html'
 
     def get(self, request: HttpRequest):
@@ -53,6 +56,9 @@ class DeliveryView(LoginRequiredMixin, View):
 
 
 class ShortdeliveryView(LoginRequiredMixin, View):
+    '''
+    판매관리/근거리배송
+    '''
     template_name='shortdelivery_info.html'
 
     def get(self, request: HttpRequest):
@@ -108,6 +114,54 @@ class PickupView(LoginRequiredMixin, View):
             'Processing': get_delivery(constants.PICKUP, constants.PROCESSING),
             'Shipping': get_delivery(constants.PICKUP, constants.SHIPPING),
             'Delivered': get_delivery(constants.PICKUP, constants.DELIVERED),
+        }
+
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+        
+        return render(request, self.template_name, context)
+
+    def put(self, request: HttpRequest):
+        context={}
+        request.PUT = json.loads(request.body)
+        next_status=constants.PROCESSING
+
+        Id = request.PUT.get('id')
+        Status = request.PUT.get('status')
+
+        if Status == constants.PROCESSING:
+            next_status=constants.DELIVERED
+
+        # Update order status 
+        order.objects.filter(id=Id).update(
+            status=next_status,
+        )
+        # Update order-product status of the order
+        product_ids=order_product.objects.filter(order_id=Id).values_list('id', flat=True)
+        for id in product_ids:
+            order_product.objects.filter(id=id).update(
+                status=next_status,
+            )
+
+        context['success']=True
+
+        return JsonResponse(context, content_type='application/json')
+
+class DrivethruView(LoginRequiredMixin, View):
+    '''
+    판매관리/드라이브스루
+    '''
+    template_name='drivethru_info.html'
+
+    def get(self, request: HttpRequest):
+        context = {
+            'Paid': get_delivery(constants.DRIVETHRU, constants.PAID),
+            'Completed': get_delivery(constants.DRIVETHRU, constants.COMPLETED),
+            'Processing': get_delivery(constants.DRIVETHRU, constants.PROCESSING),
+            'Shipping': get_delivery(constants.DRIVETHRU, constants.SHIPPING),
+            'Delivered': get_delivery(constants.DRIVETHRU, constants.DELIVERED),
         }
 
         if request.user.is_staff:
