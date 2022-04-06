@@ -5,25 +5,77 @@ document.addEventListener("DOMContentLoaded", function(){
     //status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
-  let table_delivery = $('#dataTableHover-delivery').DataTable();
-  let table_delivered = $('#dataTableHover-delivered').DataTable();
+  //Datatable of pickup and drivethru
+  let table_pickup = $('#dataTableHover-pickup').DataTable();
+  let table_pickup1 = $('#dataTableHover-pickup1').DataTable();
+  let table_drivethru = $('#dataTableHover-drivethru').DataTable();
+  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable();
 
-  table_delivery.columns(4).search( '결제완료' ).draw();
-  table_delivered.columns(4).search( '배송준비중' ).draw();
+  //Set an option by default
+  table_pickup.columns(4).search( '결제완료' ).draw();
+  table_pickup1.columns(4).search( '배송준비중' ).draw();
+  table_drivethru.columns(4).search( '결제완료' ).draw();
+  table_drivethru1.columns(4).search( '배송준비중' ).draw();
 
+  //Filter data with checked radio button
   $('#status1').on('change', function () {
     let status_info = $("input[name='status1']:checked").val();
-    table_delivery.columns(4).search( status_info ).draw();
+    table_pickup.columns(4).search( status_info ).draw();
   });
-
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
-    table_delivered.columns(4).search( status_info ).draw();
+    table_pickup1.columns(4).search( status_info ).draw();
+  });
+  $('#status2').on('change', function () {
+    let status_info = $("input[name='status2']:checked").val();
+    table_drivethru.columns(4).search( status_info ).draw();
+  });
+  $('#status3').on('change', function () {
+    let status_info = $("input[name='status3']:checked").val();
+    table_drivethru1.columns(4).search( status_info ).draw();
+  });
+});
 
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
+//pickup
+//Detect if checkbox is checked or not
+$('#dataTableHover-pickup tbody').on('change', 'input[type="checkbox"]', async function(){
+  let id = $(this).attr('id');
+
+  const url = '/seller/pickup?id=' + encodeURIComponent(id);
+  const response = await fetch(url,{
+    method: 'PUT',
+    headers:{'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({
+      id: $(this).attr('id'),
+    })
+  })
+  .catch((error)=>{
+    alert(error);
   });
 
+  const result = await response.json();
+  //$('#dataTableHover-pickup').DataTable().ajax.reload(null, false);
+
+});
+
+//drivethru
+//Detect if checkbox is checked or not
+$('#dataTableHover-pickup tbody').on('change', 'input[type="checkbox"]', async function(){
+  let id = $(this).attr('id');
+
+  const url = '/seller/drivethru?id=' + encodeURIComponent(id);
+  const response = await fetch(url,{
+    method: 'PUT',
+    headers:{'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({
+      id: $(this).attr('id'),
+    })
+  })
+  .catch((error)=>{
+    alert(error);
+  });
+
+  const result = await response.json();
 });
 
 function showStatus(status){
