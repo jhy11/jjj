@@ -23,8 +23,8 @@
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
-              <label class="form-label col-md-1" for="status1" >배송 상태</label>
-              <fieldset class="row col-md-8" id="status1">
+              <label class="form-label col-md-1" for="status2" >배송 상태</label>
+              <fieldset class="row col-md-8" id="status2">
                 <div class="custom-control custom-radio mr-3">
                   <input type="radio" id="customRadio1" name="status2" class="custom-control-input" value="결제완료" checked="checked">
                   <label class="custom-control-label" for="customRadio1">결제완료</label>
@@ -66,7 +66,7 @@
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
                 <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
                 <td class="align-middle" id="Name">{{ i.amount }}</td>             
-                <td class="align-middle status" id="Status" value='결제완료'>결제완료</td>
+                <td class="align-middle status" id="Status" value='0'>결제완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
                   <input type="checkbox" class="custom-control-input" id="{{i.id}}">
                   <label class="custom-control-label" for="{{i.id}}"></label>
@@ -79,7 +79,7 @@
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
                 <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
                 <td class="align-middle" id="Name">{{ i.amount }}</td>             
-                <td class="align-middle status" id="Status" value='상품준비완료'>상품준비완료</td>
+                <td class="align-middle status" id="Status" value='1'>상품준비완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
                   <input type="checkbox" class="custom-control-input" id="{{i.id}}" checked="checked">
                   <label class="custom-control-label" for="{{i.id}}"></label>
@@ -118,15 +118,15 @@
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
-              <label class="form-label col-md-1" for="status" >배송 상태</label>
-              <fieldset class="row col-md-8" id="status">
+              <label class="form-label col-md-1" for="status3" >배송 상태</label>
+              <fieldset class="row col-md-8" id="status3">
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio3" name="status3" class="custom-control-input" value="배송준비중" checked="checked">
-                  <label class="custom-control-label" for="customRadio3">배송준비중</label>
+                  <input type="radio" id="customRadio3" name="status3" class="custom-control-input" value="픽업대기중" checked="checked">
+                  <label class="custom-control-label" for="customRadio3">픽업대기중</label>
                 </div>
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio4" name="status3" class="custom-control-input" value="배송완료">
-                  <label class="custom-control-label" for="customRadio4">배송완료</label>
+                  <input type="radio" id="customRadio4" name="status3" class="custom-control-input" value="픽업완료">
+                  <label class="custom-control-label" for="customRadio4">픽업완료</label>
                 </div>
               </fieldset>
             </div>
@@ -160,7 +160,7 @@
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
                 <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
                 <td class="align-middle" id="Amount">{{ i.amount }}</td>
-                <td class="align-middle status" id="Flag" value='배송중'>배송중</td>
+                <td class="align-middle status" id="Flag" value='2'>픽업대기중</td>
               </tr>
               {% endfor %}
               {% for i in Delivered %}
@@ -169,7 +169,7 @@
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
                 <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
                 <td class="align-middle" id="Amount">{{ i.amount }}</td>
-                <td class="align-middle status" id="Flag" value='배송완료'>배송완료</td>
+                <td class="align-middle status" id="Flag" value='4'>픽업완료</td>
               </tr>
               {% endfor %}
               {% else %}

@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function(){
 
+  //Create status badges
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
+  //Datatable of shortdelivery
   let table_delivered = $('#dataTableHover-delivered').DataTable();
-  table_delivered.columns(4).search( '배송준비중' ).draw();
+  table_delivered.columns(4).search( '결제완료' ).draw();
 
+  //Filter data with checked radio button
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
     table_delivered.columns(4).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
   });
 });
 

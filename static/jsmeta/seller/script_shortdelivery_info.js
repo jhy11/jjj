@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", function(){
 
+  //Create status badges
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
+  //Datatable of shortdelivery
   let table_delivery = $('#dataTableHover-delivery').DataTable();
   let table_delivered = $('#dataTableHover-delivered').DataTable();
 
@@ -20,9 +22,6 @@ document.addEventListener("DOMContentLoaded", function(){
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
     table_delivered.columns(5).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
   });
 });
 

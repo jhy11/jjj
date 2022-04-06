@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
   //Datatable of pickup and drivethru
@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
   //Set an option by default
   table_pickup.columns(4).search( '결제완료' ).draw();
-  table_pickup1.columns(4).search( '배송준비중' ).draw();
+  table_pickup1.columns(4).search( '픽업대기중' ).draw();
   table_drivethru.columns(4).search( '결제완료' ).draw();
-  table_drivethru1.columns(4).search( '배송준비중' ).draw();
+  table_drivethru1.columns(4).search( '픽업대기중' ).draw();
 
   //Filter data with checked radio button
   $('#status1').on('change', function () {
@@ -88,13 +88,13 @@ function showStatus(status){
       result = '<span class="badge badge-success align-middle">상품준비완료</span>'
       break;
     case Processing:
-      result = '<span class="badge badge-primary align-middle">배송준비중</span>'
+      result = '<span class="badge badge-primary align-middle">픽업대기중</span>'
       break;
     case Shipping:
       result = '<span class="badge badge-info align-middle">배송중</span>'
       break;
     case Delivered:
-      result = '<span class="badge badge-secondary align-middle">배송완료</span>'
+      result = '<span class="badge badge-secondary align-middle">픽업완료</span>'
       break;
   }
   return result;
@@ -110,13 +110,13 @@ function getStatus(status){
     case '상품준비완료':
       result = Completed;
       break;
-    case '배송준비중':
+    case '픽업대기중':
       result = Processing;
       break;
     case '배송중':
       result = Shipping;
       break;
-    case '배송완료':
+    case '픽업완료':
       result = Delivered;
       break;
   }

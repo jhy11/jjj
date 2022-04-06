@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
   let table_delivery = $('#dataTableHover-delivery').DataTable();
@@ -19,9 +19,6 @@ document.addEventListener("DOMContentLoaded", function(){
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
     table_delivered.columns(5).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
   });
 });
 
