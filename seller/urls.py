@@ -21,6 +21,7 @@ urlpatterns=[
     path('product-approval', info_product_approval_views.ApprovalView.as_view(), name='product-approval'),
     path('product-stop', info_product_views.ProductstoppedView.as_view(), name='product-stop'),
     
+    
 
     #상품 관리
     path('product-list', info_product_views.ProductListView.as_view(), name='product-list'),

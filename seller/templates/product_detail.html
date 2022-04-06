@@ -39,6 +39,7 @@
               <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
               <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
               <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
+              <div class="py-4 px-5">상세 설명<span class="py-4 px-5"></span>{{product.description}}</div>
           </div>
         </div>
       </div>
@@ -48,7 +49,10 @@
     <div class="col">
       <div class="card mb-4 p-3">
         <div class="card-body">
-            <div class="py-4 px-5">상세 설명 {{product.description}}</div>
+          <div id="editor-container" class="container">
+          {{product.content.html |safe }}
+        
+          </div>
             <div class="py-4 px-5">
                 <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
                 <button type="button" class="btn btn-outline-danger pb-1" onclick="deleteProduct('{{i.id}}')">삭제</button>

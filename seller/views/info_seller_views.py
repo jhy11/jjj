@@ -8,8 +8,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import  ProjectForm
 
 from management.models import product, pro_category, shop
+
 
 class SellerProductView(LoginRequiredMixin, View):
     template_name = 'seller_info.html' 
@@ -131,7 +133,7 @@ class ProductDetailView(LoginRequiredMixin, View):
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
         context['product'] = seller_product
-
+       
         return render(request, self.template_name,  context)
 
 class ProductPostView(LoginRequiredMixin, View):
@@ -156,6 +158,7 @@ class ProductPostView(LoginRequiredMixin, View):
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
         Description = request.POST.get('ProductDescription')
+        Content = request.POST.get('Content')
 
         for image in mainImg:
             product.objects.create(
@@ -167,6 +170,7 @@ class ProductPostView(LoginRequiredMixin, View):
                 main_img = image,
                 shop_id = '3',
                 status = '0',
+                content = Content,
             )
         context['success']=True
         return JsonResponse(context, content_type='application/json')
@@ -197,6 +201,8 @@ class ProductEditView(LoginRequiredMixin, View):
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
         Description = request.POST.get('ProductDescription')
+        Content = request.POST.get('Content')
+        
 
         if ProductId is None:
             context['success'] = False
@@ -209,6 +215,7 @@ class ProductEditView(LoginRequiredMixin, View):
                 price = Price,
                 stock = Stock,
                 description = Description,
+                content = Content,
                 )
         else:
             for image in mainImg:
@@ -226,8 +233,20 @@ class ProductEditView(LoginRequiredMixin, View):
                     stock = Stock,
                     description = Description,
                     main_img = image_url,
+                    content = Content,
                     )
 
         context['success'] = True
         context['productId'] = ProductId
+        context['Content'] = Content
         return JsonResponse(context, content_type='application/json')
+
+
+def form_view(request):
+    context = {"product": product.objects.all()}
+    #products = product.objects.all()
+    #form = ProjectForm()
+    #secondform = ProjectSecondForm
+    
+    return render(request, 'product_detail.html', context)
+                                       

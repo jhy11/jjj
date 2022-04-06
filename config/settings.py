@@ -85,6 +85,7 @@ INSTALLED_APPS = [
     'management',
     'seller',
     'storages',
+    'django_quill',
 ]
 
 MIDDLEWARE = [
