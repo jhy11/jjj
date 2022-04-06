@@ -1,6 +1,4 @@
 # jjj
 
-pip install django
-
-pip install mysqlclient
-  
+* Add `secrets.json` file in config folder
+* `pip install -r requirements.txt`

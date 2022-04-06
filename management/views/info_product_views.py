@@ -9,6 +9,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from management.models import product, pro_category, shop
 
 class ProductView(LoginRequiredMixin, View):
+    '''
+    관리자 상품 관리
+    '''
     template_name = 'product_info.html' 
 
     def get(self, request: HttpRequest, *args, **kwargs):
@@ -24,42 +27,59 @@ class ProductView(LoginRequiredMixin, View):
         
         return render(request, self.template_name, context)
 
+
+class ProductDetailView(LoginRequiredMixin, View):
+    '''
+    상품 상세 페이지
+    '''
+    template_name = 'manage_product_detail.html' 
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        id = kwargs.get('id')
+        Product = product.objects.get(id=id)
+
+        context={}
+        if request.user.is_staff:
+            context['staff'] = True
+        if request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+
+        context['product'] = Product
+
+        return render(request, self.template_name,  context)
+
+    '''
+    상품 승인, 반려, 판매중지
+    ''' 
     def put(self, request: HttpRequest, *args, **kwargs):
         context = {}
         request.PUT = json.loads(request.body)
-
-        ProductId = request.PUT.get('ProductId')
-        Category = request.PUT.get('Category')
-        Category = pro_category.objects.filter(DeleteFlag='0').get(name=Category)
-        Shop = request.PUT.get('Shop')
-        Shop = shop.objects.filter(DeleteFlag='0').get(shop_name=Shop)
+        
+        Id = request.PUT.get('Id')  
         Status = request.PUT.get('Status')
-        Name = request.PUT.get('Name')
-        Price = request.PUT.get('Price')
-        Stock = request.PUT.get('Stock')
-        Description = request.PUT.get('Description')
 
         # Update status
-        product.objects.filter(id=ProductId, DeleteFlag='0').update(
-            pro_category=Category,
-            shop=Shop,
-            name=Name,
-            price=Price,
-            stock=Stock,
-            status=Status,
-            description = Description
+        product.objects.filter(id=Id, DeleteFlag='0').update(
+            status = Status
         )
-
-        context['success'] = True
         
+        context['success'] = True
         return JsonResponse(context, content_type='application/json')
 
-    def delete(self, request: HttpRequest):
+    '''
+    상품 삭제
+    ''' 
+    def delete(self, request: HttpRequest, *args, **kwargs):
+        context={}     
         request.DELETE = json.loads(request.body)
 
-        productId = request.DELETE.get('productId', None)
-        if productId is not None:
-            product.delete(product.objects.filter(DeleteFlag='0').get(id=productId))
+        Id = request.DELETE.get('Id', None)
+        
+        if Id is not None:
+            product.delete(product.objects.filter(DeleteFlag='0').get(id=Id))
 
-            return JsonResponse(data={ 'success': True })
+            context['success'] = True
+
+            return JsonResponse(context, content_type='application/json')
+          
         return JsonResponse(data={ 'success': False })

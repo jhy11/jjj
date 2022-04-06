@@ -1,0 +1,205 @@
+{% extends 'layouts/base.html' %} {% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper"> 
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 pl-2 text-gray-800">택배배송 관리</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+      <li class="breadcrumb-item">판매 관리</li>
+      <li class="breadcrumb-item active" aria-current="page">택배배송 관리</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-5 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">운송장 대기 목록</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivery">
+            <thead class="thead-light">
+              <tr>
+                <th>주문번호</th>
+                <th>연락처</th>
+                <th>우편번호</th>
+                <th>운송장번호</th>
+                <th>상태</th>
+                <th>준비완료</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if Completed %} 
+              {% for i in Completed %}
+              <tr class="list-order-row" style="cursor:pointer">
+                <td class="align-middle" id="No-td">{{ i.order_no }}</td>
+                <td class="align-middle" id="Call">{{ i.call }}</td>
+                <td class="align-middle" id="Code">{{ i.code }}</td>
+                <td class="align-middle" id="TransportNo">
+                  <input type="text" id="transport_no-{{i.id}}" name="transport_no" style="border: 1px solid #e3e6f0; border-radius: 4px; color:#757575;">
+                </td>
+                <td class="align-middle status" id="Status" value='상품준비완료'>상품준비완료</td>
+                <td class="align-middle custom-control custom-switch ml-5">
+                  <input type="checkbox" class="custom-control-input" id="{{i.id}}">
+                  <label class="custom-control-label" for="{{i.id}}"></label>
+                </td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>주문번호</th>
+                <th>연락처</th>
+                <th>우편번호</th>
+                <th>운송장번호</th>
+                <th>상태</th>
+                <th>준비완료</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class ="row g-3 needs-validation">
+            <div class="row col-md-12 mx-1 pt-2">
+              <label class="form-label col-md-1" for="status" >배송 상태</label>
+              <fieldset class="row col-md-8" id="status">
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio1" name="status" class="custom-control-input" value="결제완료" checked="checked">
+                  <label class="custom-control-label" for="customRadio1">결제완료</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio3" name="status" class="custom-control-input" value="배송준비중">
+                  <label class="custom-control-label" for="customRadio3">배송준비중</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio4" name="status" class="custom-control-input" value="배송중">
+                  <label class="custom-control-label" for="customRadio4">배송중</label>
+                </div>
+                <div class="custom-control custom-radio mr-3">
+                  <input type="radio" id="customRadio5" name="status" class="custom-control-input" value="배송완료">
+                  <label class="custom-control-label" for="customRadio5">배송완료</label>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">택배 배송 관리</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivered">
+            <thead class="thead-light">
+              <tr>
+                <th>주문번호</th>
+                <th>연락처</th>
+                <th>우편번호</th>
+                <th>운송장번호</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if Paid or Processing or Shipping or Delivered %} 
+              {% for i in Paid %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
+                <td class="align-middle" id="Call">{{ i.call }}</td>
+                <td class="align-middle" id="Code">{{ i.code }}</td>
+                <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
+                <td class="align-middle status" id="Flag" value='결제완료'>결제완료</td>
+              </tr>
+              {% endfor %}
+              {% for i in Processing %}
+              <tr class="list-order-row" style="cursor:pointer">
+                <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
+                <td class="align-middle" id="Call">{{ i.call }}</td>
+                <td class="align-middle" id="Code">{{ i.code }}</td>
+                <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
+                <td class="align-middle status" id="Flag" value='배송준비중'>배송준비중</td>
+              </tr>
+              {% endfor %} 
+              {% for i in Shipping %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
+                <td class="align-middle" id="Call">{{ i.call }}</td>
+                <td class="align-middle" id="Code">{{ i.code }}</td>
+                <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
+                <td class="align-middle status" id="Flag" value='배송중'>배송중</td>
+              </tr>
+              {% endfor %}
+              {% for i in Delivered %}
+              <tr class="list-order-row">
+                <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
+                <td class="align-middle" id="Call">{{ i.call }}</td>
+                <td class="align-middle" id="Code">{{ i.code }}</td>
+                <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
+                <td class="align-middle status" id="Flag" value='배송완료'>배송완료</td>
+              </tr>
+              {% endfor %}
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>주문번호</th>
+                <th>연락처</th>
+                <th>우편번호</th>
+                <th>운송장번호</th>
+                <th>상태</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<!-- Page level plugins -->
+<script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
+
+<script src="{% static 'jsmeta/constants.js' %}"></script>
+<script src="{% static 'jsmeta/management/script_delivery_info.js' %}"></script>
+
+{% endblock javascripts %}

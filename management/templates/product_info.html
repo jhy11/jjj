@@ -34,9 +34,6 @@
                                 <th>상품명</th>
                                 <th>가격</th>
                                 <th>재고</th>
-                                <th>상품 설명</th>
-                                <th>승인</th>
-                                <th>반려</th>
                             </tr>
                         </thead>
                         <tfoot>
@@ -47,9 +44,6 @@
                                 <th>상품명</th>
                                 <th>가격</th>
                                 <th>재고</th>
-                                <th>상품 설명</th>
-                                <th>승인</th>
-                                <th>반려</th>
                             </tr>
                         </tfoot>
                         <tbody class="list" id="bulk-select-body">
@@ -84,24 +78,13 @@
 
                             {% if requestTable %} 
                             {% for i in requestTable %}
-                            <tr>
+                            <tr class="list-order-row" onclick="location.href='/management/manage-product-detail/{{i.id}}'">
                                 <td class="align-middle" id="ProductId" required>{{ i.id }}</td>
                                 <td class="align-middle" id="Category" required>{{ i.pro_category.name }}</td>
                                 <td class="align-middle" id="Shop" required>{{ i.shop.shop_name }}</td>
                                 <td class="align-middle" id="Name" required>{{ i.name }}</td>
                                 <td class="align-middle" id="Price" required>{{ i.price }}</td>
                                 <td class="align-middle" id="Stock" required>{{ i.stock }}</td>
-                                <td class="align-middle" id="Description" required>{{ i.description }}</td>
-                                <td class="align-middle">
-                                    <button class="btn btn-outline-primary pb-1 btn-edit" type="button" onclick="approvePro('{{i.id}}', '{{ i.pro_category.name }}',
-                                    '{{ i.shop.shop_name }}','{{ i.name }}','{{ i.price }}','{{ i.stock }}','{{ i.description }}')"
-                                    >승인</button>
-                                </td>
-                                <td class="align-middle">
-                                    <button class="btn btn-outline-danger pb-1" type="button" onclick="rejectPro('{{i.id}}', '{{ i.pro_category.name }}',
-                                    '{{ i.shop.shop_name }}','{{ i.name }}','{{ i.price }}','{{ i.stock }}','{{ i.description }}')"
-                                    >반려</button>
-                                </td>
                             </tr>
                             {% endfor %} 
                             {% else %}
@@ -118,99 +101,84 @@
     
     <div class="row">
     <!-- A table of products on sale -->
-        <div class="col"  id="pro-OnSaleTable">
-            <div class="card mb-4 p-2">
-                <div class="card-header d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">판매 상품 목록</h6>
-                </div>
-                <div class="table-responsive p-3">
-                    <table class="table align-items-center table-flush table-hover" id="dataTableHover2">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>No.</th>
-                                <th>상품 카테고리</th>
-                                <th>점포명</th>
-                                <th>상품명</th>
-                                <th>가격</th>
-                                <th>재고</th>
-                                <th>상품 설명</th>
-                                <th>판매중지</th>
-                                <th>삭제</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <th>No.</th>
-                                <th>상품 카테고리</th>
-                                <th>점포명</th>
-                                <th>상품명</th>
-                                <th>가격</th>
-                                <th>재고</th>
-                                <th>상품 설명</th>
-                                <th>판매중지</th>
-                                <th>삭제</th>
-                            </tr>
-                        </tfoot>
-                        <tbody class="list" id="bulk-select-body">
+    <div class="col"  id="pro-onSaleTable">
+        <div class="card mb-4 p-2">
+            <div class="card-header d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">판매 중 목록</h6>
+            </div>
+            <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover2">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>No.</th>
+                            <th>상품 카테고리</th>
+                            <th>점포명</th>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>재고</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>No.</th>
+                            <th>상품 카테고리</th>
+                            <th>점포명</th>
+                            <th>상품명</th>
+                            <th>가격</th>
+                            <th>재고</th>
+                        </tr>
+                    </tfoot>
+                    <tbody class="list" id="bulk-select-body">
 
-                            <!-- Search -->
-                            <div class ="row g-3 needs-validation">
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="catSearch2">상품 카테고리</label>
-                                    <select class="form-control" id="catSearch2" name="catSearch2" required>
-                                        {% if ProCategories %}
-                                        <option value="" disabled selected>상품 카테고리 선택</option>
-                                        {% for i in ProCategories %}
-                                        <option value="{{i.name}}">{{i.name}}</option>
-                                        {% endfor %}
-                                        {% endif %}
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="shopSearch2">점포명</label>
-                                    <input class="form-control" id="shopSearch2" name="shopSearch2" type="text" placeholder="점포명" required/>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="nameSearch2">상품명</label>
-                                    <input class="form-control" id="nameSearch2" name="nameSearch2" type="text" placeholder="상품명" required/>
-                                </div>
-                                <div class="col-md-6 mb-3">
-                                    <label class="form-label" for="minPrice2">가격</label>
-                                    <input class="form-control" id="minPrice2" name="minPrice2" type="text" placeholder="최소 가격" required/>
-                                    <input class="form-control" id="maxPrice2" name="maxPrice2" type="text" placeholder="최대 가격" required/>
-                                </div>
+                        <!-- Search -->
+                        <div class ="row g-3 needs-validation">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="catSearch2">상품 카테고리</label>
+                                <select class="form-control" id="catSearch2" name="catSearch2" required>
+                                    {% if ProCategories %}
+                                    <option value="" disabled selected>상품 카테고리 선택</option>
+                                    {% for i in ProCategories %}
+                                    <option value="{{i.name}}">{{i.name}}</option>
+                                    {% endfor %}
+                                    {% endif %}
+                                </select>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="shopSearch2">점포명</label>
+                                <input class="form-control" id="shopSearch2" name="shopSearch2" type="text" placeholder="점포명" required/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="nameSearch2">상품명</label>
+                                <input class="form-control" id="nameSearch2" name="nameSearch2" type="text" placeholder="상품명" required/>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="minPrice2">가격</label>
+                                <input class="form-control" id="minPrice2" name="minPrice2" type="text" placeholder="최소 가격" required/>
+                                <input class="form-control" id="maxPrice2" name="maxPrice2" type="text" placeholder="최대 가격" required/>
+                            </div>
+                        </div>
 
-                            {% if onSaleTable %} 
-                            {% for i in onSaleTable %}
-                            <tr>
-                                <td class="align-middle" id="Id" required>{{ i.id }}</td>
-                                <td class="align-middle" id="Category" required>{{ i.pro_category.name }}</td>
-                                <td class="align-middle" id="Shop" required>{{ i.shop.shop_name }}</td>
-                                <td class="align-middle" id="Name" required>{{ i.name }}</td>
-                                <td class="align-middle" id="Manager" required>{{ i.price }}</td>
-                                <td class="align-middle" id="Manager" required>{{ i.stock }}</td>
-                                <td class="align-middle" id="Manager" required>{{ i.description }}</td>
-                                <td class="align-middle">
-                                    <button class="btn btn-outline-danger pb-1" type="button" onclick="suspendPro('{{i.id}}', '{{ i.pro_category.name }}',
-                                    '{{ i.shop.shop_name }}','{{ i.name }}','{{ i.price }}','{{ i.stock }}','{{ i.description }}')"
-                                    >판매중지</button>
-                                </td>
-                                <td class="align-middle">
-                                    <button class="btn btn-outline-danger pb-1" type="button" onclick="deletePro('{{i.id}}')">삭제</button>
-                                </td>
-                            </tr>
-                            {% endfor %} 
-                            {% else %}
-                            <tr>
-                                <td class="align-middle">Data does not exist.</td>
-                            </tr>
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
+                        {% if onSaleTable %} 
+                        {% for i in onSaleTable %}
+                        <tr class="list-order-row" onclick="location.href='/management/manage-product-detail/{{i.id}}'">
+                            <td class="align-middle" id="ProductId" required>{{ i.id }}</td>
+                            <td class="align-middle" id="Category" required>{{ i.pro_category.name }}</td>
+                            <td class="align-middle" id="Shop" required>{{ i.shop.shop_name }}</td>
+                            <td class="align-middle" id="Name" required>{{ i.name }}</td>
+                            <td class="align-middle" id="Price" required>{{ i.price }}</td>
+                            <td class="align-middle" id="Stock" required>{{ i.stock }}</td>
+                        </tr>
+                        {% endfor %} 
+                        {% else %}
+                        <tr>
+                            <td class="align-middle">Data does not exist.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
@@ -222,6 +190,6 @@
 <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}" type="text/javascript"></script>
 <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}" type="text/javascript"></script>
 
-<script src="{% static 'jsmeta/script_product_info.js' %}"></script>
+<script src="{% static 'jsmeta/management/script_product_info.js' %}"></script>
 
 {% endblock javascripts %}

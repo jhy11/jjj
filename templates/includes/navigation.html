@@ -47,6 +47,21 @@
     </div>
   </li>
   <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#sale" aria-expanded="true"
+      aria-controls="collapsePage">
+      <i class="fas fa-fw fa-truck"></i>
+      <span>판매 관리</span>
+    </a>
+    <div id="sale" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">주문</h6>
+        <a class="collapse-item" href="{% url 'management:delivery' %}">택배배송 관리</a>
+        <a class="collapse-item" href="{% url 'management:shortdelivery' %}">근거리배송 관리</a>
+        <a class="collapse-item" href="{% url 'management:pickup' %}">포장 관리</a>
+        <a class="collapse-item" href="{% url 'management:drivethru' %}">드라이브스루 관리</a>
+    </div>
+  </li>
+  <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#analysis" aria-expanded="true"
       aria-controls="analysis">
       <i class="fas fa-fw fa-table"></i>

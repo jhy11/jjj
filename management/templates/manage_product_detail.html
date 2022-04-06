@@ -10,10 +10,10 @@
 
 <div class="container-fluid" id="container-wrapper"> 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 pl-2 text-gray-800">판매 상품 개별 페이지</h1>
+    <h1 class="h3 pl-2 text-gray-800">상품 개별 페이지</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-      <li class="breadcrumb-item">판매자페이지</li>
+      <li class="breadcrumb-item">판매자</li>
       <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
     </ol>
   </div>
@@ -35,11 +35,11 @@
         <div class="card mb-4">
           <div class="card-body">
             <div class ="needs-validation px-3 pt-3 pb-4">
+              <div class="py-4 px-5">점포명<span class="py-4 px-5"></span>{{product.shop.shop_name}}</div>
               <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_category.name}}</div>
               <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
               <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
               <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
-              <div class="py-4 px-5">상세 설명<span class="py-4 px-5"></span>{{product.description}}</div>
           </div>
         </div>
       </div>
@@ -49,15 +49,19 @@
     <div class="col">
       <div class="card mb-4 p-3">
         <div class="card-body">
-          <div id="editor-container" class="container">
-          {{product.content.html |safe }}
-        
-          </div>
+            <div class="py-4 px-5">상세 설명 {{product.description}}</div>
+
+            {% if product.status == '0' %}
             <div class="py-4 px-5">
-                <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
-                <button type="button" class="btn btn-outline-danger pb-1" onclick="deleteProduct('{{i.id}}')">삭제</button>
-                <button type="button" class="btn btn-outline-primary pb-1" onclick="location.href='/seller/product-approval'">목록</button>
+                <button class="btn btn-outline-primary pb-1" type="button" onclick="approvePro('{{product.id}}')">승인</button>
+                <button class="btn btn-outline-danger pb-1" type="button" onclick="rejectPro('{{product.id}}')">반려</button>
             </div>
+            {% elif product.status == '1' %}
+            <div class="py-4 px-5">
+                <button class="btn btn-outline-danger pb-1" type="button" onclick="stopPro('{{product.id}}')">판매중지</button>
+                <button class="btn btn-outline-danger pb-1" type="button" onclick="deletePro('{{product.id}}')">삭제</button>
+            </div>
+            {% endif %}
         </div>
       </div>
     </div>
@@ -69,4 +73,5 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="{% static 'jsmeta/management/script_product_detail.js' %}"></script>
 {% endblock javascripts %}
