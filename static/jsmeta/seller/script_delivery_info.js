@@ -2,27 +2,44 @@ document.addEventListener("DOMContentLoaded", function(){
 
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
   let table_delivery = $('#dataTableHover-delivery').DataTable();
   let table_delivered = $('#dataTableHover-delivered').DataTable();
 
-  table_delivery.columns(5).search( '결제완료' ).draw();
-  table_delivered.columns(4).search( '배송준비중' ).draw();
+  table_delivery.columns(4).search( '결제완료' ).draw();
+  table_delivered.columns(5).search( '배송준비중' ).draw();
 
   $('#status1').on('change', function () {
     let status_info = $("input[name='status1']:checked").val();
-    table_delivery.columns(5).search( status_info ).draw();
+    table_delivery.columns(4).search( status_info ).draw();
   });
 
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
-    table_delivered.columns(4).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
+    table_delivered.columns(5).search( status_info ).draw();
   });
+});
+
+//Detect if checkbox is checked or not
+$('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async function(){
+  let id = $(this).attr('id');
+
+  const url = '/seller/delivery?id=' + encodeURIComponent(id);
+  const response = await fetch(url,{
+    method: 'PUT',
+    headers:{'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({
+      id: $(this).attr('id'),
+    })
+  })
+  .catch((error)=>{
+    alert(error);
+  });
+
+  const result = await response.json();
+  //reload datatable
 
 });
 

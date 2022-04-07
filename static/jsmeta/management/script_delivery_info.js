@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", function(){
 
+  //Create status badges
   let status = document.getElementsByClassName('status');
   [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
+    status.innerHTML=showStatus(status.getAttribute('value'));
   })
 
+  //Datatable of delivery
   let table_delivered = $('#dataTableHover-delivered').DataTable();
-  table_delivered.columns(4).search( '배송준비중' ).draw();
+  table_delivered.columns(4).search( '결제완료' ).draw();
 
+  //Filter data with checked radio button
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
     table_delivered.columns(4).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
   });
 });
 
@@ -64,29 +64,6 @@ function showStatus(status){
       break;
     case Delivered:
       result = '<span class="badge badge-secondary align-middle">배송완료</span>'
-      break;
-  }
-  return result;
-}
-
-function getStatus(status){
-  let result;
-
-  switch(status){
-    case '결제완료':
-      result = Paid;
-      break;
-    case '상품준비완료':
-      result = Completed;
-      break;
-    case '배송준비중':
-      result = Processing;
-      break;
-    case '배송중':
-      result = Shipping;
-      break;
-    case '배송완료':
-      result = Delivered;
       break;
   }
   return result;

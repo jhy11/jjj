@@ -19,7 +19,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="card mb-4">
+      <div class="card mb-3">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
@@ -40,10 +40,9 @@
       </div>
     </div>
   </div>
-
   <div class="row">
     <div class="col">
-      <div class="card mb-3 p-3">
+      <div class="card mb-5 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">근거리배송 결제 완료 목록</h6>
         </div>
@@ -52,9 +51,9 @@
             <thead class="thead-light">
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>상태</th>
                 <th>준비완료</th>
               </tr>
@@ -62,29 +61,28 @@
             <tbody class="list" id="list-order">
               {% if Paid or Completed %} 
               {% for i in Paid %}
-              {% load humanize %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">근거리배송</td>
+              <tr class="list-order-row" style="cursor:pointer">
+                <td class="align-middle" id="No-td">{{ i.order__order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='{{i.order__status}}'>결제완료</td>
+                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
+                <td class="align-middle" id="Total">{{ i.amount }}</td>
+                <td class="align-middle status" id="Status" value='0'>결제완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
+                  <input type="checkbox" class="custom-control-input" id="{{i.id}}">
+                  <label class="custom-control-label" for="{{i.id}}"></label>
                 </td>
               </tr>
-              {% endfor %} 
+              {% endfor %}
               {% for i in Completed %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">근거리배송</td>
+              <tr class="list-order-row" style="cursor:pointer">
+                <td class="align-middle" id="No-td">{{ i.order__order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='{{i.order__status}}'>상품준비완료</td>
+                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
+                <td class="align-middle" id="Total">{{ i.amount }}</td>
+                <td class="align-middle status" id="Status" value='1'>상품준비완료</td>
                 <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
+                  <input type="checkbox" class="custom-control-input" id="{{i.id}}" checked="checked">
+                  <label class="custom-control-label" for="{{i.id}}"></label>
                 </td>
               </tr>
               {% endfor %} 
@@ -102,9 +100,9 @@
             <tfoot>
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>상태</th>
                 <th>준비완료</th>
               </tr>
@@ -116,7 +114,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="card mb-4">
+      <div class="card mb-3">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
@@ -143,56 +141,58 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="card mb-3 p-3">
+      <div class="card mb-5 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">근거리배송 관리</h6>
+          <h6 class="m-0 font-weight-bold text-primary">택배 배송 관리</h6>
         </div>
         <div class="table-responsive p-3" id="aaa">
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivered">
             <thead class="thead-light">
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>배달원</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>배송상태</th>
               </tr>
             </thead>
             <tbody class="list" id="list-order">
               {% if Processing or Shipping or Delivered %} 
               {% for i in Processing %}
-              {% load humanize %}
               <tr class="list-order-row">
                 <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">근거리배송</td>
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='{{i.order__status}}'>배송준비중</td>
+                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
+                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
+                <td class="align-middle" id="Total">{{ i.amount }}</td>
+                <td class="align-middle status" id="Flag" value='2'>배송준비중</td>
               </tr>
-              {% endfor %} 
+              {% endfor %}
               {% for i in Shipping %}
-              {% load humanize %}
               <tr class="list-order-row">
                 <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">근거리배송</td>
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='{{i.order__status}}'>배송중</td>
+                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
+                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
+                <td class="align-middle" id="Total">{{ i.amount }}</td>
+                <td class="align-middle status" id="Flag" value='3'>배송중</td>
               </tr>
-              {% endfor %} 
+              {% endfor %}
               {% for i in Delivered %}
-              {% load humanize %}
               <tr class="list-order-row">
                 <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">근거리배송</td>
                 <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='{{i.order__status}}'>배송완료</td>
+                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
+                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
+                <td class="align-middle" id="Total">{{ i.amount }}</td>
+                <td class="align-middle status" id="Flag" value='4'>배송완료</td>
               </tr>
-              {% endfor %} 
+              {% endfor %}
               {% else %}
               <tr>
                 <td class="align-middle">Data does not exist.</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -203,9 +203,10 @@
             <tfoot>
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>배달원</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>배송상태</th>
               </tr>
             </tfoot>
