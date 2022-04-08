@@ -50,6 +50,7 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivery">
             <thead class="thead-light">
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>상태</th>
@@ -60,6 +61,7 @@
               {% if Completed or Processing %} 
               {% for i in Completed %}
               <tr class="list-order-row" style="cursor:pointer">
+                <td class="details-control"></td>
                 <td class="align-middle" id="No-td">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle status" id="Status-{i.id}}" value='1'>상품준비완료</td>
@@ -71,6 +73,7 @@
               {% endfor %}
               {% for i in Processing %}
               <tr class="list-order-row" style="cursor:pointer">
+                <td class="details-control"></td>
                 <td class="align-middle" id="No-td">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle status" id="Status-{{i.id}}" value='2'>픽업대기중</td>
@@ -86,11 +89,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>상태</th>
@@ -135,6 +140,7 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivered">
             <thead class="thead-light">
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>상태</th>
@@ -144,6 +150,7 @@
               {% if Paid or Delivered %} 
               {% for i in Paid %}
               <tr class="list-order-row">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle status" id="Flag" value='0'>결제완료</td>
@@ -151,6 +158,7 @@
               {% endfor %}
               {% for i in Delivered %}
               <tr class="list-order-row">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle status" id="Flag" value='4'>픽업완료</td>
@@ -161,11 +169,13 @@
                 <td class="align-middle">Data does not exist.</td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>상태</th>

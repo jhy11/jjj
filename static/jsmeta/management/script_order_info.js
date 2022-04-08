@@ -29,7 +29,7 @@ table.on('click', 'td.details-control', function () {
   var row = table.api().row(tr);
   var index = row.index();
   var rowData = row.data();
-  var myurl = 'order-child/' + rowData[1];
+  var myurl = '/management/show-child/' + rowData[1];
 
   if (row.child.isShown()) {
       row.child.hide();
