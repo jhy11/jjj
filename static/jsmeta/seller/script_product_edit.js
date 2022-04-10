@@ -18,7 +18,6 @@ let toolbarOptions = [
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     ['clean']                                         // remove formatting button
   ];
-  
 
 let quill = new Quill('#editor-container', {
 modules: {
@@ -28,19 +27,17 @@ toolbar: toolbarOptions,
 theme: 'snow'
 });
 
-var preciousContent = document.getElementById('myPrecious');
-var justTextContent = document.getElementById('justText');
-var justHtmlContent = document.getElementById('justHtml');
 var quillContent = document.getElementById('Productquill');
 
 var delta_content = {}
+quill.setContents(JSON.parse(quillContent.value.replaceAll('True','true').replaceAll('\'','\"')));
 
-quill.setContents(JSON.parse(quillContent.value.replaceAll('True','true').replaceAll('False','false').replaceAll('\'','\"')));
 quill.on('text-change', function() {
-preciousContent.innerHTML = JSON.stringify(delta);
-delta_content['delta'] = delta
-delta_content['html'] = quill.root.innerHTML
-
+    var delta = quill.getContents();
+    delta_content['delta'] = delta
+    console.log(delta_content);
+    delta_content['html'] = quill.root.innerHTML
+    
 });
 
 
@@ -54,6 +51,15 @@ btnEdit.addEventListener('click', async() => {
     formData.append('ProductStock', document.getElementById('ProductStock').value);
     formData.append('ProductDescription', document.getElementById('ProductDescription').value);
     formData.append('Content',  JSON.stringify(delta_content));
+    for (let key of formData.keys()) {
+        console.log(key);
+      }
+      
+      // FormData의 value 확인
+      for (let value of formData.values()) {
+        console.log(value);
+      }
+      console.log(formData)
   
     const response = await fetch('product-edit-submit', {
         method: 'POST',
@@ -67,6 +73,7 @@ btnEdit.addEventListener('click', async() => {
     const result = await response.json()
     if (result.success){
         alert("수정되었습니다.");
+        console.log(result.content);
         location.href='/seller/product-detail/' + result.productId;
     }
 })

@@ -1,4 +1,3 @@
-
 const btnSubmit = document.getElementById('btnSubmit');
 
 let toolbarOptions = [
@@ -28,18 +27,26 @@ let quill = new Quill('#editor-container', {
   theme: 'snow'
 });
 
-var delta_content = {}
+document.getElementById('mainImg').onchange = function () {
+  let file = $('#mainImg')[0].files[0];
+  if (file){
+    document.getElementById('mainImg-label').innerText=file.name;
+  }
+};
+var quillContent = document.getElementById('Productquill');
 
-quill.setContents(JSON.parse(quillContent.value.replaceAll('True','true').replaceAll('False','false').replaceAll('\'','\"')));
+var delta_content = {}
 quill.on('text-change', function() {
-preciousContent.innerHTML = JSON.stringify(delta);
-delta_content['delta'] = delta
-delta_content['html'] = quill.root.innerHTML
+    
+  var delta = quill.getContents();
+  delta_content['delta'] = delta
+  delta_content['html'] = quill.root.innerHTML
+
 
 });
 
 let input = document.getElementById("mainImg"),
-    preview = document.getElementById("preview");
+preview = document.getElementById("preview");
     
 input.addEventListener("change", function() {
   changeImage(this);

@@ -193,6 +193,7 @@ class ProductPostView(LoginRequiredMixin, View):
                 main_img = image,
                 shop_id = memberShopId,
                 status = constants.REQUESTED,
+                content = Content,
             )
         context['success']=True
         return JsonResponse(context, content_type='application/json')
@@ -266,12 +267,3 @@ class ProductEditView(LoginRequiredMixin, View):
         context['Content'] = Content
         return JsonResponse(context, content_type='application/json')
 
-
-def form_view(request):
-    context = {"product": product.objects.all()}
-    #products = product.objects.all()
-    #form = ProjectForm()
-    #secondform = ProjectSecondForm
-    
-    return render(request, 'product_detail.html', context)
-                                       

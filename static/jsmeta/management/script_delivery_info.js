@@ -8,12 +8,12 @@ document.addEventListener("DOMContentLoaded", function(){
 
   //Datatable of delivery
   let table_delivered = $('#dataTableHover-delivered').DataTable();
-  table_delivered.columns(4).search( '결제완료' ).draw();
+  table_delivered.columns(5).search( '결제완료' ).draw();
 
   //Filter data with checked radio button
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
-    table_delivered.columns(4).search( status_info ).draw();
+    table_delivered.columns(5).search( status_info ).draw();
   });
 });
 
@@ -46,6 +46,87 @@ $('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async
   //reload datatable
 
 });
+
+
+//show child table of delivery table
+let table = $('#dataTableHover-delivery').dataTable(); 
+
+table.on('click', 'td.details-control', function () {
+  var tr = $(this).closest('tr');
+  var row = table.api().row(tr);
+  var index = row.index();
+  var rowData = row.data();
+  var myurl = '/management/show-child/' + rowData[1];
+
+  if (row.child.isShown()) {
+      row.child.hide();
+      tr.removeClass('shown');
+  }else{
+      if (table.api().row('.shown').length) {
+          $('.details-control', table.api().row('.shown').node()).click();
+      }
+      row.child( 
+          '<table class="child_table" id="delivery_details'+ index +'" style="width:100%" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+          '<thead class="thead-light"><tr><th>상품명</th><th>상점</th><th>수량</th><th>주문상태</th></tr></thead><tbody>' +
+           '</tbody></table>').show();
+      tr.addClass('shown');
+      
+      $('#delivery_details'+index).dataTable({
+        destroy: true,
+        ajax:{
+          url: myurl,
+          type: "GET",
+        },
+        columns:[
+          {data : 'product__name'},
+          {data : 'product__shop__shop_name'},
+          {data : 'amount'},
+          {data : 'status'},
+        ]
+      });
+    }
+});
+
+
+//show child table of delivered table
+let table2 = $('#dataTableHover-delivered').dataTable(); 
+
+table2.on('click', 'td.details-control', function () {
+  var tr = $(this).closest('tr');
+  var row = table2.api().row(tr);
+  var index = row.index();
+  var rowData = row.data();
+  var myurl = '/management/show-child/' + rowData[1];
+
+  if (row.child.isShown()) {
+      row.child.hide();
+      tr.removeClass('shown');
+  }else{
+      if (table2.api().row('.shown').length) {
+          $('.details-control', table2.api().row('.shown').node()).click();
+      }
+      row.child( 
+          '<table class="child_table" id="delivered_details'+ index +'" style="width:100%" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+          '<thead class="thead-light"><tr><th>상품명</th><th>상점</th><th>수량</th><th>주문상태</th></tr></thead><tbody>' +
+           '</tbody></table>').show();
+      tr.addClass('shown');
+      
+      $('#delivered_details'+index).dataTable({
+        destroy: true,
+        ajax:{
+          url: myurl,
+          type: "GET",
+        },
+        columns:[
+          {data : 'product__name'},
+          {data : 'product__shop__shop_name'},
+          {data : 'amount'},
+          {data : 'status'},
+        ]
+      });
+    }
+});
+
 
 function showStatus(status){
   let result;

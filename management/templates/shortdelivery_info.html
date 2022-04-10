@@ -27,6 +27,7 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivery">
             <thead class="thead-light">
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>우편번호</th>
@@ -39,6 +40,7 @@
               {% if Completed %} 
               {% for i in Completed %}
               <tr class="list-order-row" style="cursor:pointer">
+                <td class="details-control"></td>
                 <td class="align-middle" id="No-td">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="Code">{{ i.code }}</td>
@@ -60,11 +62,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>우편번호</th>
@@ -119,6 +123,7 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-delivered">
             <thead class="thead-light">
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>우편번호</th>
@@ -130,6 +135,7 @@
               {% if Paid or Processing or Shipping or Delivered %} 
               {% for i in Paid %}
               <tr class="list-order-row">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="Code">{{ i.code }}</td>
@@ -139,6 +145,7 @@
               {% endfor %}
               {% for i in Processing %}
               <tr class="list-order-row" style="cursor:pointer">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="Code">{{ i.code }}</td>
@@ -148,6 +155,7 @@
               {% endfor %} 
               {% for i in Shipping %}
               <tr class="list-order-row">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="Code">{{ i.code }}</td>
@@ -157,6 +165,7 @@
               {% endfor %}
               {% for i in Delivered %}
               <tr class="list-order-row">
+                <td class="details-control"></td>
                 <td class="align-middle" id="OrderNo">{{ i.order_no }}</td>
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="Code">{{ i.code }}</td>
@@ -171,11 +180,13 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th>주문번호</th>
                 <th>연락처</th>
                 <th>우편번호</th>
