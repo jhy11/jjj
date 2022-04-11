@@ -10,9 +10,16 @@ urlpatterns=[
 
     #판매 관리
     path('delivery', info_delivery_views.DeliveryView.as_view(), name='delivery'),
+    path('delivery-table', info_delivery_views.DeliveryTableView.as_view(), name='delivery-table'),
+
     path('shortdelivery', info_shortdelivery_views.ShortdeliveryView.as_view(), name='shortdelivery'),
+    path('shortdelivery-table', info_shortdelivery_views.ShortdeliveryTableView.as_view(), name='shortdelivery-table'),
+
     path('pickup', info_takeout_views.PickupView.as_view(), name='pickup'),
+    path('pickup-table', info_takeout_views.PickupTableView.as_view(), name='pickup-table'),
+
     path('drivethru', info_takeout_views.DrivethruView.as_view(), name='drivethru'),
+    path('drivethru-table', info_takeout_views.DrivethruTableView.as_view(), name='drivethru-table'),
 
     path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),

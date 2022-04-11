@@ -10,20 +10,12 @@ from management.models import order_product
 
 class ShortdeliveryView(LoginRequiredMixin, View):
     '''
-    관리자/판매관리/근거리배송
+    판매자/판매관리/근거리배송
     '''
     template_name='shortdelivery.html'
 
     def get(self, request: HttpRequest):
-        user_id=request.user.id
-
-        context = {
-            'Paid': get_delivery(user_id, constants.SHORTDELIVERY, constants.PAID),
-            'Completed': get_delivery(user_id, constants.SHORTDELIVERY, constants.COMPLETED),
-            'Processing': get_delivery(user_id, constants.SHORTDELIVERY, constants.PROCESSING),
-            'Shipping': get_delivery(user_id, constants.SHORTDELIVERY, constants.SHIPPING),
-            'Delivered': get_delivery(user_id, constants.SHORTDELIVERY, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -44,5 +36,36 @@ class ShortdeliveryView(LoginRequiredMixin, View):
         check_order_status(Id)
 
         context['success']=True
+
+        return JsonResponse(context, content_type='application/json')
+
+class ShortdeliveryTableView(LoginRequiredMixin, View):
+    '''
+    판매자/판매관리/근거리배송 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+        user_id=request.user.id
+
+        Paid = get_delivery(user_id, constants.SHORTDELIVERY, constants.PAID)
+        Completed = get_delivery(user_id, constants.SHORTDELIVERY, constants.COMPLETED)
+        Processing = get_delivery(user_id, constants.SHORTDELIVERY, constants.PROCESSING)
+        Shipping = get_delivery(user_id, constants.SHORTDELIVERY, constants.SHIPPING)
+        Delivered = get_delivery(user_id, constants.SHORTDELIVERY, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Paid)
+        delivery.extend(Completed)
+        delivered.extend(Processing)
+        delivered.extend(Shipping)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
 
         return JsonResponse(context, content_type='application/json')

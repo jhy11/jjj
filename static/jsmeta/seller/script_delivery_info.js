@@ -1,12 +1,93 @@
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-  let status = document.getElementsByClassName('status');
-  [].forEach.call(status, function(status) {
-    status.innerHTML=showStatus(status.getAttribute('value'));
-  })
+  let table_delivery = $('#dataTableHover-delivery').DataTable({
+    'destroy': true,
+    'autoWidth': false,
 
-  let table_delivery = $('#dataTableHover-delivery').DataTable();
-  let table_delivered = $('#dataTableHover-delivered').DataTable();
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/delivery-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Completed){
+            setAttributes(input, {
+              'checked': true,
+            })
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_delivered = $('#dataTableHover-delivered').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/delivery-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 5,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'order__transport_no'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+    ],
+  });
 
   table_delivery.columns(4).search( '결제완료' ).draw();
   table_delivered.columns(5).search( '배송준비중' ).draw();
@@ -23,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 //Detect if checkbox is checked or not
-$('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-delivery').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
 
   const url = '/seller/delivery?id=' + encodeURIComponent(id);

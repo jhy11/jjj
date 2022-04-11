@@ -9,20 +9,12 @@ from management.models import order_product, order
 
 class DeliveryView(LoginRequiredMixin, View):
     '''
-    관리자/판매 관리/택배배송 관리
+    판매자/판매 관리/택배배송 관리
     '''
     template_name='delivery.html'
 
     def get(self, request: HttpRequest):
-        user_id=request.user.id
-
-        context = {
-            'Paid': get_delivery(user_id, constants.DELIVERY, constants.PAID),
-            'Completed': get_delivery(user_id, constants.DELIVERY, constants.COMPLETED),
-            'Processing': get_delivery(user_id, constants.DELIVERY, constants.PROCESSING),
-            'Shipping': get_delivery(user_id, constants.DELIVERY, constants.SHIPPING),
-            'Delivered': get_delivery(user_id, constants.DELIVERY, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -45,10 +37,41 @@ class DeliveryView(LoginRequiredMixin, View):
         context['success']=True
 
         return JsonResponse(context, content_type='application/json')
-    
+  
+class DeliveryTableView(LoginRequiredMixin, View):
+    '''
+    판매자/판매관리/택배배송 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+        user_id=request.user.id
+
+        Paid = get_delivery(user_id, constants.DELIVERY, constants.PAID)
+        Completed = get_delivery(user_id, constants.DELIVERY, constants.COMPLETED)
+        Processing = get_delivery(user_id, constants.DELIVERY, constants.PROCESSING)
+        Shipping = get_delivery(user_id, constants.DELIVERY, constants.SHIPPING)
+        Delivered = get_delivery(user_id, constants.DELIVERY, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Paid)
+        delivery.extend(Completed)
+        delivered.extend(Processing)
+        delivered.extend(Shipping)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
+
+        return JsonResponse(context, content_type='application/json')
+
 def get_delivery(user_id, type, status):
-    return order_product.objects.filter(product__shop_id__manager_id__user_id=user_id, order__type=type, status=status, DeleteFlag='0')\
-              .values('product_id__name', 'order__call', 'amount', 'order__order_no', 'status', 'order__transport_no', 'order__date', 'id')
+    return list(order_product.objects.filter(product__shop_id__manager_id__user_id=user_id, order__type=type, status=status, DeleteFlag='0')\
+              .values('product_id__name', 'order__call', 'amount', 'order__order_no', 'status', 'order__transport_no', 'order__date', 'id'))
 
 def check_order_status(id):
     order_id=order_product.objects.filter(id=id).values('order_id')
