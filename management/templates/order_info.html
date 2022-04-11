@@ -40,9 +40,9 @@
                 <option value="배송준비중">배송준비중</option>
                 <option value="배송중">배송중</option>
                 <option value="배송완료">배송완료</option>
-                <option value="환불접수">환불접수</option>
-                <option value="환불처리중">환불처리중</option>
-                <option value="환불완료">환불완료</option>
+                <option value="반품접수">반품접수</option>
+                <option value="반품처리중">반품처리중</option>
+                <option value="반품완료">반품완료</option>
                 <option value="취소접수">취소접수</option>
                 <option value="취소처리중">취소처리중</option>
                 <option value="취소완료">취소완료</option>
@@ -161,7 +161,7 @@
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
                 <td class="align-middle" id="Total">{{ i.total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='5'>환불접수</td>
+                <td class="align-middle status" id="Status" value='5'>반품접수</td>
               </tr>
               {% endfor %} 
               {% for i in RefundProcessing %}
@@ -173,7 +173,7 @@
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
                 <td class="align-middle" id="Total">{{ i.total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='6'>환불처리중</td>
+                <td class="align-middle status" id="Status" value='6'>반품처리중</td>
               </tr>
               {% endfor %} 
               {% for i in Refunded %}
@@ -185,7 +185,7 @@
                 <td class="align-middle" id="Call">{{ i.call }}</td>
                 <td class="align-middle" id="TransportNo">{{ i.transport_no }}</td>
                 <td class="align-middle" id="Total">{{ i.total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='7'>환불완료</td>
+                <td class="align-middle status" id="Status" value='7'>반품완료</td>
               </tr>
               {% endfor %}
               {% for i in CancelRecieved %}

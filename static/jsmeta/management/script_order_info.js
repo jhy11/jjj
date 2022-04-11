@@ -121,13 +121,13 @@ function showStatus(status){
       result = '<span class="badge badge-secondary align-middle">배송완료</span>';
       break;
     case RefundRecived:
-      result = '<span class="badge badge-warning align-middle">환불접수</span>';
+      result = '<span class="badge badge-warning align-middle">반품접수</span>';
       break;
     case RefundProcesing:
-      result = '<span class="badge badge-success align-middle">환불처리중</span>';
+      result = '<span class="badge badge-success align-middle">반품처리중</span>';
       break;
     case Refunded:
-      result = '<span class="badge badge-secondary align-middle">환불완료</span>';
+      result = '<span class="badge badge-secondary align-middle">반품완료</span>';
       break;
     case CancelRecieved:
       result = '<span class="badge badge-warning align-middle">취소접수</span>';
