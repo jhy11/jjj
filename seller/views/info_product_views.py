@@ -14,7 +14,7 @@ class ProductListView(LoginRequiredMixin, View):
             'productsOnSale': product.objects.filter(shop_id__manager_id__user_id=request.user.id, status=constants.ONSALE, DeleteFlag='0'),
             'categories': pro_category.objects.filter(DeleteFlag='0'),
             }
-
+        print(context)
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
