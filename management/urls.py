@@ -25,9 +25,17 @@ urlpatterns=[
 
     # 판매관리
     path('delivery', info_delivery_views.DeliveryView.as_view(), name='delivery'),
+    path('delivery-table', info_delivery_views.DeliveryTableView.as_view(), name='delivery-table'),
+
     path('shortdelivery', info_delivery_views.ShortdeliveryView.as_view(), name='shortdelivery'),
+    path('shortdelivery-table', info_delivery_views.ShortdeliveryTableView.as_view(), name='shortdelivery-table'),
+    
     path('pickup', info_delivery_views.PickupView.as_view(), name='pickup'),
+    path('pickup-table', info_delivery_views.PickupTableView.as_view(), name='pickup-table'),
+
     path('drivethru', info_delivery_views.DrivethruView.as_view(), name='drivethru'),
+    path('drivethru-table', info_delivery_views.DrivethruTableView.as_view(), name='drivethru-table'),
+
 
     #문의 관리
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),

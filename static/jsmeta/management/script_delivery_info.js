@@ -1,13 +1,137 @@
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-  //Create status badges
-  let status = document.getElementsByClassName('status');
-  [].forEach.call(status, function(status) {
-    status.innerHTML=showStatus(status.getAttribute('value'));
-  })
+  let table_delivery = $('#dataTableHover-delivery').DataTable({
+    'destroy': true,
+    'autoWidth': false,
 
-  //Datatable of delivery
-  let table_delivered = $('#dataTableHover-delivered').DataTable();
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/delivery-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 4,
+        "render": function(data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+
+          setAttributes(td,{
+            'class': 'align-middle',
+            'id': 'TransportNo'
+          });
+          setAttributes(input, {
+            'type': 'text',
+            'id': 'transport_no-'+data.id,
+            'name': 'transport_no',
+            'style': 'border: 1px solid #e3e6f0; border-radius: 4px; color:#757575;'
+          });
+          td.appendChild(input);
+
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 6,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Completed){
+            setAttributes(input, {
+              'checked': true,
+            });
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : 'code'},
+      {data : null},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_delivered = $('#dataTableHover-delivered').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/delivery-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : 'code'},
+      {data : 'transport_no'},
+      {data : null},
+    ],
+  });
+
   table_delivered.columns(5).search( '결제완료' ).draw();
 
   //Filter data with checked radio button
@@ -18,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function(){
 });
 
 //Detect if checkbox is checked or not
-$('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-delivery').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
   let transport_no = document.getElementById('transport_no-'+id).value;
 

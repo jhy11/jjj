@@ -1,17 +1,214 @@
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-  //Create status badges
-  let status = document.getElementsByClassName('status');
-  [].forEach.call(status, function(status) {
-    status.innerHTML=showStatus(status.getAttribute('value'));
-  })
+  let table_delivery = $('#dataTableHover-delivery').DataTable({
+    'destroy': true,
+    'autoWidth': false,
 
-  //포장 테이블
-  let table_delivery = $('#dataTableHover-delivery').DataTable();
-  let table_delivered = $('#dataTableHover-delivered').DataTable();
-  //드라이브스루 테이블
-  let table_drivethru = $('#dataTableHover-drivethru').DataTable();
-  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable();
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/pickup-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 3,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 4,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Processing){
+            setAttributes(input, {
+              'checked': true,
+            });
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+            'for': data.status,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_delivered = $('#dataTableHover-delivered').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/pickup-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 3,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : null},
+    ],
+  });
+
+  let table_drivethru = $('#dataTableHover-drivethru').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/drivethru-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 3,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 4,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Processing){
+            setAttributes(input, {
+              'checked': true,
+            });
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+            'for': data.status,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/drivethru-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 0,
+        "render": function (data) {
+          let td = document.createElement('td');
+          setAttributes(td,{
+            'class': 'details-control',
+          });
+
+          return td.outerHTML;
+        }
+      },
+      {
+        "targets": 3,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : null},
+      {data : 'order_no'},
+      {data : 'call'},
+      {data : null},
+    ],
+  });
 
   //검색 디폴트 옵션
   table_delivery.columns(3).search( '상품준비완료' ).draw();
@@ -43,9 +240,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
 //포장
 //Detect if checkbox is checked or not
-$('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-delivery').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
-  let status = document.getElementById('Status-'+id).getAttribute('value');
+  let status = document.getElementById(id).getAttribute('for');
 
   const url = '/management/pickup?id=' + encodeURIComponent(id);
   const response = await fetch(url,{
@@ -67,9 +264,9 @@ $('#dataTableHover-delivery tbody').on('change', 'input[type="checkbox"]', async
 
 //드라이브스루
 //Detect if checkbox is checked or not
-$('#dataTableHover-drivethru tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-drivethru').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
-  let status = document.getElementById('Status-'+id).getAttribute('value');
+  let status = document.getElementById(id).getAttribute('for');
 
   const url = '/management/drivethru?id=' + encodeURIComponent(id);
   const response = await fetch(url,{
