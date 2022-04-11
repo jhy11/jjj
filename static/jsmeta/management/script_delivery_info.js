@@ -15,14 +15,16 @@ document.addEventListener("DOMContentLoaded", function(){
       'url': '/management/delivery-table',
       'dataSrc': 'delivery'
     },
+    createdRow: function( row, data, dataIndex ) {
+      // Set the data-status attribute, and add a class
+      $( row ).find('td:eq(0)')
+          .addClass('details-control');
+    },
     columnDefs: [
       {
         "targets": 0,
         "render": function (data) {
           let td = document.createElement('td');
-          setAttributes(td,{
-            'class': 'details-control',
-          });
           return td.outerHTML;
         }
       },
@@ -103,15 +105,16 @@ document.addEventListener("DOMContentLoaded", function(){
       'url': '/management/delivery-table',
       'dataSrc': 'delivered'
     },
+    createdRow: function( row, data, dataIndex ) {
+      // Set the data-status attribute, and add a class
+      $( row ).find('td:eq(0)')
+          .addClass('details-control');
+    },
     columnDefs: [
       {
         "targets": 0,
         "render": function (data) {
           let td = document.createElement('td');
-          setAttributes(td,{
-            'class': 'details-control',
-          });
-
           return td.outerHTML;
         }
       },
