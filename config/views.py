@@ -182,12 +182,30 @@ class ChangeMemView(View):
     '''
     회원정보 수정 기능
     '''
-    def get(self, request: HttpRequest, *args, **kwargs):
-        return render(request, 'edit_mem_info.html')
+    template_name = 'edit_mem_info.html' 
 
-    def put(self, request: HttpRequest, *args, **kwargs):
-        request.PUT = json.loads(request.body)
+    def get(self, request: HttpRequest, *args, **kwargs):
+        user = request.user
+        user_id = request.user.id
+       
+        context={}
+        context['member'] = member.objects.get(user__id=user_id)
+    
+        return render(request, self.template_name,  context)
+
+    #def put(self, request: HttpRequest, *args, **kwargs):
+    def put(self, request: HttpRequest):
         context = {}
+        print("Put 진입")
+        request.PUT = json.loads(request.body)
+
+        # password = request.PUT.get('password', None)
+        # new_password = request.PUT.get('new_password', None)
+        # confirm_password = request.PUT.get('confirm-password', None)
+        # name = request.PUT.get('new-name', None)
+        # email = request.PUT.get('new-email', None)
+        # phone = request.PUT.get('new-phone', None)
+
 
         password = request.PUT['password']
         new_password = request.PUT['new_password']
@@ -196,17 +214,21 @@ class ChangeMemView(View):
         email = request.PUT['new-email']
         phone = request.PUT['new-phone']
 
+        print(password)
         print(new_password)
+        print(confirm_password)
+        print(name)
+        print(email)
+        print(phone)
 
 
-
-        if password != confirm_password:
+        if new_password != confirm_password:
             context['success'] = False
             context['message'] = '비밀번호가 일치하지 않습니다.'
             return JsonResponse(context, content_type='application/json')
         
         user = request.user
-        user_id = request.user.id
+        user_id = user.id
         check_password(password, user.password)
 
         #change password

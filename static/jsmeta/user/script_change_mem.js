@@ -52,9 +52,9 @@ btnEdit.addEventListener('click', async() => {
             return false;
         }
     }
-
+    /////
     if(new_password == ''){
-        document.getElementById('new_password').focus();
+        document.getElementById('new-password').focus();
         return false;
     }
     else{
@@ -74,7 +74,7 @@ btnEdit.addEventListener('click', async() => {
             return false;
         }
     }
-
+    ////
     if(name == ''){
         document.getElementById('new-name').focus();
         return false;
@@ -106,7 +106,7 @@ btnEdit.addEventListener('click', async() => {
     const formData = new FormData(document.getElementById('EditMemForm'));
     
     const response = await fetch('', {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),
         },
@@ -164,12 +164,12 @@ function CheckPhone(str){
 //비밀번호 정규식
 function CheckPassword(str){
    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/.test(str)){
-       document.getElementById('new_password').setAttribute('class', 'form-control is-invalid');
+       document.getElementById('new-password').setAttribute('class', 'form-control is-invalid');
        document.getElementById('passwordError').innerText = '숫자와 영문자 조합으로 8~16자리를 사용해야 합니다';
        return false;
    }
    else{
-       document.getElementById('new_password').setAttribute('class', 'form-control');
+       document.getElementById('new-password').setAttribute('class', 'form-control');
        document.getElementById('passwordError').innerText = '';
        return true;
    }
@@ -177,7 +177,7 @@ function CheckPassword(str){
 
 
 function SamePassword(){
-   var password = document.getElementById('new_password').value;
+   var password = document.getElementById('new-password').value;
    var confirm_password = document.getElementById('confirm-password').value;
    if(password== '' || confirm_password =='')
        return;
