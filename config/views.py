@@ -6,6 +6,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import member, membership, order_product, product
@@ -172,4 +173,57 @@ class CheckSameEmail(View):
 
         except:
             context['success'] = True
+        return JsonResponse(context, content_type='application/json')
+
+
+
+#Login required 추가할 것
+class ChangeMemView(View):
+    '''
+    회원정보 수정 기능
+    '''
+    def get(self, request: HttpRequest, *args, **kwargs):
+        return render(request, 'edit_mem_info.html')
+
+    def put(self, request: HttpRequest, *args, **kwargs):
+        request.PUT = json.loads(request.body)
+        context = {}
+
+        password = request.PUT['password']
+        new_password = request.PUT['new_password']
+        confirm_password = request.PUT['confirm-password']
+        name = request.PUT['new-name']
+        email = request.PUT['new-email']
+        phone = request.PUT['new-phone']
+
+        print(new_password)
+
+
+
+        if password != confirm_password:
+            context['success'] = False
+            context['message'] = '비밀번호가 일치하지 않습니다.'
+            return JsonResponse(context, content_type='application/json')
+        
+        user = request.user
+        user_id = request.user.id
+        check_password(password, user.password)
+
+        #change password
+        if new_password is not None:
+            user.set_password(new_password)
+
+        #change email
+        user = User.objects.filter(id=user_id).update(
+            email = email,
+        )
+
+        #change mem_name, mem_phone
+        mem = member.objects.filter(id=user_id).update(
+            mem_name = name,
+            mem_phone = phone,
+        )
+
+        
+        context['success'] = True
         return JsonResponse(context, content_type='application/json')
