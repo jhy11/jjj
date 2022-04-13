@@ -4,10 +4,173 @@ let getbyId = function(id){
 
 const btn_submit = getbyId("btn-submit");    
 
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  let table_requested = $('#dataTableHover1').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/product-table',
+      'dataSrc': 'productsRequested'
+    },
+    columnDefs: [
+      {
+        "targets": 5,
+        "render": function(data){
+          let td =document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+  
+          let btn_update = document.createElement('button');
+          setAttributes(btn_update,{
+            'type': 'button',
+            'class': "btn btn-outline-primary pb-1",
+            'data-toggle': 'modal',
+            'data-target': '#shopModal',
+            'id': '#modalCenter',
+            'data-id': data.id,
+            'data-cat': data.pro_category__name,
+            'data-proname': data.name,
+            'data-price': data.price,
+            'data-stock': data.stock,
+            'data-descrip': data.description,
+          });
+  
+          btn_update.innerText = '수정';
+          td.appendChild(btn_update);
+  
+          return td.innerHTML;
+        },
+      },
+      {
+        "targets": 6,
+        "render": function (data) {
+          let td = document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+
+          let btn_delete = document.createElement('button');
+          setAttributes(btn_delete, {
+            'type': 'button',
+            'class': "btn btn-outline-danger pb-1",
+            'onClick': "deleteProduct(" + data.id + ")"
+          });
+
+          btn_delete.innerText = '삭제';
+          td.appendChild(btn_delete);
+          return td.innerHTML;
+        }
+      },
+    ],
+    columns: [
+      {data : 'id'},
+      {data : 'pro_category__name'},
+      {data : 'name'},
+      {data : 'price'},
+      {data : 'stock'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_rejected = $('#dataTableHover2').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/product-table',
+      'dataSrc': 'productsStopped'
+    },
+    columnDefs: [
+      {
+        "targets": 5,
+        "render": function(data){
+          let td =document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+  
+          let btn_update = document.createElement('button');
+          setAttributes(btn_update,{
+            'type': 'button',
+            'class': "btn btn-outline-primary pb-1",
+            'data-toggle': 'modal',
+            'data-target': '#shopModal',
+            'id': '#modalCenter',
+            'data-id': data.id,
+            'data-cat': data.pro_category__name,
+            'data-proname': data.name,
+            'data-price': data.price,
+            'data-stock': data.stock,
+            'data-descrip': data.description,
+          });
+  
+          btn_update.innerText = '수정';
+          td.appendChild(btn_update);
+  
+          return td.innerHTML;
+        },
+      },
+      {
+        "targets": 6,
+        "render": function (data) {
+          let td = document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+
+          let btn_delete = document.createElement('button');
+          setAttributes(btn_delete, {
+            'type': 'button',
+            'class': "btn btn-outline-danger pb-1",
+            'onClick': "deleteProduct(" + data.id + ")"
+          });
+
+          btn_delete.innerText = '삭제';
+          td.appendChild(btn_delete);
+          return td.innerHTML;
+        }
+      },      
+      {
+        "targets": 7,
+        "render": function (data) {
+          let td = document.createElement('td');
+          td.setAttribute('class', 'align-middle');
+
+          let btn_reapply = document.createElement('button');
+          setAttributes(btn_reapply, {
+            'type': 'button',
+            'class': "btn btn-outline-danger pb-1",
+            'onClick': "reapplyProduct(" + data.id + ")"
+          });
+
+          btn_reapply.innerText = '재신청';
+          td.appendChild(btn_reapply);
+          return td.innerHTML;
+        }
+      },
+
+    ],
+    columns: [
+      {data : 'id'},
+      {data : 'pro_category__name'},
+      {data : 'name'},
+      {data : 'price'},
+      {data : 'stock'},
+      {data : null},
+      {data : null},
+      {data : null},
+    ],
+  });  
+});
+/*
+
 btn_submit.addEventListener("click", function(){
   submitStart();
 });
-
 async function submitStart() {
   const response = await fetch('seller-product', {
     method: "POST",
@@ -69,7 +232,7 @@ async function updateProduct(){
    
 }
 }
-
+*/
 async function deleteProduct(id) {
 
   const response = await fetch('seller-product', {
@@ -131,7 +294,7 @@ function loadNewData(result){
     searching: false,
 
     columnDefs: [{
-      "targets": 6,
+      "targets": 5,
       "render": function(data){
         let td =document.createElement('td');
         td.setAttribute('class', 'align-middle');
@@ -158,7 +321,7 @@ function loadNewData(result){
       },
     },
     {
-      "targets": 7,
+      "targets": 6,
       "render": function (data) {
           let td = document.createElement('td');
           td.setAttribute('class', 'align-middle');
@@ -181,7 +344,6 @@ function loadNewData(result){
       {data: "name"},
       {data: "price"},
       {data: "stock"},
-      {data: "description"},
       {data: null},
       {data: null},
     ],

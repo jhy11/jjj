@@ -64,7 +64,6 @@
                 <th>상품명</th>
                 <th>상품가격</th>
                 <th>상품재고</th>
-                <th>상품설명</th>
                 <th>수정</th>
                 <th>삭제</th>
               </tr>
@@ -76,46 +75,10 @@
                 <th>상품명</th>
                 <th>상품가격</th>
                 <th>상품재고</th>
-                <th>상품설명</th>
                 <th>수정</th>
                 <th>삭제</th>
               </tr>
             </tfoot>
-            <tbody class="list" id="bulk-select-body">
-              {% if productsOnSale %} 
-              {% for i in productsOnSale %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Id">{{ i.id }}</td>
-                <td class="align-middle" id="ProCategory">{{ i.pro_category.name }}</td>
-                <td class="align-middle" id="Name">{{ i.name }}</td>
-                <td class="align-middle" id="Price">{{ i.price }}</td>
-                <td class="align-middle" id="Stock">{{ i.stock }}</td>
-                <td class="align-middle" id="Description">{{ i.description }}</td>
-                <td class="align-middle">
-                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" data-toggle="modal" data-target="#productsModal"
-                    id="#modalCenter" data-id="{{ i.id }}" data-cat="{{ i.pro_category.name }}" data-proname="{{ i.name }}" data-price="{{ i.price }}" data-stock="{{ i.stock }}" data-descrip="{{ i.description }}"
-                  >수정</button>
-                </td>
-                <td class="align-middle">
-                  <button class="btn btn-outline-danger pb-1" type="button" onclick="deleteProduct('{{i.id}}')">
-                    삭제
-                  </button>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
           </table>
         </div>
       </div>

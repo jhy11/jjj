@@ -11,6 +11,8 @@ urlpatterns=[
     path('shop', info_shop_views.ShopView.as_view(), name='shop'),
     #상품 관리
     path('product', info_product_views.ProductView.as_view(), name='product'),
+    path('product-table', info_product_views.ProductTableView.as_view(), name='product-table'),
+
     path('manage-product-detail/<str:id>', info_product_views.ProductDetailView.as_view(), name='manage-product-detail'),
     path('change-status', info_product_views.ProductDetailView.as_view(), name='change-status'),
     #회원 관리

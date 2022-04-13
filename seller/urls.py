@@ -22,7 +22,9 @@ urlpatterns=[
     path('drivethru-table', info_takeout_views.DrivethruTableView.as_view(), name='drivethru-table'),
 
     path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
+
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),
+    path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),
 
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
@@ -33,6 +35,7 @@ urlpatterns=[
 
     #상품 관리
     path('product-list', info_product_views.ProductListView.as_view(), name='product-list'),
+    path('product-table', info_product_views.ProductTableView.as_view(), name='product-table'),
     path('product-detail/<str:id>', info_seller_views.ProductDetailView.as_view(), name='product-detail'),
     path('product-post', info_seller_views.ProductPostView.as_view(), name='product-post'),
     path('product-edit/<str:id>', info_seller_views.ProductEditView.as_view(), name='product-edit'),
