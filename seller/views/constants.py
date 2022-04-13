@@ -7,7 +7,7 @@ PROCESSING = '2'
 SHIPPING = '3'
 DELIVERED = '4'
 
-# 환불접수, 환불처리중, 환불 완료
+# 반품접수, 반품처리중, 반품완료
 REFUND_RECEIVED = '5'
 REFUND_PROCESSING = '6'
 REFUNDED = '7'

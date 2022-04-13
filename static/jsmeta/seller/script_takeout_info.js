@@ -1,22 +1,180 @@
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-  let status = document.getElementsByClassName('status');
-  [].forEach.call(status, function(status) {
-    status.innerHTML=showStatus(status.getAttribute('value'));
-  })
+  let table_pickup = $('#dataTableHover-pickup').DataTable({
+    'destroy': true,
+    'autoWidth': false,
 
-  //Datatable of pickup and drivethru
-  let table_pickup = $('#dataTableHover-pickup').DataTable();
-  let table_pickup1 = $('#dataTableHover-pickup1').DataTable();
-  let table_drivethru = $('#dataTableHover-drivethru').DataTable();
-  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable();
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/pickup-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Completed){
+            setAttributes(input, {
+              'checked': true,
+            });
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_pickup1 = $('#dataTableHover-pickup1').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/pickup-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+    ],
+  });
+  let table_drivethru = $('#dataTableHover-drivethru').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/drivethru-table',
+      'dataSrc': 'delivery'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
+
+          if(data.status === Completed){
+            setAttributes(input, {
+              'checked': true,
+            });
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_drivethru1 = $('#dataTableHover-drivethru1').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/drivethru-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+    ],
+  });
 
   //Set an option by default
   table_pickup.columns(4).search( '결제완료' ).draw();
   table_pickup1.columns(4).search( '픽업대기중' ).draw();
   table_drivethru.columns(4).search( '결제완료' ).draw();
   table_drivethru1.columns(4).search( '픽업대기중' ).draw();
-
+  
   //Filter data with checked radio button
   $('#status1').on('change', function () {
     let status_info = $("input[name='status1']:checked").val();
@@ -38,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 //pickup
 //Detect if checkbox is checked or not
-$('#dataTableHover-pickup tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-pickup').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
 
   const url = '/seller/pickup?id=' + encodeURIComponent(id);
@@ -60,7 +218,7 @@ $('#dataTableHover-pickup tbody').on('change', 'input[type="checkbox"]', async f
 
 //drivethru
 //Detect if checkbox is checked or not
-$('#dataTableHover-pickup tbody').on('change', 'input[type="checkbox"]', async function(){
+$('#dataTableHover-drivethru').on('change', 'input[type="checkbox"]', async function(){
   let id = $(this).attr('id');
 
   const url = '/seller/drivethru?id=' + encodeURIComponent(id);

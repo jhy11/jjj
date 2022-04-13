@@ -58,45 +58,6 @@
                 <th>준비완료</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if Paid or Completed %} 
-              {% for i in Paid %}
-              <tr class="list-order-row" style="cursor:pointer">
-                <td class="align-middle" id="No-td">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
-                <td class="align-middle" id="Total">{{ i.amount }}</td>
-                <td class="align-middle status" id="Status" value='0'>결제완료</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{{i.id}}">
-                  <label class="custom-control-label" for="{{i.id}}"></label>
-                </td>
-              </tr>
-              {% endfor %}
-              {% for i in Completed %}
-              <tr class="list-order-row" style="cursor:pointer">
-                <td class="align-middle" id="No-td">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
-                <td class="align-middle" id="Total">{{ i.amount }}</td>
-                <td class="align-middle status" id="Status" value='1'>상품준비완료</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{{i.id}}" checked="checked">
-                  <label class="custom-control-label" for="{{i.id}}"></label>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>
@@ -157,49 +118,6 @@
                 <th>배송상태</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if Processing or Shipping or Delivered %} 
-              {% for i in Processing %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
-                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
-                <td class="align-middle" id="Total">{{ i.amount }}</td>
-                <td class="align-middle status" id="Flag" value='2'>배송준비중</td>
-              </tr>
-              {% endfor %}
-              {% for i in Shipping %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
-                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
-                <td class="align-middle" id="Total">{{ i.amount }}</td>
-                <td class="align-middle status" id="Flag" value='3'>배송중</td>
-              </tr>
-              {% endfor %}
-              {% for i in Delivered %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="TransportNo">{{ i.order__transport_no }}</td>
-                <td class="align-middle" id="Name">{{ i.product_id__name }}</td>
-                <td class="align-middle" id="Total">{{ i.amount }}</td>
-                <td class="align-middle status" id="Flag" value='4'>배송완료</td>
-              </tr>
-              {% endfor %}
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>

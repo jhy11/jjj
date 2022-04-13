@@ -15,13 +15,7 @@ class DeliveryView(LoginRequiredMixin, View):
     template_name='delivery_info.html'
 
     def get(self, request: HttpRequest):
-        context = {
-            'Paid': get_delivery(constants.DELIVERY, constants.PAID),
-            'Completed': get_delivery(constants.DELIVERY, constants.COMPLETED),
-            'Processing': get_delivery(constants.DELIVERY, constants.PROCESSING),
-            'Shipping': get_delivery(constants.DELIVERY, constants.SHIPPING),
-            'Delivered': get_delivery(constants.DELIVERY, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -54,21 +48,44 @@ class DeliveryView(LoginRequiredMixin, View):
 
         return JsonResponse(context, content_type='application/json')
 
+class DeliveryTableView(LoginRequiredMixin, View):
+    '''
+    관리자/판매관리/택배배송 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+        
+        Paid = get_delivery(constants.DELIVERY, constants.PAID)
+        Completed = get_delivery(constants.DELIVERY, constants.COMPLETED)
+        Processing = get_delivery(constants.DELIVERY, constants.PROCESSING)
+        Shipping = get_delivery(constants.DELIVERY, constants.SHIPPING)
+        Delivered = get_delivery(constants.DELIVERY, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Completed)
+        delivered.extend(Paid)
+        delivered.extend(Processing)
+        delivered.extend(Shipping)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
+
+        return JsonResponse(context, content_type='application/json')
 
 class ShortdeliveryView(LoginRequiredMixin, View):
     '''
-    판매관리/근거리배송
+    관리자/판매관리/근거리배송
     '''
     template_name='shortdelivery_info.html'
 
     def get(self, request: HttpRequest):
-        context = {
-            'Paid': get_delivery(constants.SHORTDELIVERY, constants.PAID),
-            'Completed': get_delivery(constants.SHORTDELIVERY, constants.COMPLETED),
-            'Processing': get_delivery(constants.SHORTDELIVERY, constants.PROCESSING),
-            'Shipping': get_delivery(constants.SHORTDELIVERY, constants.SHIPPING),
-            'Delivered': get_delivery(constants.SHORTDELIVERY, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -98,23 +115,47 @@ class ShortdeliveryView(LoginRequiredMixin, View):
             )
 
         context['success']=True
+
+        return JsonResponse(context, content_type='application/json')
+
+class ShortdeliveryTableView(LoginRequiredMixin, View):
+    '''
+    관리자/판매관리/근거리배송 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+
+        Paid = get_delivery(constants.SHORTDELIVERY, constants.PAID)
+        Completed = get_delivery(constants.SHORTDELIVERY, constants.COMPLETED)
+        Processing = get_delivery(constants.SHORTDELIVERY, constants.PROCESSING)
+        Shipping = get_delivery(constants.SHORTDELIVERY, constants.SHIPPING)
+        Delivered = get_delivery(constants.SHORTDELIVERY, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Completed)
+        delivered.extend(Paid)
+        delivered.extend(Processing)
+        delivered.extend(Shipping)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
 
         return JsonResponse(context, content_type='application/json')
 
 class PickupView(LoginRequiredMixin, View):
     '''
-    판매관리/포장
+    관리자/판매관리/포장
     '''
     template_name='pickup_info.html'
 
     def get(self, request: HttpRequest):
-        context = {
-            'Paid': get_delivery(constants.PICKUP, constants.PAID),
-            'Completed': get_delivery(constants.PICKUP, constants.COMPLETED),
-            'Processing': get_delivery(constants.PICKUP, constants.PROCESSING),
-            'Shipping': get_delivery(constants.PICKUP, constants.SHIPPING),
-            'Delivered': get_delivery(constants.PICKUP, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -149,20 +190,45 @@ class PickupView(LoginRequiredMixin, View):
 
         return JsonResponse(context, content_type='application/json')
 
+
+class PickupTableView(LoginRequiredMixin, View):
+    '''
+    관리자/판매관리/포장 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+        user_id=request.user.id
+
+        Paid = get_delivery(constants.PICKUP, constants.PAID)
+        Completed = get_delivery(constants.PICKUP, constants.COMPLETED)
+        Processing = get_delivery(constants.PICKUP, constants.PROCESSING)
+        Delivered = get_delivery(constants.PICKUP, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Completed)
+        delivery.extend(Processing)
+        delivered.extend(Paid)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
+
+        return JsonResponse(context, content_type='application/json')
+
+
 class DrivethruView(LoginRequiredMixin, View):
     '''
-    판매관리/드라이브스루
+    관리자/판매관리/드라이브스루
     '''
     template_name='drivethru_info.html'
 
     def get(self, request: HttpRequest):
-        context = {
-            'Paid': get_delivery(constants.DRIVETHRU, constants.PAID),
-            'Completed': get_delivery(constants.DRIVETHRU, constants.COMPLETED),
-            'Processing': get_delivery(constants.DRIVETHRU, constants.PROCESSING),
-            'Shipping': get_delivery(constants.DRIVETHRU, constants.SHIPPING),
-            'Delivered': get_delivery(constants.DRIVETHRU, constants.DELIVERED),
-        }
+        context={}
 
         if request.user.is_staff:
             context['staff'] = True
@@ -194,6 +260,37 @@ class DrivethruView(LoginRequiredMixin, View):
             )
 
         context['success']=True
+
+        return JsonResponse(context, content_type='application/json')
+
+class DrivethruTableView(LoginRequiredMixin, View):
+    '''
+    관리자/판매관리/드라이브스루 관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+        user_id=request.user.id
+
+        Paid = get_delivery(constants.DRIVETHRU, constants.PAID)
+        Completed = get_delivery(constants.DRIVETHRU, constants.COMPLETED)
+        Processing = get_delivery(constants.DRIVETHRU, constants.PROCESSING)
+        #Shipping = get_delivery(constants.DRIVETHRU, constants.SHIPPING)
+        Delivered = get_delivery(constants.DRIVETHRU, constants.DELIVERED)
+
+        delivery=[] 
+        delivered=[]
+
+        delivery.extend(Completed)
+        delivery.extend(Processing)
+        delivered.extend(Paid)
+        #delivered.extend(Shipping)
+        delivered.extend(Delivered)
+
+        context = {
+            'delivery': delivery,
+            'delivered': delivered,
+        }
 
         return JsonResponse(context, content_type='application/json')
 

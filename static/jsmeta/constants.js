@@ -7,7 +7,7 @@ const Processing = '2';
 const Shipping = '3';
 const Delivered = '4';
 
-/* 환불접수, 환불처리중, 환불 완료*/
+/* 반품접수, 반품처리중, 반품 완료*/
 const RefundRecived = '5';
 const RefundProcesing = '6';
 const Refunded = '7';

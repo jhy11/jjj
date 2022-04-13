@@ -5,6 +5,7 @@ from django.http import HttpRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin
+from seller.views import constants
 
 from management.models import product, pro_category, shop
 
@@ -16,8 +17,6 @@ class ProductView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {
-            'requestTable': product.objects.filter(status='0', DeleteFlag='0'),
-            'onSaleTable': product.objects.filter(status='1', DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
         if request.user.is_staff:
@@ -83,3 +82,29 @@ class ProductDetailView(LoginRequiredMixin, View):
             return JsonResponse(context, content_type='application/json')
           
         return JsonResponse(data={ 'success': False })
+
+class ProductTableView(LoginRequiredMixin, View):
+    '''
+    관리자페이지/판매자/상품관리
+
+    Datatable에 넣을 데이터를 받아옵니다.
+    '''
+    def get(self, request: HttpRequest):
+
+        productsRequested = get_product(constants.REQUESTED)
+        productsOnSale = get_product(constants.ONSALE)
+        productsRejected = get_product(constants.REJECTED)
+        productsStopped =get_product(constants.STOPPED)
+
+        context = {
+            'productsRequested': productsRequested,
+            'productsOnSale': productsOnSale,
+            'productsRejected': productsRejected,
+            'productsStopped': productsStopped,
+        }
+
+        return JsonResponse(context, content_type='application/json')
+
+def get_product(status):
+    return list(product.objects.filter(status=status, DeleteFlag='0')\
+              .values('id', 'pro_category__name', 'name', 'price', 'status', 'stock', 'shop__shop_name'))

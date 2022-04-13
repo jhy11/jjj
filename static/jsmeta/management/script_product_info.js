@@ -1,15 +1,38 @@
-//pro-RequestedTable search
-$(document).ready(function() {
-  var table = $('#dataTableHover1').DataTable(); 
-  
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  //승인 요청 테이블
+  let table_requested = $('#dataTableHover1').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/product-table',
+      'dataSrc': 'productsRequested'
+    },
+    columns: [
+      {data : 'id'},
+      {data : 'pro_category__name'},
+      {data : 'shop__shop_name'},
+      {data : 'name'},
+      {data : 'price'},
+      {data : 'stock'},
+    ],
+  });
   $('#catSearch').on('change', function () {
-    table.columns(1).search( this.value ).draw();
+    table_requested.columns(1).search( this.value ).draw();
   });
   $('#shopSearch').on('keyup', function () {
-    table.columns(2).search( this.value ).draw();
+    table_requested.columns(2).search( this.value ).draw();
   });
   $('#nameSearch').on('keyup', function () {
-    table.columns(3).search( this.value ).draw();
+    table_requested.columns(3).search( this.value ).draw();
   });
 
   $.fn.dataTable.ext.search.push(
@@ -29,21 +52,38 @@ $(document).ready(function() {
     });
 
     $('#minPrice, #maxPrice').keyup(function(){
-      table.draw();
+      table_requested.draw();
     });
 
   
-  //pro-OnSaleTable search
-  var table2 = $('#dataTableHover2').DataTable(); 
+  //판매 중 테이블
+  let table_onsale = $('#dataTableHover2').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/management/product-table',
+      'dataSrc': 'productsOnSale'
+    },
+    columns: [
+      {data : 'id'},
+      {data : 'pro_category__name'},
+      {data : 'shop__shop_name'},
+      {data : 'name'},
+      {data : 'price'},
+      {data : 'stock'},
+    ],
+  });
 
   $('#catSearch2').on('change', function () {
-    table2.columns(1).search( this.value ).draw();
+    table_onsale.columns(1).search( this.value ).draw();
   });
   $('#shopSearch2').on('keyup', function () {
-    table2.columns(2).search( this.value ).draw();
+    table_onsale.columns(2).search( this.value ).draw();
   });
   $('#nameSearch2').on('keyup', function () {
-    table2.columns(3).search( this.value ).draw();
+    table_onsale.columns(3).search( this.value ).draw();
   });
 
   $.fn.dataTable.ext.search.push(
@@ -63,7 +103,7 @@ $(document).ready(function() {
     });
 
     $('#minPrice2, #maxPrice2').keyup(function(){
-      table2.draw();
+      table_onsale.draw();
     });
 
 });
