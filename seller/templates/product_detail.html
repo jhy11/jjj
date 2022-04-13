@@ -50,13 +50,16 @@
       <div class="card mb-4 p-3">
         <div class="card-body">
           <div id="editor-container" class="container">
-          {{product.content.html |safe }}
+           {{product.content.html |safe }}
         
           </div>
             <div class="py-4 px-5">
                 <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
-                <button type="button" class="btn btn-outline-danger pb-1" onclick="deleteProduct('{{i.id}}')">삭제</button>
-                <button type="button" class="btn btn-outline-primary pb-1" onclick="location.href='/seller/product-approval'">목록</button>
+                <button type="button" class="btn btn-outline-danger pb-1" id="btnDelete" data-id="{{ product.id }}">삭제</button>
+                {% if product.status == '2' %}
+                <button type="button" class="btn btn-outline-success pb-1" id="btnReapply" data-id="{{ product.id }}">재신청</button>
+                {% endif %}
+                <button type="button" class="btn btn-outline-dark pb-1" onclick="location.href='/seller/product-approval'">목록</button>
             </div>
         </div>
       </div>
@@ -69,4 +72,7 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script src="{% static 'jsmeta/seller/script_product_delete.js' %}"></script>
+<script src="{% static 'jsmeta/seller/script_product_reapply.js' %}"></script>
+
 {% endblock javascripts %}

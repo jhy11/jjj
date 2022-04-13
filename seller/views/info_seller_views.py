@@ -15,18 +15,17 @@ from management.models import member, product, pro_category, shop
 
 class SellerProductView(LoginRequiredMixin, View):
     '''
-    판매자 상품 관리 - 생성, 수정, 삭제 (여기서 생성,수정 지워도 될듯)
+    판매자 상품 관리 
     '''
     template_name = 'seller_info.html' 
-
-
+   
     def get(self, request: HttpRequest, *args, **kwargs):
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
 
         context = {
             'requestTable': product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0'),
-            'onSaleTable': product.objects.filter(shop_id =memberShopId, status=constants.ONSALE, DeleteFlag='0'),
+            'rejectedTable': product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
         if request.user.is_staff:
@@ -35,106 +34,6 @@ class SellerProductView(LoginRequiredMixin, View):
             context['seller'] = True
         
         return render(request, self.template_name, context)
-    
-    def post(self, request: HttpRequest, *args, **kwargs):
-        context = {}
-        request.POST = json.loads(request.body)
-
-        memberId = member.objects.get(user=request.user).id
-        memberShopId  = shop.objects.get(manager__id=memberId).id
-        
-        ProCategoryId = request.POST.get('ProductCategoryId')
-        ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
-        Name = request.POST.get('ProductName')
-        Price = request.POST.get('ProductPrice')
-        Stock = request.POST.get('ProductStock')
-        Description = request.POST.get('ProductDescription')
-
-        product.objects.create(
-            pro_category=ProCategory,      
-            name = Name,
-            price = Price,
-            stock = Stock,
-            description = Description,
-            shop_id = memberShopId,
-            status = constants.REQUESTED,
-        )
-        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['success']=True
-        return JsonResponse(context, content_type='application/json')
-
-    def put(self, request: HttpRequest, *args, **kwargs):
-        context = {}
-        request.PUT = json.loads(request.body)
-
-        memberId = member.objects.get(user=request.user).id
-        memberShopId  = shop.objects.get(manager__id=memberId).id
-        
-        Id = request.PUT.get('Id')
-        ProCategoryId = request.PUT.get('ProductCategoryId')
-        ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
-        Name = request.PUT.get('ProductName')
-        Price = request.PUT.get('ProductPrice')
-        Stock = request.PUT.get('ProductStock')
-        Description = request.PUT.get('ProductDescription')
-    
-        product.objects.filter(id=Id).update(
-            pro_category=ProCategory,      
-            name = Name,
-            price = Price,
-            stock = Stock,
-            description = Description,
-        )
-        statusValue = product.objects.filter(id=Id).values('status')
-        if (statusValue[0].get('status') == '0'):
-            context['statusValue'] = 0
-        else: 
-            context['statusValue'] = 2
-        
-        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status='2', DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['success'] = True
-        
-        return JsonResponse(context, content_type='application/json')
-
-    def delete(self, request: HttpRequest):
-        context={}     
-        request.DELETE = json.loads(request.body)
-
-        Id = request.DELETE.get('Id', None)
-        if Id is not None:
-            product.delete(product.objects.filter(DeleteFlag='0').get(id=Id))
-
-            context['success'] = True
-
-            return JsonResponse(context, content_type='application/json')
-        return JsonResponse(data={ 'success': False })
-
-class reapplyView(LoginRequiredMixin, View):
-    '''
-    재신청
-    '''
-    template_name = 'seller_info.html' 
-
-    def put(self, request: HttpRequest, *args, **kwargs):
-        context = {}
-        request.PUT = json.loads(request.body)
-        
-        Id = request.PUT.get('Id')  
-
-        memberId = member.objects.get(user=request.user).id
-        memberShopId  = shop.objects.get(manager__id=memberId).id
-
-        # Update status
-        product.objects.filter(id=Id).update(
-            status = '0'
-        )
-        context['products'] = list(product.objects.filter(shop_id =memberShopId, status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['success'] = True
-        
-        return JsonResponse(context, content_type='application/json')
-
 
 class ProductDetailView(LoginRequiredMixin, View):
     '''

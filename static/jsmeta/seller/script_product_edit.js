@@ -18,7 +18,7 @@ let toolbarOptions = [
     [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
     ['clean']                                         // remove formatting button
   ];
-
+var preciousContent = document.getElementById('myPrecious');
 let quill = new Quill('#editor-container', {
 modules: {
 toolbar: toolbarOptions,
@@ -35,8 +35,8 @@ quill.setContents(JSON.parse(quillContent.value.replaceAll('True','true').replac
 quill.on('text-change', function() {
     var delta = quill.getContents();
     delta_content['delta'] = delta
-    console.log(delta_content);
     delta_content['html'] = quill.root.innerHTML
+   // preciousContent.innerHTML = JSON.stringify(delta);
     
 });
 
@@ -51,6 +51,7 @@ btnEdit.addEventListener('click', async() => {
     formData.append('ProductStock', document.getElementById('ProductStock').value);
     formData.append('ProductDescription', document.getElementById('ProductDescription').value);
     formData.append('Content',  JSON.stringify(delta_content));
+   // console.log(preciousContent.innerHTM);
     for (let key of formData.keys()) {
         console.log(key);
       }

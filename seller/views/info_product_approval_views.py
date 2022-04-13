@@ -17,12 +17,13 @@ class ApprovalView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
-
+          
         context = {
             'requestTable': product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0'),
-            'onSaleTable': product.objects.filter(shop_id =memberShopId,status=constants.ONSALE, DeleteFlag='0'),
+            'rejectedTable': product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
+
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
@@ -103,7 +104,7 @@ class ApprovalView(LoginRequiredMixin, View):
           
         return JsonResponse(data={ 'success': False })
 
-class reapplyView(LoginRequiredMixin, View):
+class ReapplyView(LoginRequiredMixin, View):
     template_name = 'product_approval.html' 
 
     def put(self, request: HttpRequest, *args, **kwargs):
@@ -115,8 +116,6 @@ class reapplyView(LoginRequiredMixin, View):
         product.objects.filter(id=Id).update(
             status = constants.REQUESTED
         )
-        # context['products'] = list(product.objects.filter(shop_id ='3', status='0',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        # context['products2'] = list(product.objects.filter(shop_id ='3', status='2',DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
         context['success'] = True
         
         return JsonResponse(context, content_type='application/json')

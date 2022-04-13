@@ -22,6 +22,9 @@ let toolbarOptions = [
 let quill = new Quill('#editor-container', {
   modules: {
     toolbar: toolbarOptions,
+    imageResize: {
+      displaySize: true
+    },
   },
   //placeholder: '상품 상세 설명을 작성해주세요.',
   theme: 'snow'
@@ -41,8 +44,6 @@ quill.on('text-change', function() {
   var delta = quill.getContents();
   delta_content['delta'] = delta
   delta_content['html'] = quill.root.innerHTML
-
-
 });
 
 let input = document.getElementById("mainImg"),

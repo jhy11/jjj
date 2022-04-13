@@ -17,9 +17,9 @@ urlpatterns=[
     path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),
 
-
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
     path('product-approval', info_product_approval_views.ApprovalView.as_view(), name='product-approval'),
+    path('product-reapply', info_product_approval_views.ReapplyView.as_view(), name='product-reapply'),
     path('product-stop', info_product_views.ProductstoppedView.as_view(), name='product-stop'),
     
     
@@ -37,5 +37,4 @@ urlpatterns=[
     path('qna-edit/<str:id>', info_qna_views.QnaEditView.as_view(), name='qna-edit'),
     #path('review', info_review_views.ReviewView.as_view(), name='review'),
 
-    path('reapply', info_seller_views.reapplyView.as_view(), name='reapply'),
 ]
