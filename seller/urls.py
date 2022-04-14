@@ -46,6 +46,6 @@ urlpatterns=[
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),
     path('qna-post/<str:id>', info_qna_views.QnaPostView.as_view(), name='qna-post'),
     path('qna-edit/<str:id>', info_qna_views.QnaEditView.as_view(), name='qna-edit'),
-    #path('review', info_review_views.ReviewView.as_view(), name='review'),
+    path('review', info_review_views.ReviewView.as_view(), name='review'),
 
 ]

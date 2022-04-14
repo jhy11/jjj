@@ -17,52 +17,44 @@
       <li class="breadcrumb-item active" aria-current="page">상품 관리</li>
     </ol>
   </div>
-    
+
   <div class="row">
-    <div class="col-xl-6 col-lg-6">
+    <div class="col-md-12">
       <div class="card mb-4">
-        <div class="card-body">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-2 font-weight-bold text-primary">대표 이미지</h6>
+        </div>
+        <div class="py-4 px-5">
+          <img src="{{product.main_img.url}}" width="300" height="400"><br>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-body pt-0">
           <div class ="needs-validation px-3 pt-3 pb-4">
-            <div class="py-4 px-5">대표 이미지</div>
-            <div class="py-4 px-5">
-              <img src="{{product.main_img.url}}" width="300" height="400"><br>
-            </div>
+            <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_category.name}}</div>
+            <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
+            <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
+            <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
+            <div class="py-4 px-5">상세 설명<span class="py-4 px-5"></span>{{product.description}}</div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="col-xl-6 col-lg-6">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class ="needs-validation px-3 pt-3 pb-4">
-              <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_category.name}}</div>
-              <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
-              <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
-              <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
-              <div class="py-4 px-5">상세 설명<span class="py-4 px-5"></span>{{product.description}}</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <div class="card mb-4 p-3">
-        <div class="card-body">
+        <div class="card-body pt-0">
           <div id="editor-container" class="container">
-           {{product.content.html |safe }}
-        
+            {{ product.content.html | safe }}
           </div>
-            <div class="py-4 px-5">
-                {% if product.status != '3' %}
-                <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
-                {% endif %}
-                <button type="button" class="btn btn-outline-danger pb-1" id="btnDelete" data-id="{{ product.id }}">삭제</button>
-                {% if product.status == '2' %}
-                <button type="button" class="btn btn-outline-success pb-1" id="btnReapply" data-id="{{ product.id }}">재신청</button>
-                {% endif %}
-                <button type="button" class="btn btn-outline-dark pb-1" onclick="location.href='/seller/product-approval'">목록</button>
-            </div>
+          <div class="py-4 px-5">
+              {% if product.status != '3' %}
+              <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
+              {% endif %}
+              <button type="button" class="btn btn-outline-danger pb-1" id="btnDelete" data-id="{{ product.id }}">삭제</button>
+              {% if product.status == '2' %}
+              <button type="button" class="btn btn-outline-success pb-1" id="btnReapply" data-id="{{ product.id }}">재신청</button>
+              {% endif %}
+              <button type="button" class="btn btn-outline-dark pb-1" onclick="location.href='/seller/product-approval'">목록</button>
+          </div>
         </div>
       </div>
     </div>
