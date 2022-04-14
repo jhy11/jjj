@@ -46,35 +46,21 @@ btnEdit.addEventListener('click', async() => {
         document.getElementById('password').focus();
         return false;
     }
-    else{
+    
+    if(new_password != ''){
         if(!CheckPassword(password)){
             document.getElementById('password').focus();
             return false;
         }
     }
-    /////
-    if(new_password == ''){
-        document.getElementById('new-password').focus();
-        return false;
-    }
-    else{
-        if(!CheckPassword(password)){
-            document.getElementById('password').focus();
-            return false;
-        }
-    }
-
-    if(confirm_password == ''){
-        document.getElementById('confirm-password').focus();
-        return false;
-    }
-    else{
+    
+    if(confirm_password != ''){
         if(!SamePassword()){
             document.getElementById('confirm-password').focus();
             return false;
         }
     }
-    ////
+    
     if(name == ''){
         document.getElementById('new-name').focus();
         return false;
@@ -106,7 +92,7 @@ btnEdit.addEventListener('click', async() => {
     const formData = new FormData(document.getElementById('EditMemForm'));
     
     const response = await fetch('', {
-        method: 'PUT',
+        method: 'POST',
         headers: {
             'X-CSRFToken': getCookie('csrftoken'),
         },
