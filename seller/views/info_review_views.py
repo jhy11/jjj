@@ -6,7 +6,7 @@ from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import comment
-'''
+
 class ReviewView(LoginRequiredMixin, View):
     template_name = 'review_info.html' 
 
@@ -17,10 +17,11 @@ class ReviewView(LoginRequiredMixin, View):
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
 
-        context['reviews'] = comment.objects.values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
+        context['reviews'] = comment.objects.values('id', 'member__mem_name', 'product__name', 'content', 'rate')
 
         return render(request, self.template_name, context)
 
+"""
 class ReviewPostView(LoginRequiredMixin, TemplateView):
     template_name = 'review-post.html'
 
@@ -49,6 +50,7 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
 
         return redirect('/seller/review')
 
+
 class ReviewEditView(LoginRequiredMixin, View):
     template_name = 'review-post.html'
 
@@ -59,12 +61,13 @@ class ReviewEditView(LoginRequiredMixin, View):
 
         if content is not None:
           # update content of answer
-          review_answer.objects.filter(id=id).update(
+          comment.objects.filter(id=id).update(
             content=content,
             updated_at=datetime.now(),
           )
 
         return redirect('/seller/review')
   
-def get_question(id):
-    return list(review.objects.filter(id=id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))'''
+#def get_question(id):
+    #return list(review.objects.filter(id=id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))'''
+"""

@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import info_delivery_views, info_shortdelivery_views, info_takeout_views, info_seller_views, \
-                info_product_views, info_qna_views, info_cancel_views, info_refund_views, info_product_approval_views
+                info_product_views, info_qna_views, info_cancel_views, info_refund_views, info_product_approval_views,info_review_views
 
 app_name = 'seller'
 
@@ -24,7 +24,7 @@ urlpatterns=[
     path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
 
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),
-    path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),
+    #path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
     path('product-approval', info_product_approval_views.ApprovalView.as_view(), name='product-approval'),
