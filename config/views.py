@@ -9,14 +9,25 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from management.models import member, membership, order_product, product
+from seller.views import constants
+
+from management.models import member, membership, order_product, product, order
 
 class index(LoginRequiredMixin, View):
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {}
         user_id = request.user.id
         if request.user.is_staff:
-            context['staff'] = True
+            context = {
+              'staff': True,
+              'Requested': product.objects.filter(DeleteFlag='0', status=constants.REQUESTED).count(),
+
+              'Delivery': get_num_of_delivery(constants.DELIVERY),
+              'Shortdelivery': get_num_of_delivery(constants.SHORTDELIVERY),
+              'Pickup': get_num_of_delivery(constants.PICKUP),
+              'Drivethru': get_num_of_delivery(constants.DRIVETHRU),
+
+            }
 
         elif request.user.groups.filter(name='seller').exists():
             context={
@@ -25,10 +36,10 @@ class index(LoginRequiredMixin, View):
               'Shipping': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Shipping').count(),
               'Delivered': order_product.objects.filter(DeleteFlag='0', product_id__shop_id__manager_id__user_id=user_id, order_id__status='Delivered').count(),
 
-              'Requested': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='0').count(),
-              'OnSale': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='1').count(),
-              'Rejected': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='2').count(),
-              'Stopped': product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status='3').count(),
+              'Requested': get_num_of_products(user_id, constants.REQUESTED),
+              'OnSale': get_num_of_products(user_id, constants.ONSALE),
+              'Rejected': get_num_of_products(user_id, constants.REJECTED),
+              'Stopped': get_num_of_products(user_id, constants.STOPPED),
               'seller' : True
             }
 
@@ -175,8 +186,6 @@ class CheckSameEmail(View):
             context['success'] = True
         return JsonResponse(context, content_type='application/json')
 
-
-
 #Login required 추가할 것
 class ChangeMemView(View):
     '''
@@ -204,7 +213,7 @@ class ChangeMemView(View):
             context['success'] = False
             context['message'] = '비밀번호가 일치하지 않습니다.'
             return JsonResponse(context, content_type='application/json')
-        
+
         user = request.user
         user_id = request.user.id
         check_password(password, user.password)
@@ -224,6 +233,12 @@ class ChangeMemView(View):
             mem_phone = phone,
         )
 
-        
+
         context['success'] = True
-        return JsonResponse(context, content_type='application/json')
+        return JsonResponse(context, content_type='application/json') 
+
+def get_num_of_products(user_id, status):
+    return product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status=status).count()
+
+def get_num_of_delivery(type):
+    return order.objects.filter(DeleteFlag='0', type=type, status=constants.COMPLETED).count()
