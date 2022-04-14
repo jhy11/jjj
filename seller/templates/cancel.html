@@ -30,8 +30,8 @@
                   <label class="custom-control-label" for="customRadio1">취소요청</label>
                 </div>
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio2" name="status1" class="custom-control-input" value="취소요청완료">
-                  <label class="custom-control-label" for="customRadio2">취소요청완료</label>
+                  <input type="radio" id="customRadio2" name="status1" class="custom-control-input" value="취소처리중">
+                  <label class="custom-control-label" for="customRadio2">취소처리중</label>
                 </div>
               </fieldset>
             </div>
@@ -59,58 +59,6 @@
                 <th>준비완료</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if CancelReceived or NotCompletelyCanceled %} 
-              {% for i in CancelReceived %}
-              {% load humanize %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='취소요청'>취소요청</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% for i in NotCompletelyCanceled %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='취소요청완료'>취소요청완료</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>
@@ -126,7 +74,7 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col">
       <div class="card mb-4">
         <div class="card-body">
@@ -148,12 +96,12 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="col">
       <div class="card mb-3 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">취소 관리</h6>
+          <h6 class="m-0 font-weight-bold text-primary">취소 완료</h6>
         </div>
         <div class="table-responsive p-3" id="aaa">
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-canceled">
@@ -166,48 +114,6 @@
                 <th>배송상태</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if CancelProcessing or Canceled %} 
-              {% for i in CancelProcessing %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value="취소처리중">취소처리중</td>
-              </tr>
-              {% endfor %} 
-              {% for i in Canceled %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value="취소완료">취소완료</td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>

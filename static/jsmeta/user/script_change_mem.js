@@ -46,35 +46,21 @@ btnEdit.addEventListener('click', async() => {
         document.getElementById('password').focus();
         return false;
     }
-    else{
+    
+    if(new_password != ''){
         if(!CheckPassword(password)){
             document.getElementById('password').focus();
             return false;
         }
     }
-
-    if(new_password == ''){
-        document.getElementById('new_password').focus();
-        return false;
-    }
-    else{
-        if(!CheckPassword(password)){
-            document.getElementById('password').focus();
-            return false;
-        }
-    }
-
-    if(confirm_password == ''){
-        document.getElementById('confirm-password').focus();
-        return false;
-    }
-    else{
+    
+    if(confirm_password != ''){
         if(!SamePassword()){
             document.getElementById('confirm-password').focus();
             return false;
         }
     }
-
+    
     if(name == ''){
         document.getElementById('new-name').focus();
         return false;
@@ -164,12 +150,12 @@ function CheckPhone(str){
 //비밀번호 정규식
 function CheckPassword(str){
    if(!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/.test(str)){
-       document.getElementById('new_password').setAttribute('class', 'form-control is-invalid');
+       document.getElementById('new-password').setAttribute('class', 'form-control is-invalid');
        document.getElementById('passwordError').innerText = '숫자와 영문자 조합으로 8~16자리를 사용해야 합니다';
        return false;
    }
    else{
-       document.getElementById('new_password').setAttribute('class', 'form-control');
+       document.getElementById('new-password').setAttribute('class', 'form-control');
        document.getElementById('passwordError').innerText = '';
        return true;
    }
@@ -177,7 +163,7 @@ function CheckPassword(str){
 
 
 function SamePassword(){
-   var password = document.getElementById('new_password').value;
+   var password = document.getElementById('new-password').value;
    var confirm_password = document.getElementById('confirm-password').value;
    if(password== '' || confirm_password =='')
        return;

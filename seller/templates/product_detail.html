@@ -54,7 +54,9 @@
         
           </div>
             <div class="py-4 px-5">
+                {% if product.status != '3' %}
                 <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
+                {% endif %}
                 <button type="button" class="btn btn-outline-danger pb-1" id="btnDelete" data-id="{{ product.id }}">삭제</button>
                 {% if product.status == '2' %}
                 <button type="button" class="btn btn-outline-success pb-1" id="btnReapply" data-id="{{ product.id }}">재신청</button>

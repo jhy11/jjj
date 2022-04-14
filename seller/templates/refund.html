@@ -19,19 +19,19 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="card mb-4">
+      <div class="card mb-3">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
               <label class="form-label col-md-1" for="status1" >반품 상태</label>
               <fieldset class="row col-md-8" id="status1">
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio1" name="status1" class="custom-control-input" value="반품요청" checked="checked">
-                  <label class="custom-control-label" for="customRadio1">반품요청</label>
+                  <input type="radio" id="customRadio1" name="status1" class="custom-control-input" value="반품접수" checked="checked">
+                  <label class="custom-control-label" for="customRadio1">반품접수</label>
                 </div>
                 <div class="custom-control custom-radio mr-3">
-                  <input type="radio" id="customRadio2" name="status1" class="custom-control-input" value="반품요청완료">
-                  <label class="custom-control-label" for="customRadio2">반품요청완료</label>
+                  <input type="radio" id="customRadio2" name="status1" class="custom-control-input" value="반품처리중">
+                  <label class="custom-control-label" for="customRadio2">반품처리중</label>
                 </div>
               </fieldset>
             </div>
@@ -43,7 +43,7 @@
 
   <div class="row">
     <div class="col">
-      <div class="card mb-3 p-3">
+      <div class="card mb-5 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-0 font-weight-bold text-primary">반품 요청 목록</h6>
         </div>
@@ -52,71 +52,19 @@
             <thead class="thead-light">
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>상태</th>
                 <th>준비완료</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if RefundRequested or NotCompletelyRefunded %} 
-              {% for i in RefundRequested %}
-              {% load humanize %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='반품요청'>반품요청</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% for i in NotCompletelyRefunded %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="Order_no">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value='반품요청완료'>반품요청완료</td>
-                <td class="align-middle custom-control custom-switch ml-5">
-                  <input type="checkbox" class="custom-control-input" id="{i.order__order_no}">
-                  <label class="custom-control-label" for="{i.order__order_no}"></label>
-                </td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
+                <th>상품명</th>
+                <th>수량</th>
                 <th>상태</th>
                 <th>준비완료</th>
               </tr>
@@ -126,9 +74,9 @@
       </div>
     </div>
   </div>
-  <div class="row">
+  <!-- <div class="row">
     <div class="col">
-      <div class="card mb-4">
+      <div class="card mb-3">
         <div class="card-body">
           <div class ="row g-3 needs-validation">
             <div class="row col-md-12 mx-1 pt-2">
@@ -148,73 +96,31 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="row">
     <div class="col">
-      <div class="card mb-3 p-3">
+      <div class="card mb-5 p-3">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">반품 관리</h6>
+          <h6 class="m-0 font-weight-bold text-primary">반품 완료</h6>
         </div>
         <div class="table-responsive p-3" id="aaa">
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-refunded">
             <thead class="thead-light">
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
-                <th>배송상태</th>
+                <th>상품명</th>
+                <th>수량</th>
+                <th>상태</th>
               </tr>
             </thead>
-            <tbody class="list" id="list-order">
-              {% if RefundProcessing or Refunded %} 
-              {% for i in RefundProcessing %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value="반품처리중">반품처리중</td>
-              </tr>
-              {% endfor %} 
-              {% for i in Refunded %}
-              <tr class="list-order-row">
-                <td class="align-middle" id="OrderNo">{{ i.order__order_no }}</td>
-                <td class="align-middle" id="Type">
-                  {% if i.order__type == '0' %}택배배송
-                  {% elif i.order__type == '1' %}근거리배송
-                  {% elif i.order__type == '2' %}포장
-                  {% else %}드라이브스루
-                  {% endif %}
-                </td>
-                <td class="align-middle" id="Call">{{ i.order__call }}</td>
-                <td class="align-middle" id="Total">{{ i.order__total_price|intcomma }}</td>
-                <td class="align-middle status" id="Status" value="반품완료">반품완료</td>
-              </tr>
-              {% endfor %} 
-              {% else %}
-              <tr>
-                <td class="align-middle">Data does not exist.</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-              {% endif %}
-            </tbody>
             <tfoot>
               <tr>
                 <th>주문번호</th>
-                <th>수령방법</th>
                 <th>연락처</th>
-                <th>가격</th>
-                <th>배송상태</th>
+                <th>상품명</th>
+                <th>수량</th>
+                <th>상태</th>
               </tr>
             </tfoot>
           </table>

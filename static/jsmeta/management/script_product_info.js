@@ -16,6 +16,10 @@ document.addEventListener("DOMContentLoaded", function(){
       'url': '/management/product-table',
       'dataSrc': 'productsRequested'
     },
+    createdRow: function( row, data, dataIndex ) {
+      $( row )
+      .attr('onclick', "window.open('/management/manage-product-detail/"+data.id +"','_self')");
+    },
     columns: [
       {data : 'id'},
       {data : 'pro_category__name'},
@@ -66,6 +70,10 @@ document.addEventListener("DOMContentLoaded", function(){
       'url': '/management/product-table',
       'dataSrc': 'productsOnSale'
     },
+    createdRow: function( row, data, dataIndex ) {
+      $( row )
+          .attr('onclick', "window.open('/management/manage-product-detail/"+data.id +"','_self')");
+    },
     columns: [
       {data : 'id'},
       {data : 'pro_category__name'},
@@ -107,3 +115,4 @@ document.addEventListener("DOMContentLoaded", function(){
     });
 
 });
+
