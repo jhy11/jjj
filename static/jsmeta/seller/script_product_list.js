@@ -15,60 +15,16 @@ document.addEventListener("DOMContentLoaded", function(){
       'url': '/seller/product-table',
       'dataSrc': 'productsOnSale'
     },
-    columnDefs: [
-      {
-        "targets": 5,
-        "render": function(data){
-          let td =document.createElement('td');
-          td.setAttribute('class', 'align-middle');
-
-          let btn_update = document.createElement('button');
-          setAttributes(btn_update,{
-            'type': 'button',
-            'class': "btn btn-outline-primary pb-1",
-            'data-toggle': 'modal',
-            'data-target': '#shopModal',
-            'id': '#modalCenter',
-            'data-id': data.id,
-            'data-cat': data.pro_category__name,
-            'data-proname': data.name,
-            'data-price': data.price,
-            'data-stock': data.stock,
-          });
-
-          btn_update.innerText = '수정';
-          td.appendChild(btn_update);
-
-          return td.innerHTML;
-          },
-      },
-      {
-        "targets": 6,
-        "render": function (data) {
-            let td = document.createElement('td');
-            td.setAttribute('class', 'align-middle');
-
-            let btn_delete = document.createElement('button');
-            setAttributes(btn_delete, {
-              'type': 'button',
-              'class': "btn btn-outline-danger pb-1",
-              'onClick': "deleteProduct(" + data.id + ")"
-            });
-
-            btn_delete.innerText = '삭제';
-            td.appendChild(btn_delete);
-            return td.innerHTML;
-        }
-      },
-    ],
+    createdRow: function( row, data, dataIndex ) {
+      $( row )
+      .attr('onclick', "window.open('/seller/product-detail/"+data.id +"','_self')");
+    },
     columns: [
       {data : 'id'},
       {data : 'pro_category__name'},
       {data : 'name'},
       {data : 'price'},
       {data : 'stock'},
-      {data : null},
-      {data : null},
     ],
   });
 
@@ -80,6 +36,10 @@ document.addEventListener("DOMContentLoaded", function(){
       'type' : 'GET',
       'url': '/seller/product-table',
       'dataSrc': 'productsStopped'
+    },
+    createdRow: function( row, data, dataIndex ) {
+      $( row )
+      .attr('onclick', "window.open('/seller/product-detail/"+data.id +"','_self')");
     },
     columns: [
       {data : 'id'},

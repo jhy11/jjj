@@ -152,7 +152,6 @@ class RegisterView(View):
         context['email'] = email
         return JsonResponse(context, content_type='application/json')
 
-
 class CheckSameId(View):
     def post(self, request: HttpRequest, *args, **kwargs):
         request.POST = json.loads(request.body)
@@ -186,41 +185,50 @@ class CheckSameEmail(View):
             context['success'] = True
         return JsonResponse(context, content_type='application/json')
 
+
 #Login required 추가할 것
 class ChangeMemView(View):
     '''
     회원정보 수정 기능
     '''
+    template_name = 'edit_mem_info.html' 
+
     def get(self, request: HttpRequest, *args, **kwargs):
-        return render(request, 'edit_mem_info.html')
+        user_id = request.user.id
+       
+        context={}
+        context['member'] = member.objects.get(user__id=user_id)
+    
+        return render(request, self.template_name,  context)
 
-    def put(self, request: HttpRequest, *args, **kwargs):
-        request.PUT = json.loads(request.body)
+
+    def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
+       
+        password = request.POST['password']
+        new_password = request.POST['new-password']
+        confirm_password = request.POST['confirm-password']
+        name = request.POST['new-name']
+        email = request.POST['new-email']
+        phone = request.POST['new-phone']
 
-        password = request.PUT['password']
-        new_password = request.PUT['new_password']
-        confirm_password = request.PUT['confirm-password']
-        name = request.PUT['new-name']
-        email = request.PUT['new-email']
-        phone = request.PUT['new-phone']
-
-        print(new_password)
-
-
-
-        if password != confirm_password:
+        if new_password != confirm_password:
             context['success'] = False
             context['message'] = '비밀번호가 일치하지 않습니다.'
             return JsonResponse(context, content_type='application/json')
+        
+        if not check_password(password, request.user.password):
+            context['success'] = False
+            context['message'] = '비밀번호가 틀립니다.'
+            return JsonResponse(context, content_type='application/json')
 
-        user = request.user
         user_id = request.user.id
-        check_password(password, user.password)
-
         #change password
-        if new_password is not None:
-            user.set_password(new_password)
+        if new_password !="":
+            print("new_password is not none")
+            print(new_password)
+            request.user.set_password(new_password)
+            request.user.save()
 
         #change email
         user = User.objects.filter(id=user_id).update(
@@ -228,14 +236,15 @@ class ChangeMemView(View):
         )
 
         #change mem_name, mem_phone
-        mem = member.objects.filter(id=user_id).update(
+        mem = member.objects.filter(user__id=user_id).update(
             mem_name = name,
             mem_phone = phone,
         )
 
-
+        
         context['success'] = True
-        return JsonResponse(context, content_type='application/json') 
+        context['message'] = '회원정보가 수정되었습니다.'
+        return JsonResponse(context, content_type='application/json')
 
 def get_num_of_products(user_id, status):
     return product.objects.filter(shop_id__manager_id__user_id=user_id, DeleteFlag='0', status=status).count()
