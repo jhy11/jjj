@@ -22,6 +22,7 @@ urlpatterns=[
     path('drivethru-table', info_takeout_views.DrivethruTableView.as_view(), name='drivethru-table'),
 
     path('cancel', info_cancel_views.CancelView.as_view(), name='cancel'),
+    path('cancel-table', info_cancel_views.CancelTableView.as_view(), name='cancel-table'),
 
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),
     path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),

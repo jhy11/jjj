@@ -1,23 +1,104 @@
+function setAttributes(el, attrs) {
+  for(var key in attrs) {
+    el.setAttribute(key, attrs[key]);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function(){
 
-  let status = document.getElementsByClassName('status');
-  [].forEach.call(status, function(status) {
-    //status.innerHTML=showStatus(status.getAttribute('value'));
-  })
+  let table_cancel = $('#dataTableHover-cancel').DataTable({
+    'destroy': true,
+    'autoWidth': false,
 
-  let table_canceled = $('#dataTableHover-canceled').DataTable();
-  let table_cancel = $('#dataTableHover-cancel').DataTable();
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/drivethru-table',
+      'dataSrc': 'delivered'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+      {
+        "targets": 5,
+        "render": function (data) {
+          let td = document.createElement('td');
+          let input = document.createElement('input');
+          let label = document.createElement('label');
 
-  table_canceled.columns(4).search( '취소처리중' ).draw();
+          if(data.status === CancelProcessing){
+            setAttributes(input, {
+              'checked': true,
+            })
+          }
+          setAttributes(td,{
+            'class': 'align-middle custom-control custom-switch ml-5',
+          });
+          setAttributes(input, {
+            'type': 'checkbox',
+            'class': "custom-control-input",
+            'id': data.id,
+          });
+          setAttributes(label, {
+            'class': "custom-control-label",
+            'for': data.id,
+          });
+          td.append(input, label);
+
+          return td.outerHTML;
+        }
+      }
+    ],
+    
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+      {data : null},
+    ],
+  });
+
+  let table_canceled = $('#dataTableHover-canceled').DataTable({
+    'destroy': true,
+    'autoWidth': false,
+
+    'ajax': {
+      'type' : 'GET',
+      'url': '/seller/cancel-table',
+      'dataSrc': 'canceled'
+    },
+    columnDefs: [
+      {
+        "targets": 4,
+        "render": function (data) {
+          return showStatus(data.status);
+        }
+      },
+    ],
+    
+    columns: [
+      {data : 'order__order_no'},
+      {data : 'order__call'},
+      {data : 'product_id__name'},
+      {data : 'amount'},
+      {data : null},
+    ],
+  });
+
   table_cancel.columns(4).search( '취소요청' ).draw();
+/*
+  table_canceled.columns(4).search( '취소처리중' ).draw();
 
   $('#status').on('change', function () {
     let status_info = $("input[name='status']:checked").val();
     table_canceled.columns(4).search( status_info ).draw();
-
-    //let status = getStatus(status_info);
-    //table.columns(4).search( status ).draw();
   });
+  */
   $('#status1').on('change', function () {
     let status_info = $("input[name='status1']:checked").val();
     table_cancel.columns(4).search( status_info ).draw();
@@ -41,6 +122,24 @@ function showStatus(status){
       break;
     case Delivered:
       result = '<span class="badge badge-secondary align-middle">배송완료</span>'
+      break;
+    case RefundRecived:
+      result = '<span class="badge badge-warning align-middle">반품접수</span>'
+      break;
+    case RefundProcesing:
+      result = '<span class="badge badge-primary align-middle">반품처리중</span>'
+      break;
+    case Refunded:
+      result = '<span class="badge badge-secondary align-middle">반품완료</span>'
+      break;
+    case CancelRecieved:
+      result = '<span class="badge badge-warning align-middle">취소접수</span>'
+      break;
+    case CancelProcessing:
+      result = '<span class="badge badge-primary align-middle">취소처리중</span>'
+      break;
+    case Canceled:
+      result = '<span class="badge badge-secondary align-middle">취소완료</span>'
       break;
   }
   return result;
