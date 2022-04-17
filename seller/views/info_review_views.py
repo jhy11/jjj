@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from management.models import comment
 
+
 class ReviewView(LoginRequiredMixin, View):
     template_name = 'review_info.html' 
 
@@ -16,21 +17,20 @@ class ReviewView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-
-        context['reviews'] = comment.objects.values('id', 'member__mem_name', 'product__name', 'content', 'rate')
+        context['reviews'] = comment.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id).values('id', 'memeber__mem_name', 'product__name', 'content', 'rate', 'created_at')
+        #context['answered_questions'] = qna.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id, answer_flag='1').values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
 
         return render(request, self.template_name, context)
 
-"""
 class ReviewPostView(LoginRequiredMixin, TemplateView):
-    template_name = 'review-post.html'
+    template_name = 'review_post.html'
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = {}
-        question = get_question(kwargs.get('id'))
+        review = get_review(kwargs.get('id'))
 
-        context['question'] = question[0]
-        context['answer'] = list(review_answer.objects.filter(review__id=kwargs.get('id')).values('id', 'content'))[0]
+        context['review'] = review[0]
+        #context['answer'] = list(comment.objects.filter(comment__id=kwargs.get('id')).values('id', 'content'))[0]
 
         return context
 
@@ -40,19 +40,17 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
         content = request.POST.get('Content', None)
 
         if content is not None:
-          review_answer.objects.create(
+          comment.objects.create(
             content=content,
-            review_id=id
-          )
-          review.objects.filter(id=id).update(
-            answer_flag='1'
+            comment_id=id
           )
 
         return redirect('/seller/review')
 
+"""
 
 class ReviewEditView(LoginRequiredMixin, View):
-    template_name = 'review-post.html'
+    template_name = 'review_post.html'
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:
         context = {}
@@ -67,7 +65,6 @@ class ReviewEditView(LoginRequiredMixin, View):
           )
 
         return redirect('/seller/review')
-  
-#def get_question(id):
-    #return list(review.objects.filter(id=id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))'''
 """
+def get_review(id):
+    return list(comment.objects.filter(id=id).values('id', 'memeber__mem_name', 'product__name', 'content', 'rate', 'created_at'))

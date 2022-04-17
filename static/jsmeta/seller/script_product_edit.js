@@ -36,8 +36,9 @@ theme: 'snow'
 });
 
 var quillContent = document.getElementById('Productquill');
-
+console.log(quillContent.value);
 var delta_content = {}
+
 quill.setContents(JSON.parse(quillContent.value.replaceAll('True','true').replaceAll('\'','\"')));
 
 quill.on('text-change', function() {
