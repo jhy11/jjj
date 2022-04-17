@@ -1,5 +1,13 @@
 const btnEdit = document.getElementById('btnEdit');
 
+$('#ProductStock').TouchSpin({
+  min: 0,
+  max: 100,                
+  boostat: 5,
+  maxboostedstep: 10,        
+  initval: 0
+});
+
 let toolbarOptions = [
     [{ 'font': [] }],
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons

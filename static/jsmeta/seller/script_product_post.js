@@ -1,5 +1,22 @@
 const btnSubmit = document.getElementById('btnSubmit');
 
+
+document.getElementById('mainImg').onchange = function () {
+  let file = $('#mainImg')[0].files[0];
+  if (file){
+    document.getElementById('mainImg-label').innerText=file.name;
+  }
+};
+
+
+$('#ProductStock').TouchSpin({
+  min: 0,
+  max: 100,                
+  boostat: 5,
+  maxboostedstep: 10,        
+  initval: 0
+});
+
 let toolbarOptions = [
   [{ 'font': [] }],
   ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
@@ -22,20 +39,12 @@ let toolbarOptions = [
 let quill = new Quill('#editor-container', {
   modules: {
     toolbar: toolbarOptions,
-    imageResize: {
-      displaySize: true
-    },
+   
   },
   //placeholder: '상품 상세 설명을 작성해주세요.',
   theme: 'snow'
 });
 
-document.getElementById('mainImg').onchange = function () {
-  let file = $('#mainImg')[0].files[0];
-  if (file){
-    document.getElementById('mainImg-label').innerText=file.name;
-  }
-};
 var quillContent = document.getElementById('Productquill');
 
 var delta_content = {}
@@ -69,8 +78,9 @@ function changeImage(input) {
 }
 
 btnSubmit.addEventListener('click', async() => {
-
+    console.log("click");
     const formData = new FormData(document.getElementById('uploadImgForm'));
+    console.log(formData);
     formData.append('ProductCategoryId', document.getElementById('ProductCategoryId').value);
     formData.append('ProductName', document.getElementById('ProductName').value);
     formData.append('ProductPrice', document.getElementById('ProductPrice').value);
@@ -103,11 +113,3 @@ btnSubmit.addEventListener('click', async() => {
         console.log(result.Content);
     }
 })
-
-$('#ProductStock').TouchSpin({
-  min: 0,
-  max: 100,                
-  boostat: 5,
-  maxboostedstep: 10,        
-  initval: 0
-});

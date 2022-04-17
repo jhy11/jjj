@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import info_delivery_views, info_shortdelivery_views, info_takeout_views, info_seller_views, \
-                info_product_views, info_qna_views, info_cancel_views, info_refund_views, info_product_approval_views
+                info_product_views, info_qna_views, info_cancel_views, info_refund_views, info_product_approval_views,info_review_views
 
 app_name = 'seller'
 
@@ -25,7 +25,7 @@ urlpatterns=[
     path('cancel-table', info_cancel_views.CancelTableView.as_view(), name='cancel-table'),
 
     path('refund', info_refund_views.RefundView.as_view(), name='refund'),
-    path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),
+    #path('refund-table', info_refund_views.RefundTableView.as_view(), name='refund-table'),
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
     path('product-approval', info_product_approval_views.ApprovalView.as_view(), name='product-approval'),
@@ -46,6 +46,6 @@ urlpatterns=[
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),
     path('qna-post/<str:id>', info_qna_views.QnaPostView.as_view(), name='qna-post'),
     path('qna-edit/<str:id>', info_qna_views.QnaEditView.as_view(), name='qna-edit'),
-    #path('review', info_review_views.ReviewView.as_view(), name='review'),
+    path('review', info_review_views.ReviewView.as_view(), name='review'),
 
 ]

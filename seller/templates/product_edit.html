@@ -24,7 +24,7 @@
 
 <div class="container-fluid" id="container-wrapper">
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 pl-2 text-gray-800">판매 상품 등록</h1>
+    <h1 class="h3 pl-2 text-gray-800">판매 상품 수정</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
       <li class="breadcrumb-item">판매자페이지</li>
@@ -50,71 +50,73 @@
         </form>
       </div>
     </div>
-  </div>
-  <div class="col-md-12">
-    <div class="card mb-4">
-      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-        <h6 class="m-2 font-weight-bold text-primary">상품 정보</h6>
-      </div>
-      <div class="card-body pt-0">
-        <form class="row needs-validation p-2" id="uploadForm" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="row col-md-12 mb-4">
-            <label class="form-label" for="ProductCategoryId">상품 카테고리</label>
-            <select class="form-control" id="ProductCategoryId" name="ProductCategoryId" required>
-              {% if ProCategories %}
-              <option value="" disabled selected>상품 카테고리 선택</option>
-              <option value="{{product.pro_category.id}}" selected>{{product.pro_category.name}}</option>
-              {% for i in ProCategories %}
-              <option value="{{i.id}}">{{i.name}}</option>
-              {% endfor %}
-              {% endif %}
-            </select>
-            <div class="valid-feedback">Complete</div>
-          </div>
-          <div class="row col-md-12 mb-4">
-            <label class="form-label col-md-2 pt-2" for="ProductName">상품명</label>
-            <input class=" form-control" id="ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요."
-                value="{{product.name}}" required />
-            <div class="valid-feedback">Complete</div>
-          </div>
-          <div class="row col-md-12 mb-4">
-            <label class="form-label col-md-2 pt-2" for="ProductPrice">가격</label>
-            <input class="form-control" id="ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요."
-              value="{{product.price}}" required />
-            <div class="valid-feedback">Complete</div>
-          </div>
-          <div class="row col-md-12 mb-4">
-            <label class="form-label col-md-2 pt-2" for="ProductStock">재고</label>
-            <input class="form-control" id="ProductStock" name="ProductStock" type="text" placeholder="상품 재고를 입력하세요."
-              value="{{product.stock}}" required />
-            <div class="valid-feedback">Complete</div>
-          </div>
-          <div class="row col-md-12 mb-4">
-            <label class="form-label col-md-2 pt-2" for="ProductDescription">상품설명</label>
-            <input class="form-control" id="ProductDescription" name="ProductDescription" type="text"
-              placeholder="상품 상세 설명을 입력하세요." value="{{product.description}}" required />
-            <div class="valid-feedback">Complete</div>
-          </div>
-          <input class="form-control" id="ProductId" name="ProductId" value="{{product.id}}" type="hidden">
-          <div class="row">
-            <div class="col">
-              <div class="card-header pb-0">
-                <h5 class="m-0 font-weight-bold text-primary"></h5>
-                <p><b>상품의 상세 설명</b>을 작성해주세요.</p>
+  
+    <div class="col-md-12">
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-2 font-weight-bold text-primary">상품 정보</h6>
+        </div>
+        <div class="card-body pt-0">
+          <form class="row needs-validation p-2" id="uploadForm" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row col-md-12 mb-4">
+              <label class="form-label col-md-2 pt-2" for="ProductCategoryId">상품 카테고리</label>
+              <select class="form-control col-md-6" id="ProductCategoryId" name="ProductCategoryId" required>
+                {% if ProCategories %}
+                <option value="" disabled selected>상품 카테고리 선택</option>
+                <option value="{{product.pro_category.id}}" selected>{{product.pro_category.name}}</option>
+                {% for i in ProCategories %}
+                <option value="{{i.id}}">{{i.name}}</option>
+                {% endfor %}
+                {% endif %}
+              </select>
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <label class="form-label col-md-2 pt-2" for="ProductName">상품명</label>
+              <input class=" form-control col-md-3" id="ProductName" name="ProductName" type="text" placeholder="상품명을 입력하세요."
+                  value="{{product.name}}" required />
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <label class="form-label col-md-2 pt-2" for="ProductPrice">가격</label>
+              <input class="form-control col-md-3" id="ProductPrice" name="ProductPrice" type="text" placeholder="상품 가격을 입력하세요."
+                value="{{product.price}}" required />
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <label class="form-label col-md-2 pt-2" for="ProductStock">재고</label>
+              <div class="form-group">
+                <input class="form-control col-md-3" id="ProductStock" name="ProductStock" type="text" placeholder="재고를 입력하세요." required/>
               </div>
-              <div class="card-body pt-0">
-                <div id="editor-container" class="container"></div>
-                <input class="form-control" id="Productquill" name="Productquill" value="{{product.content.delta}}"
-                  type="hidden">
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <label class="form-label col-md-2 pt-2" for="ProductDescription">상품설명</label>
+              <input class="form-control col-md-3" id="ProductDescription" name="ProductDescription" type="text"
+                placeholder="상품 상세 설명을 입력하세요." value="{{product.description}}" required />
+              <div class="valid-feedback">Complete</div>
+            </div>
+            <input class="form-control" id="ProductId" name="ProductId" value="{{product.id}}" type="hidden">
+            <div class="row">
+              <div class="col">
+                <div class="card-header pb-0">
+                  <h5 class="m-0 font-weight-bold text-primary"></h5>
+                  <p><b>상품의 상세 설명</b>을 작성해주세요.</p>
+                </div>
+                <div class="card-body pt-0">
+                  <div id="editor-container" class="container"></div>
+                  <input class="form-control" id="Productquill" name="Productquill" value="{{product.content.delta}}"
+                    type="hidden">
 
-                <div class="py-4 px-5">
-                  <button type="button" class="btn btn-outline-primary pb-1 btn-edit" id="btnEdit">수정</button>
-                  <button type="button" class="btn btn-outline-danger pb-1">취소</button>
+                  <div class="py-4 px-5">
+                    <button type="button" class="btn btn-outline-primary pb-1 btn-edit" id="btnEdit">수정</button>
+                    <button type="button" class="btn btn-outline-danger pb-1">취소</button>
+                  </div>
                 </div>
               </div>
-            </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>

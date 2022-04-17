@@ -18,7 +18,7 @@ class SellerProductView(LoginRequiredMixin, View):
     판매자 상품 관리 
     '''
     template_name = 'seller_info.html' 
-   
+
     def get(self, request: HttpRequest, *args, **kwargs):
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
