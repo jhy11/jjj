@@ -104,6 +104,7 @@ class order_product(BaseModel):
     order = models.ForeignKey(order, on_delete=models.CASCADE, verbose_name='order', default=1)
     amount = models.IntegerField(db_column='amount', blank=True, null=True)
     status = models.CharField(db_column='status', max_length=50, blank=True, null=True)
+    review_flag = models.CharField(db_column='review_flag', max_length=10, blank=True, null=True, default='0')
  
     class Meta:
             db_table = 'order-product'
@@ -151,8 +152,8 @@ class payment(BaseModel):
 class comment(BaseModel):
     comment_img = models.ImageField(blank=True, null=True, upload_to='comment/main')
     member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
-    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
-    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    product = models.ForeignKey(order_product, on_delete=models.CASCADE, verbose_name='product', default=1)
+    content = models.TextField(db_column='content', blank=True, null=True)
     rate = models.CharField(db_column='rate', max_length=50, blank=True, null=True)
     reply_flag = models.CharField(db_column='reply_flag', max_length=10, blank=True, null=True, default='0')
 
