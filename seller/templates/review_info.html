@@ -10,7 +10,7 @@
 {% block content %}
 <div class="container-fluid" id="container-wrapper"> 
   <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 pl-2 text-gray-800">문의 관리</h1>
+    <h1 class="h3 pl-2 text-gray-800">리뷰 관리</h1>
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
       <li class="breadcrumb-item">문의/리뷰 관리</li>
@@ -57,22 +57,29 @@
                 <th>리뷰</th>
                 <th>별점</th>
                 <th>날짜</th>
+                <th>답변 여부</th>
               </tr>
             </thead>
             <tbody class="list" id="list-order">
               {% if reviews %} 
               {% for i in reviews %}
               <tr class="list-order-row" onclick="location.href='/seller/review-post/{{i.id}}'">
-                <td class="align-middle" id="Product">{{ i.product__name }}</td>
-                <td class="align-middle" id="MemName">{{ i.memeber__mem_name }}</td>
+                <td class="align-middle" id="Product">{{ i.orderproduct__product__name }}</td>
+                <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Content">{{ i.content }}</td>
                 <td class="align-middle" id="Rate">{{ i.rate }}</td>
                 <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d h:m' }}</td>
+                <td class="align-middle status" id="Flag" value='{{i.reply_flag}}'>
+                  {% if i.reply_flag == '1' %} 답변완료
+                  {% else %}미답변
+                  {% endif %}
+                </td>
               </tr>
               {% endfor %} 
               {% else %}
               <tr>
                 <td class="align-middle">Data does not exist.</td>
+                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -87,6 +94,7 @@
                 <th>리뷰</th>
                 <th>별점</th>
                 <th>날짜</th>
+                <th>답변 여부</th>
               </tr>
             </tfoot>
           </table>
@@ -94,6 +102,65 @@
       </div>
     </div>
   </div>
+  
+  <div class="row">
+    <div class="col">
+      <div class="card mb-3 p-3">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">답변 완료 리뷰</h6>
+        </div>
+        <div class="table-responsive p-3" id="aaa">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover-answered">
+            <thead class="thead-light">
+              <tr>
+                <th>상품명</th>
+                <th>회원명</th>
+                <th>리뷰</th>
+                <th>별점</th>
+                <th>날짜</th>
+                <th>답변 여부</th>
+              </tr>
+            </thead>
+            <tbody class="list" id="list-order">
+              {% if reviews %} 
+              {% for i in reviews %}
+              <tr class="list-order-row" onclick="location.href='/seller/review-post/{{i.id}}'">
+                <td class="align-middle" id="Product">{{ i.orderproduct__product__name }}</td>
+                <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
+                <td class="align-middle" id="Content">{{ i.content }}</td>
+                <td class="align-middle" id="Rate">{{ i.rate }}</td>
+                <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d h:m' }}</td>
+                <td class="align-middle status" id="Flag" value='{{i.reply_flag}}'></td>
+              </tr>
+              {% endfor %} 
+              {% else %}
+              <tr>
+                <td class="align-middle">Data does not exist.</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              {% endif %}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>상품명</th>
+                <th>회원명</th>
+                <th>리뷰</th>
+                <th>별점</th>
+                <th>날짜</th>
+                <th>답변 여부</th>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
  
 

@@ -34,7 +34,7 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ review.product__name }}</td>
+                  <td>{{ review.orderproduct__product__name }}</td>
                   <td>{{ review.member__mem_name }}</td>
                   <td>{{ review.content }}</td>
                   <td>{{ review.rate }}</td>
@@ -42,6 +42,9 @@
                 </tr>
               </tbody>
             </table>
+          </div>
+          <div class="py-4 px-5">
+            <img src="{{review.comment_img.url}}" width="300" height="400"><br>
           </div>
         </div>
       </div>
@@ -55,9 +58,9 @@
             class="row g-3 needs-validation"
             novalidate=""
             {% if answer %}
-            action="/seller/qna-edit/{{answer.id}}"
+            action="/seller/review-edit/{{answer.id}}"
             {% else %}
-            action="/seller/qna-post/{{question.id}}"
+            action="/seller/review-post/{{review.id}}"
             {% endif %}
             method="post"
             enctype="multipart/form-data"

@@ -5,7 +5,7 @@ from typing import Any, Dict
 from datetime import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from management.models import comment
+from management.models import comment,comment_reply
 
 
 class ReviewView(LoginRequiredMixin, View):
@@ -17,8 +17,8 @@ class ReviewView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['reviews'] = comment.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id).values('id', 'memeber__mem_name', 'product__name', 'content', 'rate', 'created_at')
-        #context['answered_questions'] = qna.objects.filter(product_id__shop_id__manager_id__user_id=request.user.id, answer_flag='1').values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
+        context['reviews'] = comment.objects.filter(orderproduct_id__product_id__shop_id__manager_id__user_id=request.user.id).values('id', 'member__mem_name', 'orderproduct__product__name', 'content', 'rate', 'created_at','comment_img','reply_flag')
+        context['answered_questions'] = comment.objects.filter(orderproduct_id__product_id__shop_id__manager_id__user_id=request.user.id, reply_flag='1').values('id', 'member__mem_name', 'orderproduct__product__name', 'content', 'rate', 'created_at','comment_img','reply_flag')
 
         return render(request, self.template_name, context)
 
@@ -27,11 +27,15 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = {}
-        review = get_review(kwargs.get('id'))
+        if self.request.user.is_staff:
+            context['staff'] = True
+        if self.request.user.groups.filter(name='seller').exists():
+            context['seller'] = True
+      
+        review = get_review(kwargs.get('id'), self.request.user.id)
 
         context['review'] = review[0]
-        #context['answer'] = list(comment.objects.filter(comment__id=kwargs.get('id')).values('id', 'content'))[0]
-
+        context['answer'] = list(comment_reply.objects.filter(comment_id=kwargs.get('id')).values('id', 'content'))[0]
         return context
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:
@@ -40,14 +44,17 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
         content = request.POST.get('Content', None)
 
         if content is not None:
-          comment.objects.create(
+          comment_reply.objects.create(
             content=content,
             comment_id=id
+          )
+          comment.objects.filter(id=id).update(
+            reply_flag='1'
           )
 
         return redirect('/seller/review')
 
-"""
+
 
 class ReviewEditView(LoginRequiredMixin, View):
     template_name = 'review_post.html'
@@ -59,12 +66,12 @@ class ReviewEditView(LoginRequiredMixin, View):
 
         if content is not None:
           # update content of answer
-          comment.objects.filter(id=id).update(
+          comment_reply.objects.filter(id=id).update(
             content=content,
             updated_at=datetime.now(),
           )
 
         return redirect('/seller/review')
-"""
-def get_review(id):
-    return list(comment.objects.filter(id=id).values('id', 'memeber__mem_name', 'product__name', 'content', 'rate', 'created_at'))
+
+def get_review(id, user_id):
+    return list(comment.objects.filter(id=id).values('id', 'member__mem_name', 'orderproduct__product__name', 'content', 'rate', 'created_at','comment_img','reply_flag'))
