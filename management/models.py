@@ -150,7 +150,7 @@ class payment(BaseModel):
 #후기
 class comment(BaseModel):
     comment_img = models.ImageField(blank=True, null=True, upload_to='comment/main')
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     rate = models.CharField(db_column='rate', max_length=50, blank=True, null=True)
@@ -158,7 +158,13 @@ class comment(BaseModel):
     class Meta:
             db_table = 'comment'
 
+#후기 답변
+class comment_reply(BaseModel):
+    comment = models.ForeignKey(comment, on_delete=models.CASCADE, verbose_name='comment', default=1)
+    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
 
+    class Meta:
+            db_table = 'comment_reply'
             
 #장바구니
 class cart(BaseModel):
