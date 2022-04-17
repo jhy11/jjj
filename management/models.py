@@ -140,7 +140,7 @@ class qna_answer(BaseModel):
 
 #결제
 class payment(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     pay_method = models.CharField(db_column='pay_method', max_length=50, blank=True, null=True)
 
     class Meta:
@@ -161,7 +161,7 @@ class comment(BaseModel):
             
 #장바구니
 class cart(BaseModel):
-    memeber = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='memeber', default=1)
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
 
     class Meta:
             db_table = 'cart'
