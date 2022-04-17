@@ -158,7 +158,13 @@ class comment(BaseModel):
     class Meta:
             db_table = 'comment'
 
+#후기 답변
+class comment_reply(BaseModel):
+    comment = models.ForeignKey(comment, on_delete=models.CASCADE, verbose_name='comment', default=1)
+    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
 
+    class Meta:
+            db_table = 'comment_reply'
             
 #장바구니
 class cart(BaseModel):
