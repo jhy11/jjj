@@ -154,6 +154,7 @@ class comment(BaseModel):
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     rate = models.CharField(db_column='rate', max_length=50, blank=True, null=True)
+    reply_flag = models.CharField(db_column='reply_flag', max_length=10, blank=True, null=True, default='0')
 
     class Meta:
             db_table = 'comment'
