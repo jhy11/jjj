@@ -19,29 +19,53 @@
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <div class="card mb-4">
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
         <div class="card-header d-flex flex-row align-items-center justify-content-between">
           <h6 class="m-2 font-weight-bold text-primary">대표 이미지</h6>
         </div>
-        <div class="py-4 px-5">
+        <div class="card-body pt-0">
           <img src="{{product.main_img.url}}" width="300" height="400"><br>
         </div>
       </div>
     </div>
-
-    <div class="col-md-12">
-      <div class="card mb-4">
-        <div class="card-body pt-0">
-          <div class ="needs-validation px-3 pt-3 pb-4">
-            <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_category.name}}</div>
-            <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
-            <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
-            <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
-            <div class="py-4 px-5">상세 설명<span class="py-4 px-5"></span>{{product.description}}</div>
-          </div>
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-2 font-weight-bold text-primary">상품 설명</h6>
         </div>
         <div class="card-body pt-0">
+          <div class ="needs-validation px-1 pt-3 pb-4">
+            <div class="row col-md-12 mb-4">
+              <div class="col-md-4 font-weight-bold">상품 카테고리</div>
+              <div class="col-md-8">{{product.pro_category.name}}</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <div class="col-md-4 font-weight-bold">상품명</div>
+              <div class="col-md-8">{{product.name}}</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <div class="col-md-4 font-weight-bold">상품 가격</div>
+              <div class="col-md-8">{{product.price}}</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <div class="col-md-4 font-weight-bold">재고</div>
+              <div class="col-md-8">{{product.stock}}</div>
+            </div>
+            <div class="row col-md-12 mb-4">
+              <div class="col-md-4 font-weight-bold">상품 설명</div>
+              <div class="col-md-8">{{product.description}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mb-4">
+      <div class="card">
+        <div class="card-header d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-2 font-weight-bold text-primary">상세 설명</h6>
+        </div>
+        <div class="card-body ">
           <div id="editor-container" class="container">
             {{ product.content.html | safe }}
           </div>
