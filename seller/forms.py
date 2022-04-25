@@ -12,8 +12,9 @@ class ProjectForm(forms.Form):
 class ProjectSecondForm(forms.ModelForm):
     class Meta:
         model = product
-        
+      
         exclude = ['DeleteFlag', 'shop', 'deleted_at']
+      
         labels = {
             'pro_category': '상품카테고리',
             'name': '상품명',
@@ -27,12 +28,6 @@ class ProjectSecondForm(forms.ModelForm):
         widgets = { 
             'status': forms.HiddenInput(attrs={'value': 0}),
          } 
+       
 
       
-
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = product
-        fields = ['main_img']
-   
-

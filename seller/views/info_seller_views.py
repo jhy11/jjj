@@ -14,7 +14,7 @@ import os,io
 from django.core.files.base import ContentFile
 from django.shortcuts import render
 from management.models import product
-from seller.forms import ProjectForm,ProjectSecondForm, ImageForm
+from seller.forms import ProjectForm,ProjectSecondForm
 
 from management.models import member, product, pro_category, shop
 class ProductImageView(LoginRequiredMixin, View):
@@ -53,16 +53,19 @@ class ProductDetailView(LoginRequiredMixin, View):
     '''
     template_name = 'product_detail.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
-        id = kwargs.get('id')
-        seller_product = product.objects.get(id=id)
         context={}
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['product'] = seller_product
+        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['product'] = product.objects.filter(DeleteFlag='0')
 
-        #return JsonResponse(context, content_type='application/json')
+        pk = kwargs.get('id')
+        eachProduct =  product.objects.get(id=pk)
+        print(eachProduct)
+        
+        context["eachProduct"] = eachProduct
        
         return render(request, self.template_name,  context)
 
@@ -73,9 +76,7 @@ class ProductPostView(LoginRequiredMixin, View):
     template_name = 'product_post.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         context={}
-
         
-
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
@@ -85,9 +86,6 @@ class ProductPostView(LoginRequiredMixin, View):
         secondform = ProjectSecondForm
         imageform =  ImageForm
 
-        obj = product.objects.get(pk =238)
-        context['obj'] =obj
-        print(obj)
         context['secondform'] = secondform
         context['imageform'] = imageform
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
@@ -96,7 +94,6 @@ class ProductPostView(LoginRequiredMixin, View):
    
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
-        print(request.POST)
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
         secondform = ProjectSecondForm(request.POST, request.FILES,)
@@ -106,74 +103,52 @@ class ProductPostView(LoginRequiredMixin, View):
       
         context['secondform'] = secondform
         context['success']=True
-        return render(request, 'product_image.html', context)
+        return render(request, self.template_name, context)
 
 class ProductEditView(LoginRequiredMixin, View):
     '''
     상품 수정
     '''
     template_name = 'product_edit.html' 
+
     def get(self, request: HttpRequest, *args, **kwargs):
-        id = kwargs.get('id')
-     
         context={}
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
-        context['product'] = product.objects.get(id=id)
-
-        return render(request, self.template_name, context)
+        context['product'] = product.objects.filter(DeleteFlag='0')
+        
+        pk = kwargs.get('id')
+        order = get_object_or_404(product, id=pk)
+        secondform = ProjectSecondForm(instance = order)
+        
+        context["secondform"] = secondform
+       
+        return render(request, self.template_name,  context)
         
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
-        ProductId = request.POST.get('ProductId')
-        mainImg = request.FILES.getlist('mainImg')
+        memberId = member.objects.get(user=request.user).id
+        memberShopId  = shop.objects.get(manager__id=memberId).id
+        pk = kwargs.get('id')
+        order = get_object_or_404(product, id=pk)
+      
+        secondform = ProjectSecondForm(request.POST, request.FILES, instance=order)
+        if secondform.is_valid():
+            secondform.save()
+            return redirect('seller:product-approval')
+           
+        context['secondform'] = secondform
+        return render(request,self.template_name, context)
 
-        ProductCategoryId = request.POST.get('ProductCategoryId')
-        ProductCategory = pro_category.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
-        Name = request.POST.get('ProductName')
-        Price = request.POST.get('ProductPrice')
-        Stock = request.POST.get('ProductStock')
-        Description = request.POST.get('ProductDescription')
-        Content = request.POST.get('Content')
-        
+class ProductDeleteView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, *args, **kwargs):
+        pk = kwargs.get('id')
+        product.objects.get(id=pk).delete()
+        return redirect('seller:product-approval')
 
-        if ProductId is None:
-            context['success'] = False
-            return JsonResponse(context, content_type='application/json')
 
-        if not mainImg:
-            product.objects.filter(id=ProductId).update(
-                pro_category=ProductCategory,      
-                name = Name,
-                price = Price,
-                stock = Stock,
-                description = Description,
-                content = Content,
-                )
-        else:
-            for image in mainImg:
 
-                fileSystem = FileSystemStorage(location='media/product/main')
-                uploadImgName = fileSystem.get_available_name(image.name)
-                fileSystem.save(uploadImgName, image)
-
-                image_url = "product/main/" + uploadImgName
-    
-                product.objects.filter(id=ProductId).update(
-                    pro_category=ProductCategory,      
-                    name = Name,
-                    price = Price,
-                    stock = Stock,
-                    description = Description,
-                    main_img = image_url,
-                    content = Content,
-                    )
-
-        context['success'] = True
-        context['productId'] = ProductId
-        context['Content'] = Content
-        return JsonResponse(context, content_type='application/json')
 

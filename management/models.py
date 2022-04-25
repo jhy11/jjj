@@ -71,9 +71,12 @@ class product(BaseModel):
     content = QuillField(blank=True, null=True)
     #image = models.CharField(db_column='image', max_length=1024, blank=True, null=True)
     #image_type = models.CharField(db_column='image_type', max_length=50)
-    
+  
+
     class Meta:
         db_table = 'product'
+
+    
 
     
     

@@ -4,6 +4,7 @@ from . import views
 from .views import info_delivery_views, info_shortdelivery_views, info_takeout_views, info_seller_views, \
                 info_product_views, info_qna_views, info_cancel_views, info_refund_views, info_product_approval_views,info_review_views
 
+
 app_name = 'seller'
 
 urlpatterns=[
@@ -40,8 +41,8 @@ urlpatterns=[
     path('product-detail/<str:id>', info_seller_views.ProductDetailView.as_view(), name='product-detail'),
     path('product-post', info_seller_views.ProductPostView.as_view(), name='product-post'),
     path('product-edit/<str:id>', info_seller_views.ProductEditView.as_view(), name='product-edit'),
+    path('product-delete/<str:id>', info_seller_views.ProductDeleteView.as_view(), name='product-delete'),
     path('product-edit-submit', info_seller_views.ProductEditView.as_view(), name='product-edit-submit'),
-    path('product-image',info_seller_views.ProductImageView.as_view(), name='product-image'),
   
 
     #문의/리뷰
