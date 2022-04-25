@@ -29,9 +29,9 @@ class CancelTableView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         user_id=request.user.id
 
-        CancelRequested = get_cancellation(user_id, constants.CANCEL_RECEIVED),
-        CancelProcessing = get_cancellation(user_id, constants.CANCEL_PROCESSING),
-        Canceled = get_cancellation(user_id, constants.CANCELED),
+        CancelRequested = get_cancellation(user_id, constants.CANCEL_RECEIVED)
+        CancelProcessing = get_cancellation(user_id, constants.CANCEL_PROCESSING)
+        Canceled = get_cancellation(user_id, constants.CANCELED)
 
         cancel=[] 
         canceled=[]

@@ -31,7 +31,7 @@
                 {% if ShopCategories %}
                 <option value="" disabled selected>점포 카테고리를 선택하세요.</option>
                 {% for i in ShopCategories %}
-                <option value="{{i.name}}">{{i.name}}</option>
+                <option value="{{i.id}}">{{i.name}}</option>
                 {% endfor %}
                 {% endif %}
               </select>
@@ -48,7 +48,7 @@
                 {% if Sellers %}
                 <option value="" disabled selected>담당자 아이디를 선택하세요.</option>
                 {% for i in Sellers %}
-                <option value="{{i.user.username}}">{{i.user.username}}</option>
+                <option value="{{i.id}}">{{i.user.username}}</option>
                 {% endfor %}
                 {% endif %}
               </select>

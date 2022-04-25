@@ -12,8 +12,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
     'ajax': {
       'type' : 'GET',
-      'url': '/seller/drivethru-table',
-      'dataSrc': 'delivered'
+      'url': '/seller/cancel-table',
+      'dataSrc': 'cancel'
     },
     columnDefs: [
       {
@@ -103,6 +103,24 @@ document.addEventListener("DOMContentLoaded", function(){
     let status_info = $("input[name='status1']:checked").val();
     table_cancel.columns(4).search( status_info ).draw();
   });
+});
+
+$('#dataTableHover-cancel').on('change', 'input[type="checkbox"]', async function(){
+  let id = $(this).attr('id');
+
+  const url = '/seller/cancel?id=' + encodeURIComponent(id);
+  const response = await fetch(url,{
+    method: 'PUT',
+    headers:{'X-CSRFToken': getCookie('csrftoken')},
+    body: JSON.stringify({
+      id: $(this).attr('id'),
+    })
+  })
+  .catch((error)=>{
+    alert(error);
+  });
+
+  const result = await response.json();
 });
 
 function showStatus(status){
