@@ -30,7 +30,7 @@ urlpatterns=[
 
     path('seller-product', info_seller_views.SellerProductView.as_view(), name='seller-product'),
     path('product-approval', info_product_approval_views.ApprovalView.as_view(), name='product-approval'),
-    path('product-reapply', info_product_approval_views.ReapplyView.as_view(), name='product-reapply'),
+    #path('product-reapply', info_product_approval_views.ReapplyView.as_view(), name='product-reapply'),
     path('product-stop', info_product_views.ProductstoppedView.as_view(), name='product-stop'),
     
     
@@ -42,6 +42,7 @@ urlpatterns=[
     path('product-post', info_seller_views.ProductPostView.as_view(), name='product-post'),
     path('product-edit/<str:id>', info_seller_views.ProductEditView.as_view(), name='product-edit'),
     path('product-delete/<str:id>', info_seller_views.ProductDeleteView.as_view(), name='product-delete'),
+    path('product-reapply/<str:id>', info_seller_views.ProductReapplyView.as_view(), name='product-reapply'),
     path('product-edit-submit', info_seller_views.ProductEditView.as_view(), name='product-edit-submit'),
   
 

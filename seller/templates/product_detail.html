@@ -21,38 +21,26 @@
   <div class="row justify-content-center">
     <div class="col-md-8">
       
-        <div class="card m-5 p-2" style="width: 25rem;">
+        <div class="card m-5 p-2" style="width: 40rem;">
             <img src="{{ eachProduct.main_img.url }}" class="card-img-top" alt="...">
             <div class="card-body">
                 <p style="font-size: 14px;" class="btn btn-warning m-1 p-1">{{ eachProduct.pro_category.name }}</p>
-                <h5 class="card-title m-1"><b>Name:</b> {{ eachProduct.name }}</h5>
-                <h4 class="card-subtitle m-1"><b>Price:</b> {{ eachProduct.price }}원</h4>
+                <h5 class="card-title m-1"><b>상품명:</b> {{ eachProduct.name }}</h5>
+                <h4 class="card-subtitle m-1"><b>가격:</b> {{ eachProduct.price }}원</h4>
                 <hr>
-                <p style="font-size: 15px;" class="card-text mt-1">Stock: {{ eachProduct.stock}}</p>
-                <p style="font-size: 15px;" class="card-text mt-1">Description: {{ eachProduct.description}}</p>
-                <p style="font-size: 13px;" class="cart-text mt-1">Content: {{eachProduct.content.html | safe}}</p>
+                <p style="font-size: 15px;" class="card-text mt-1">재고: {{ eachProduct.stock}}</p>
+                <p style="font-size: 15px;" class="card-text mt-1">상세설명: {{ eachProduct.description}}</p>
+                <p style="font-size: 13px;" class="cart-text mt-1">내용: {{eachProduct.content.html | safe}}</p>
+                {% if eachProduct.status != '3' %}
                 <a href="{% url 'seller:product-delete' eachProduct.id %}" class="btn btn-danger m-1"> 삭제 </a>
+                {% endif %}
                 <a href="{% url 'seller:product-edit' eachProduct.id %}" class="btn btn-primary m-1"> 수정 </a>
+                {% if eachProduct.status == '2' %}
+                <a href="{% url 'seller:product-reapply' eachProduct.id %}" class="btn btn-success m-1"> 재신청 </a>
+                {% endif %}
                 <a href="{% url 'seller:product-approval' %}" class="btn btn-dark m-1"> 목록 </a>
             </div>
         </div>
-    </div>
- 
-    <div class="col-md-12 mb-4">
-      <div class="card">
-        <div class="card-body ">
-          <div class="py-4 px-5">
-              {% if product.status != '3' %}
-              <button type="button" class="btn btn-outline-primary pb-1 btn-edit" onclick="location.href='/seller/product-edit/{{product.id}}'">수정</button>
-              {% endif %}
-              <button type="button" class="btn btn-outline-danger pb-1" id="btnDelete" data-id="{{ product.id }}">삭제</button>
-              {% if product.status == '2' %}
-              <button type="button" class="btn btn-outline-success pb-1" id="btnReapply" data-id="{{ product.id }}">재신청</button>
-              {% endif %}
-              <button type="button" class="btn btn-outline-dark pb-1" onclick="location.href='/seller/product-approval'">목록</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -62,7 +50,5 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-<script src="{% static 'jsmeta/seller/script_product_delete.js' %}"></script>
-<script src="{% static 'jsmeta/seller/script_product_reapply.js' %}"></script>
 
 {% endblock javascripts %}

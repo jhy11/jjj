@@ -63,7 +63,6 @@ class ProductDetailView(LoginRequiredMixin, View):
 
         pk = kwargs.get('id')
         eachProduct =  product.objects.get(id=pk)
-        print(eachProduct)
         
         context["eachProduct"] = eachProduct
        
@@ -84,10 +83,8 @@ class ProductPostView(LoginRequiredMixin, View):
         
         form = ProjectForm()
         secondform = ProjectSecondForm
-        imageform =  ImageForm
 
         context['secondform'] = secondform
-        context['imageform'] = imageform
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
 
         return render(request, self.template_name, context)
@@ -100,6 +97,7 @@ class ProductPostView(LoginRequiredMixin, View):
         
         if secondform.is_valid():
             post = secondform.save()
+            return redirect('seller:product-approval')
       
         context['secondform'] = secondform
         context['success']=True
@@ -148,6 +146,15 @@ class ProductDeleteView(LoginRequiredMixin, View):
         pk = kwargs.get('id')
         product.objects.get(id=pk).delete()
         return redirect('seller:product-approval')
+
+class ProductReapplyView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest, *args, **kwargs):
+        pk = kwargs.get('id')
+        product.objects.filter(id=pk).update(
+            status = constants.REQUESTED
+        )
+        return redirect('seller:product-approval')
+
 
 
 

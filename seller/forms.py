@@ -22,7 +22,7 @@ class ProjectSecondForm(forms.ModelForm):
             'stock': '재고 보유량',
             'description': '상세설명',
             'content': '내용',
-            'main_img': '대표이미지',
+            'main_img': '대표이미지(사진첨부필수)',
 
         }
         widgets = { 
