@@ -3,6 +3,7 @@ from django.db.models.deletion import CASCADE
 from config.models import BaseModel
 from django.contrib.auth.models import User
 from django_quill.fields import QuillField
+from PIL import Image
 
 
 #회원등급
@@ -54,8 +55,11 @@ class pro_category(BaseModel):
             db_table = 'pro_category'
 
 
+    
+
 #상품
 class product(BaseModel):
+    main_img = models.ImageField(blank=True, null=True, upload_to='product/main')
     pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='pro_category', default=1)
     shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='shop', default=1)
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
@@ -65,12 +69,15 @@ class product(BaseModel):
     # comment = models.CharField(db_column='comment', max_length=50, blank=True, null=True) #short comment
     description = models.TextField(db_column='description',blank=True, null=True)
     content = QuillField(blank=True, null=True)
-    main_img = models.ImageField(blank=True, null=True, upload_to='product/main')
     #image = models.CharField(db_column='image', max_length=1024, blank=True, null=True)
     #image_type = models.CharField(db_column='image_type', max_length=50)
     
     class Meta:
         db_table = 'product'
+
+    
+    
+
 
 #상품옵션
 class option(BaseModel):

@@ -1,0 +1,48 @@
+{% extends 'layouts/base.html' %} {% load static %}
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+<!--quil-->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Bootstrap Touchspin -->
+<link href="{% static 'vendor/bootstrap-touchspin/css/jquery.bootstrap-touchspin.css' %}" rel="stylesheet" >
+
+<style>
+  .custom-file-input:lang(en)~.custom-file-label::after {
+    content: "파일 선택" !important;
+  }
+  .ql-editor{
+    min-height: 300px;
+    font-size: 16px;
+  }
+</style>
+{% endblock stylesheets %}
+{% block content %}
+
+
+<div>
+    <h1> This is my blog</h1>
+    <h2>{{secondform.name}}</h2>
+    <h2>{{secondform.price}}</h2>
+    <h2>{{secondform.stock}}</h2>
+    <h2>{{secondform.description}}</h2>
+    {{secondform.content| safe}}
+    <img src="{{secondform.main_img.url}}">
+  
+
+
+    
+    
+
+   
+   
+</div>
+    
+  
+{% endblock content %}
+{% block javascripts %}
+<!-- Bootstrap Touchspin -->
+<script src="{% static 'vendor/bootstrap-touchspin/js/jquery.bootstrap-touchspin.js' %}"></script>
+<!--Quil-->
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+{% endblock javascripts %}

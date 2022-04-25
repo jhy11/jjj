@@ -41,6 +41,8 @@ urlpatterns=[
     path('product-post', info_seller_views.ProductPostView.as_view(), name='product-post'),
     path('product-edit/<str:id>', info_seller_views.ProductEditView.as_view(), name='product-edit'),
     path('product-edit-submit', info_seller_views.ProductEditView.as_view(), name='product-edit-submit'),
+    path('product-image',info_seller_views.ProductImageView.as_view(), name='product-image'),
+  
 
     #문의/리뷰
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),

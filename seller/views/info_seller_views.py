@@ -9,9 +9,21 @@ from django.views.generic.base import View
 from django.core.files.storage import FileSystemStorage, default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import constants
+from PIL import Image
+import os,io
+from django.core.files.base import ContentFile
+from django.shortcuts import render
+from management.models import product
+from seller.forms import ProjectForm,ProjectSecondForm, ImageForm
 
 from management.models import member, product, pro_category, shop
+class ProductImageView(LoginRequiredMixin, View):
+    template_name = 'product_image.html' 
 
+    def get(self, request: HttpRequest, *args, **kwargs):
+        context= {}
+        return render(request, self.template_name, context)
+        
 
 class SellerProductView(LoginRequiredMixin, View):
     '''
@@ -49,6 +61,8 @@ class ProductDetailView(LoginRequiredMixin, View):
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
         context['product'] = seller_product
+
+        #return JsonResponse(context, content_type='application/json')
        
         return render(request, self.template_name,  context)
 
@@ -59,43 +73,40 @@ class ProductPostView(LoginRequiredMixin, View):
     template_name = 'product_post.html' 
     def get(self, request: HttpRequest, *args, **kwargs):
         context={}
+
+        
+
         if request.user.is_staff:
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
+        
+        form = ProjectForm()
+        secondform = ProjectSecondForm
+        imageform =  ImageForm
+
+        obj = product.objects.get(pk =238)
+        context['obj'] =obj
+        print(obj)
+        context['secondform'] = secondform
+        context['imageform'] = imageform
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
 
         return render(request, self.template_name, context)
-        
+   
     def post(self, request: HttpRequest, *args, **kwargs):
         context = {}
-
+        print(request.POST)
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
-    
-        mainImg = request.FILES.getlist('mainImg')
-        ProductCategoryId = request.POST.get('ProductCategoryId')
-        ProductCategory = pro_category.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
-        Name = request.POST.get('ProductName')
-        Price = request.POST.get('ProductPrice')
-        Stock = request.POST.get('ProductStock')
-        Description = request.POST.get('ProductDescription')
-        Content = request.POST.get('Content')
-
-        for image in mainImg:
-            product.objects.create(
-                pro_category=ProductCategory,      
-                name = Name,
-                price = Price,
-                stock = Stock,
-                description = Description,
-                main_img = image,
-                shop_id = memberShopId,
-                status = constants.REQUESTED,
-                content = Content,
-            )
+        secondform = ProjectSecondForm(request.POST, request.FILES,)
+        
+        if secondform.is_valid():
+            post = secondform.save()
+      
+        context['secondform'] = secondform
         context['success']=True
-        return JsonResponse(context, content_type='application/json')
+        return render(request, 'product_image.html', context)
 
 class ProductEditView(LoginRequiredMixin, View):
     '''
