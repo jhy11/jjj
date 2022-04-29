@@ -194,6 +194,22 @@ class cart_product(BaseModel):
     class Meta:
             db_table = 'cart-product'
 
+
+#찜
+class liked(BaseModel):
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
+
+    class Meta:
+            db_table = 'liked'
+
+#찜-상품
+class liked_product(BaseModel):
+    liked = models.ForeignKey(liked, on_delete=models.CASCADE, verbose_name='liked', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', default=1)
+
+    class Meta:
+            db_table = 'liked-product'
+
 #배송주소
 class address(BaseModel):
     member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
