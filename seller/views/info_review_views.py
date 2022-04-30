@@ -35,7 +35,12 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
         review = get_review(kwargs.get('id'), self.request.user.id)
 
         context['review'] = review[0]
-        context['answer'] = list(comment_reply.objects.filter(comment_id=kwargs.get('id')).values('id', 'content'))[0]
+        content = list(comment.objects.filter(id=kwargs.get('id')).values('reply_flag'))[0]
+        reply_flag = content['reply_flag']
+        if reply_flag == '1':
+            context['answer'] = list(comment_reply.objects.filter(comment_id=kwargs.get('id')).values('id', 'content'))[0]
+        else:
+            pass
         return context
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:

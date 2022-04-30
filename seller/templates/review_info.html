@@ -122,8 +122,8 @@
               </tr>
             </thead>
             <tbody class="list" id="list-order">
-              {% if reviews %} 
-              {% for i in reviews %}
+              {% if answered_questions %} 
+              {% for i in answered_questions %}
               <tr class="list-order-row" onclick="location.href='/seller/review-post/{{i.id}}'">
                 <td class="align-middle" id="Product">{{ i.orderproduct__product__name }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
