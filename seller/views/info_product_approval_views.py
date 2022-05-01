@@ -23,9 +23,7 @@ class ApprovalView(LoginRequiredMixin, View):
             'rejectedTable': product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0'),
             'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
             }
-        print("approve")
         requestTable = product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0')
-        print(requestTable)
         
         if request.user.is_staff:
             context['staff'] = True

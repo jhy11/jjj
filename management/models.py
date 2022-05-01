@@ -75,6 +75,9 @@ class product(BaseModel):
 
     class Meta:
         db_table = 'product'
+    
+    def __str__(self):
+        return str(self.pk)
 
     
 

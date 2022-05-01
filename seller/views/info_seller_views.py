@@ -81,9 +81,8 @@ class ProductPostView(LoginRequiredMixin, View):
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
         
-        form = ProjectForm()
         secondform = ProjectSecondForm
-
+      
         context['secondform'] = secondform
         context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
 
@@ -93,12 +92,14 @@ class ProductPostView(LoginRequiredMixin, View):
         context = {}
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
-        secondform = ProjectSecondForm(request.POST, request.FILES,)
-        
+        secondform = ProjectSecondForm(request.POST or None, request.FILES or None,)
+       
         if secondform.is_valid():
+          
             post = secondform.save()
             return redirect('seller:product-approval')
-      
+            #return JsonResponse({'message': 'works'})
+
         context['secondform'] = secondform
         context['success']=True
         return render(request, self.template_name, context)
