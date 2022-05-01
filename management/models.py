@@ -137,6 +137,7 @@ class qna(BaseModel):
     content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
     password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
     answer_flag = models.CharField(db_column='answer_flag', max_length=10, blank=True, null=True, default='0')
+    qna_img = models.ImageField(blank=True, null=True, upload_to='qna/main')
 
     class Meta:
             db_table = 'qna'
