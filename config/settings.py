@@ -61,11 +61,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
-#NUMB_TURN_CREDENTIAL = config('NUMB_TURN_CREDENTIAL', default=None)
-#NUMB_TURN_USERNAME = config('NUMB_TURN_USERNAME', default=None)
-
-
 # set storage for media files
 DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage' 
 
@@ -79,11 +74,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'channels',
     'config',
-    'webrtc',
     'products',
     'management',
     'seller',
+    'chat',
     'storages',
     'django_quill',
 ]
@@ -177,6 +173,18 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
+
+
+# Channels
+ASGI_APPLICATION = 'config.asgi.application'
+
+#https://stackoverflow.com/questions/53271407/channels-without-channel-layer-or-any-other-free-hosting
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+
 
 
 # Default primary key field type
