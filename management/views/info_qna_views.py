@@ -60,7 +60,7 @@ class QnaEditView(LoginRequiredMixin, View):
 
         if content is not None:
           # update content of answer
-          qna_answer.objects.filter(id=id).update(
+          qna_answer.objects.filter(qna__id=id).update(
             content=content,
             updated_at=datetime.now(),
           )
