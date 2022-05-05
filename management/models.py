@@ -148,7 +148,7 @@ class qna(BaseModel):
 #상품 문의 답변
 class qna_answer(BaseModel):
     qna = models.ForeignKey(qna, on_delete=models.CASCADE, verbose_name='qna', default=1)
-    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    content = models.TextField(db_column='content', blank=True, null=True)
 
     class Meta:
             db_table = 'qna_answer'
