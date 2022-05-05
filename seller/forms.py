@@ -1,4 +1,3 @@
-from socket import fromshare
 from django_quill.forms import QuillFormField
 from django import forms
 from management.models import product, pro_category
