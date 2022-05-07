@@ -123,7 +123,7 @@ class order_product(BaseModel):
             db_table = 'order-product'
 
 
-#상품 문의 카테고리
+#일반 문의 카테고리
 class qna_category(BaseModel):
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
 
@@ -131,7 +131,7 @@ class qna_category(BaseModel):
             db_table = 'qna_category'
 
 
-#상품 문의
+#일반 문의
 class qna(BaseModel):
     member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', blank=True, null=True)
@@ -145,13 +145,33 @@ class qna(BaseModel):
     class Meta:
             db_table = 'qna'
 
-#상품 문의 답변
+#일반 문의 답변
 class qna_answer(BaseModel):
     qna = models.ForeignKey(qna, on_delete=models.CASCADE, verbose_name='qna', default=1)
     content = models.TextField(db_column='content', blank=True, null=True)
 
     class Meta:
             db_table = 'qna_answer'
+
+#상품 문의
+class pro_qna(BaseModel):
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', blank=True, null=True)
+    title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
+    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
+    answer_flag = models.CharField(db_column='answer_flag', max_length=10, blank=True, null=True, default='0')
+
+    class Meta:
+            db_table = 'pro_qna'
+
+#상품 문의 답변
+class pro_qna_answer(BaseModel):
+    qna = models.ForeignKey(pro_qna, on_delete=models.CASCADE, verbose_name='pro_qna', default=1)
+    content = models.TextField(db_column='content', blank=True, null=True)
+
+    class Meta:
+            db_table = 'pro_qna_answer'
 
 #결제
 class payment(BaseModel):
