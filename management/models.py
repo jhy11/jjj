@@ -47,7 +47,16 @@ class shop(BaseModel):
             db_table = 'shop'
 
 
-#상품 카테고리
+
+#상품 상위 카테고리
+class pro_category(BaseModel):
+    name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
+ 
+    class Meta:
+            db_table = 'pro_category'
+
+
+#상품 하위 카테고리
 class pro_subcategory(BaseModel):
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
  
