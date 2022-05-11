@@ -184,15 +184,20 @@ ASGI_APPLICATION = 'config.asgi.application'
 # 표준 장고 개발 서버를 채널 개발 서버로 대체
 
 
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)]
+#         },
+#     }
+# }
+
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)]
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-
 
 
 # Default primary key field type

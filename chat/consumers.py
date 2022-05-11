@@ -24,6 +24,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print('self.room_name: ', self.room_name) # 1
         print('self.room_group_name: ',self.room_group_name) #  chat_1
         print('self.channel_layer: ',self.channel_layer) # RedisChannelLayer(hosts=[{'address': ('127.0.0.1', 6379)}])
+        # 현재 인메모리
 
         # reject the connection
         room_peer_cnt = peerCnt[int(self.room_name)]
