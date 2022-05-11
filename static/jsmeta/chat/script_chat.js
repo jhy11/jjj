@@ -33,11 +33,11 @@ if(loc.protocol == 'https:'){
 
 // get shopn id
 var shopId = document.getElementById('shopId').textContent;
-console.log(shopId);
+console.log('Shop Id:', shopId);
 var roomName = shopId;
 
 endPoint = wsStart + loc.host + '/ws/chat/' + roomName + '/';
-console.log(endPoint) 
+console.log('Endpoint:',endPoint) 
 
 /*websocket */
 var webSocket;
@@ -59,18 +59,18 @@ btnJoin.onclick = () => {
     /*커넥션이 만들어지면*/ 
     webSocket.onopen = function(e){
         console.log('Connection opened! ', e);
-
-    
         sendSignal('new-peer', {});
     }
     
     webSocket.onmessage = webSocketOnMessage;
     
     webSocket.onclose = function(e){
+        alert("연결이 해제되었습니다!");
         console.log('Connection closed! ', e);
     }
      
     webSocket.onerror = function(e){
+        alert("이미 대화가 진행중인 채팅방입니다");
         console.log('Error occured! ', e);
     }
 
@@ -94,10 +94,8 @@ function webSocketOnMessage(event){
         return;
     }
     
-   
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
     console.log('receiver_channel_name: ', receiver_channel_name);
-
    
     if(action == 'new-peer'){
         console.log('New peer: ', peerUsername);

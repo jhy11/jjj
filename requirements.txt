@@ -5,3 +5,4 @@ boto3==1.21.28
 django-storages==1.12.3
 django-quill-editor==0.1.40
 channels==3.0.4
+channels-redis==3.4.0

@@ -1,12 +1,15 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-
 import asyncio
-
 from management.models import shop
 
+#peerCnt = 0 # 아 차라리 데이터베이스에 저장해??
+peerCnt = [0] * 100
+
 class ChatConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
+       
         # different group name depends on shop
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
@@ -18,9 +21,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-        print('self.room_group_name: ',self.room_group_name)
-        print('self.channel_layer: ',self.channel_layer)
+        print('self.room_name: ', self.room_name) # 1
+        print('self.room_group_name: ',self.room_group_name) #  chat_1
+        print('self.channel_layer: ',self.channel_layer) # RedisChannelLayer(hosts=[{'address': ('127.0.0.1', 6379)}])
 
+        # reject the connection
+        room_peer_cnt = peerCnt[int(self.room_name)]
+        print("Number of peer in the room: ", room_peer_cnt)
+        if 1< room_peer_cnt:
+            await self.close()
+    
+        peerCnt[int(self.room_name)] = room_peer_cnt + 1
+        print("Number of peer in the room: ", peerCnt[int(self.room_name)])
         await self.accept()
 
     async def disconnect(self, close_code):
@@ -30,6 +42,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+        peerCnt[int(self.room_name)] = peerCnt[int(self.room_name)] - 1
+        print("Number of peer in the room: ", peerCnt[int(self.room_name)])
         print('Disconnected!')
         
 
@@ -44,13 +58,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         print('peer_username: ', peer_username)
         print('action: ', action)
         print('self.channel_name: ', self.channel_name)
+        print('self.room_group_name: ', self.room_group_name)
 
         if(action == 'new-offer') or (action =='new-answer'):
-            # in case its a new offer or answer
             # send it to the new peer or initial offerer respectively
-
             receiver_channel_name = receive_dict['message']['receiver_channel_name']
-
             print('Sending to ', receiver_channel_name)
 
             # set new receiver as the current sender
