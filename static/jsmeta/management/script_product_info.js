@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function(){
     },
     columns: [
       {data : 'id'},
-      {data : 'pro_category__name'},
+      {data : 'pro_subcategory__name'},
       {data : 'shop__shop_name'},
       {data : 'name'},
       {data : 'price'},
@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function(){
     },
     columns: [
       {data : 'id'},
-      {data : 'pro_category__name'},
+      {data : 'pro_subcategory__name'},
       {data : 'shop__shop_name'},
       {data : 'name'},
       {data : 'price'},

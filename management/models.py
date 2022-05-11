@@ -48,7 +48,7 @@ class shop(BaseModel):
 
 
 #상품 카테고리
-class pro_category(BaseModel):
+class pro_subcategory(BaseModel):
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
  
     class Meta:
@@ -60,7 +60,7 @@ class pro_category(BaseModel):
 #상품
 class product(BaseModel):
     main_img = models.ImageField(blank=True, null=True, upload_to='product/main')
-    pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='pro_category', default=1)
+    pro_subcategory = models.ForeignKey(pro_subcategory, on_delete=models.CASCADE, verbose_name='pro_subcategory', default=1)
     shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='shop', default=1)
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
     price = models.CharField(db_column='price', max_length=50, blank=True, null=True)
