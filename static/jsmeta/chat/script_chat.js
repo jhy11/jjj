@@ -137,6 +137,16 @@ function webSocketOnMessage(event){
 
         return;
     }
+
+    if(action == 'new-product'){
+        var selectedProId = parsedData['message']['selected_product'];
+        var selectedProName = parsedData['message']['selected_product_name'];
+
+        console.log('Selected Product: ', selectedProName);
+        setProduct(selectedProName)
+        
+        return;
+    }
 }
 
 messageInput.addEventListener('keyup', function(event){
@@ -439,4 +449,9 @@ function removeVideo(video){
     var videoWrapper = video.parentNode;
     // remove it
     videoWrapper.parentNode.removeChild(videoWrapper);
+}
+
+
+function setProduct(productName){
+    $('#selectedPro').val(productName); 
 }
