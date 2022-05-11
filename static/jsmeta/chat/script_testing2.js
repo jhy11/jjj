@@ -71,6 +71,11 @@ function Main(){
                     Math.max.apply(null, confidence)
                 );
                 console.log(maxConfidence);
+
+                let result = gesture.gestures.reduce((p, c) => { 
+                    return (p.score > c.score) ? p : c;
+                });
+                console.log('result: ', result);
         
             }
         }
