@@ -52,7 +52,7 @@ class pro_category(BaseModel):
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
  
     class Meta:
-            db_table = 'pro_category'
+            db_table = 'pro_subcategory'
 
 
     
