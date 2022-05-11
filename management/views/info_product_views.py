@@ -7,7 +7,7 @@ from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from seller.views import constants
 
-from management.models import product, pro_category, shop
+from management.models import product, pro_subcategory, shop
 
 class ProductView(LoginRequiredMixin, View):
     '''
@@ -17,7 +17,7 @@ class ProductView(LoginRequiredMixin, View):
 
     def get(self, request: HttpRequest, *args, **kwargs):
         context = {
-            'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
+            'ProCategories': pro_subcategory.objects.filter(DeleteFlag='0'),
             }
         if request.user.is_staff:
             context['staff'] = True
@@ -107,4 +107,4 @@ class ProductTableView(LoginRequiredMixin, View):
 
 def get_product(status):
     return list(product.objects.filter(status=status, DeleteFlag='0')\
-              .values('id', 'pro_category__name', 'name', 'price', 'status', 'stock', 'shop__shop_name'))
+              .values('id', 'pro_subcategory__name', 'name', 'price', 'status', 'stock', 'shop__shop_name'))

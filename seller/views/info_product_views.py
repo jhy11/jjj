@@ -4,14 +4,14 @@ from django.views.generic.base import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import constants
 
-from management.models import product, pro_category
+from management.models import product, pro_subcategory
 
 class ProductListView(LoginRequiredMixin, View):
     template_name='product_list.html'
 
     def get(self, request: HttpRequest):
         context = {
-            'categories': pro_category.objects.filter(DeleteFlag='0'),
+            'categories': pro_subcategory.objects.filter(DeleteFlag='0'),
             }
 
         if request.user.is_staff:
@@ -27,7 +27,7 @@ class ProductstoppedView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         context = {
             'productsStopped': product.objects.filter(shop_id__manager_id__user_id=request.user.id, status=constants.STOPPED, DeleteFlag='0'),
-            'categories': pro_category.objects.filter(DeleteFlag='0'),
+            'categories': pro_subcategory.objects.filter(DeleteFlag='0'),
         }
 
         if request.user.is_staff:
@@ -62,4 +62,4 @@ class ProductTableView(LoginRequiredMixin, View):
 
 def get_product(user_id, status):
     return list(product.objects.filter(shop_id__manager_id__user_id=user_id, status=status, DeleteFlag='0')\
-              .values('id', 'pro_category__name', 'name', 'price', 'status', 'stock'))
+              .values('id', 'pro_subcategory__name', 'name', 'price', 'status', 'stock'))
