@@ -59,6 +59,7 @@ class pro_category(BaseModel):
 #상품 하위 카테고리
 class pro_subcategory(BaseModel):
     name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
+    pro_category = models.ForeignKey(pro_category, on_delete=models.CASCADE, verbose_name='pro_category', default=1)
  
     class Meta:
             db_table = 'pro_subcategory'
