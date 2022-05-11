@@ -137,7 +137,7 @@ class qna(BaseModel):
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', blank=True, null=True)
     category = models.ForeignKey(qna_category, on_delete=models.CASCADE, verbose_name='category', default=1)
     title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
-    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    content = models.TextField(db_column='content', blank=True, null=True)
     password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
     answer_flag = models.CharField(db_column='answer_flag', max_length=10, blank=True, null=True, default='0')
     qna_img = models.ImageField(blank=True, null=True, upload_to='qna/main')
@@ -158,7 +158,7 @@ class pro_qna(BaseModel):
     member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', blank=True, null=True)
     title = models.CharField(db_column='title', max_length=50, blank=True, null=True)
-    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    content = models.TextField(db_column='content', blank=True, null=True)
     password = models.CharField(db_column='password', max_length=50, blank=True, null=True)
     answer_flag = models.CharField(db_column='answer_flag', max_length=10, blank=True, null=True, default='0')
 
@@ -197,7 +197,7 @@ class comment(BaseModel):
 #후기 답변
 class comment_reply(BaseModel):
     comment = models.ForeignKey(comment, on_delete=models.CASCADE, verbose_name='comment', default=1)
-    content = models.CharField(db_column='content', max_length=50, blank=True, null=True)
+    content = models.TextField(db_column='content', blank=True, null=True)
 
     class Meta:
             db_table = 'comment_reply'
