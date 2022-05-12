@@ -6,7 +6,7 @@ from django.views.generic.base import View
 from management.models import shop
 
 class ChatView(View):
-    template_name='chat_testing.html'
+    template_name='chat.html'
 
     def get(self, request: HttpRequest):
         context={}
