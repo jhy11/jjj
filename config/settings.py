@@ -67,6 +67,7 @@ DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage'
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -74,7 +75,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'channels',
     'config',
     'products',
     'management',
@@ -177,14 +177,27 @@ STATIC_URL = '/static/'
 
 # Channels
 ASGI_APPLICATION = 'config.asgi.application'
+# 오류
+# 그냥 asgi.application 시도해볼 것
+# 예제는 mysite.routing.application
+# channels runserver 명령 제어 -> 
+# 표준 장고 개발 서버를 채널 개발 서버로 대체
 
-#https://stackoverflow.com/questions/53271407/channels-without-channel-layer-or-any-other-free-hosting
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)]
+#         },
+#     }
+# }
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-
 
 
 # Default primary key field type

@@ -1,54 +1,224 @@
 var mapPeers = {};
 
-
+//Get video properties
 const localVideo = document.getElementById('localVideo');
+let localStream = new MediaStream();
 
+const constraints = {
+    'video': true,
+    'audio': true
+}
+
+
+userMedia = navigator.mediaDevices.getUserMedia(constraints)
+.then(stream => {
+    localStream = stream;
+    console.log('Got MediaStream:', stream);
+    var mediaTracks = stream.getTracks();
+    
+    for(i=0; i < mediaTracks.length; i++){
+        console.log(mediaTracks[i]);
+    }
+    
+    localVideo.srcObject = localStream;
+    localVideo.muted = true;
+    
+    window.stream = stream; // make variable available to browser console
+
+    audioTracks = stream.getAudioTracks();
+    videoTracks = stream.getVideoTracks();
+
+    // unmute audio and video by default
+    audioTracks[0].enabled = true;
+    videoTracks[0].enabled = true;
+})
+.catch(error => {
+    console.error('Error accessing media devices.', error);
+});
+
+
+const runHandpose = async() => {    
+    const model = await handpose.load();
+    console.log("Handpose model loaded");
+
+    //Loop and detect hands
+    let detectTimer = setInterval(() => {
+        detect(model, detectTimer);
+    }, 10);
+};
 /*
-local video stream
-MediaStream ->MediaStreamTrac
-MediaStream.getTracks()가 MediaStreamTrack 객체의 배열
-*/ 
-var localStream = new MediaStream();
-
-var messageInput = document.getElementById('message-input');
-var btnSendMsg = document.getElementById('message-submit');
-
-var ul = document.getElementById("message-log");
-
-
-var loc = window.location;
-var endPoint = '';
-
-/*
-window.location.protocol
-웹 프로토콜을 알려준다.(http인지 https인지)
+const secondRunHandpose = async(model) => {    
+    //Loop and detect hands
+    let secondDetectTimer = setInterval(() => {
+        secondDetect(model, secondDetectTimer);
+    }, 10);
+};
 */
-var wsStart = 'ws://';
+/*
+const secondDetect = async (model, secondDetectTimer) => {
+    //Make detections
+    const hand = await model.estimateHands(localVideo);
+
+    if (hand.length > 0) {
+        const GE = new fp.GestureEstimator([
+            fp.Gestures.VictoryGesture,
+            fp.Gestures.ThumbsUpGesture,
+        ]);
+        const gesture = await GE.estimate(hand[0].landmarks, 4);
+        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
+
+            const confidence = gesture.gestures.map(
+                (prediction) => prediction.confidence
+            );
+                
+            const maxConfidence = confidence.indexOf(
+                Math.max.apply(null, confidence)
+            );
+
+            let result = gesture.gestures.reduce((p, c) => { 
+                return (p.score > c.score) ? p : c;
+            });
+            if (result.name == 'thumbs_up' && result.score > 9) {
+                console.log("재인식 완료");
+                clearInterval(secondDetectTimer);
+                return;
+            }
+        }
+    }
+}
+*/
+
+const detect = async (model, detectTimer) => {
+    //Make detections
+    const hand = await model.estimateHands(localVideo);
+
+    if (hand.length > 0) {
+        const GE = new fp.GestureEstimator([
+            fp.Gestures.VictoryGesture,
+            fp.Gestures.ThumbsUpGesture,
+        ]);
+        const gesture = await GE.estimate(hand[0].landmarks, 4);
+        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
+
+            const confidence = gesture.gestures.map(
+                (prediction) => prediction.confidence
+            );
+                
+            const maxConfidence = confidence.indexOf(
+                Math.max.apply(null, confidence)
+            );
+
+            let result = gesture.gestures.reduce((p, c) => { 
+                return (p.score > c.score) ? p : c;
+            });
+            if (result.name == 'thumbs_up' && result.score > 9) {
+                testfunction(model, result);
+                clearInterval(detectTimer);
+            }
+        }
+    }
+}
+
+function testfunction(model, result){
+    console.log('result: ', result);
+    
+    if(confirm(result.name + '이 감지되었습니다. 쿠폰 발행을 위해 5초 이내에 재인식 시켜주세요')) {
+        
+        var PTest = function () {
+            return new Promise(function (resolve, reject) {
+            setTimeout(function() {
+              reject();
+            }, 5000)
+
+            //Loop and detect hands
+            let secondDetectTimer = setInterval(() => {
+                const detect2 = async (model, secondDetectTimer) => {
+                    const hand = await model.estimateHands(localVideo);
+
+                    if (hand.length > 0) {
+                        const GE = new fp.GestureEstimator([
+                            fp.Gestures.VictoryGesture,
+                            fp.Gestures.ThumbsUpGesture,
+                        ]);
+                        const gesture = await GE.estimate(hand[0].landmarks, 4);
+                        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
+
+                            const confidence = gesture.gestures.map(
+                                (prediction) => prediction.confidence
+                            );
+                                
+                            const maxConfidence = confidence.indexOf(
+                                Math.max.apply(null, confidence)
+                            );
+
+                            let result = gesture.gestures.reduce((p, c) => { 
+                                return (p.score > c.score) ? p : c;
+                            });
+                            if (result.name == 'thumbs_up' && result.score > 9) {
+                                console.log("재인식 완료");
+                                clearInterval(secondDetectTimer);
+                                resolve();
+                            }
+                        }
+                    }
+                }
+            },10);
+          });
+        }
+
+        var myfunc = PTest();
+        myfunc.then(function () {
+            console.log("Promise Resolved");
+            bargainResult = 'Accepted';
+            console.log(bargainResult);
+
+            //쿠폰 발행
+            
+        }).catch(function () {
+            console.log("Promise Rejected");
+            bargainResult = 'Rejected';
+            console.log(bargainResult);
+        });
+
+    }
+
+    // if bargain is over, send message
+    sendSignal('end-bargain', {
+        'bargain_result': bargainResult,
+    });
+
+}
+
+
+const messageInput = document.getElementById('message-input');
+const btnSendMsg = document.getElementById('message-submit');
+const ul = document.getElementById("message-log");
+
+const loc = window.location;
+let endPoint = '';
+
+let wsStart = 'ws://';
 if(loc.protocol == 'https:'){
     wsStart = 'wss://';
 }
 
-
-//var endPoint = wsStart + loc.host + loc.pathname;
-
 // get shopn id
-var shopId = document.getElementById('shopId').textContent;
-console.log(shopId);
-var roomName = shopId;
+let shopId = document.getElementById('shopId').textContent;
+console.log('Shop Id:', shopId);
+let roomName = shopId;
 
 endPoint = wsStart + loc.host + '/ws/chat/' + roomName + '/';
-console.log(endPoint) 
+console.log('Endpoint:',endPoint) 
 
-/*websocket */
-var webSocket;
+let webSocket;
 
 // get username
-var username = document.getElementById('username').textContent;
+let username = document.getElementById('username').textContent;
 console.log('Username: ',username);
-var btnJoin = document.getElementById('startButton');
+
+const btnJoin = document.getElementById('startButton');
 
 // join room (initiate websocket connection)
-// upon button click
 btnJoin.onclick = () => {
     // disable and vanish join button
     btnJoin.disabled = true;
@@ -59,18 +229,18 @@ btnJoin.onclick = () => {
     /*커넥션이 만들어지면*/ 
     webSocket.onopen = function(e){
         console.log('Connection opened! ', e);
-
-    
         sendSignal('new-peer', {});
     }
     
     webSocket.onmessage = webSocketOnMessage;
     
     webSocket.onclose = function(e){
+        alert("연결이 해제되었습니다!");
         console.log('Connection closed! ', e);
     }
      
     webSocket.onerror = function(e){
+        alert("이미 대화가 진행중인 채팅방입니다");
         console.log('Error occured! ', e);
     }
 
@@ -94,10 +264,8 @@ function webSocketOnMessage(event){
         return;
     }
     
-   
     var receiver_channel_name = parsedData['message']['receiver_channel_name'];
     console.log('receiver_channel_name: ', receiver_channel_name);
-
    
     if(action == 'new-peer'){
         console.log('New peer: ', peerUsername);
@@ -139,6 +307,25 @@ function webSocketOnMessage(event){
 
         return;
     }
+
+    if(action == 'new-product'){
+        var selectedProId = parsedData['message']['selected_product'];
+        var selectedProName = parsedData['message']['selected_product_name'];
+
+        console.log('Selected Product: ', selectedProName);
+        setProduct(selectedProName)
+        
+        return;
+    }
+
+    if(action == 'start-bargain'){
+
+        console.log('Buyer asks for a bargain');
+        alert('Bargain start');
+        runHandpose();
+        
+        return;
+    }
 }
 
 messageInput.addEventListener('keyup', function(event){
@@ -169,42 +356,6 @@ function btnSendMsgOnClick(){
     
     messageInput.value = '';
 }
-
-
-/*
-getUserMedia(constraints)
-연결된 장치들 중 constraints에 만족하는 장치들 불러옴
-*/ 
-const constraints = {
-    'video': true,
-    'audio': true
-}
-
-userMedia = navigator.mediaDevices.getUserMedia(constraints)
-    .then(stream => {
-        localStream = stream;
-        console.log('Got MediaStream:', stream);
-        var mediaTracks = stream.getTracks();
-        
-        for(i=0; i < mediaTracks.length; i++){
-            console.log(mediaTracks[i]);
-        }
-        
-        localVideo.srcObject = localStream;
-        localVideo.muted = true;
-
-        window.stream = stream;
-
-        audioTracks = stream.getAudioTracks();
-        videoTracks = stream.getVideoTracks();
-
-        // unmute audio and video by default
-        audioTracks[0].enabled = true;
-        videoTracks[0].enabled = true;
-    })
-    .catch(error => {
-        console.error('Error accessing media devices.', error);
-    });
 
 
 function sendSignal(action, message){
@@ -441,4 +592,9 @@ function removeVideo(video){
     var videoWrapper = video.parentNode;
     // remove it
     videoWrapper.parentNode.removeChild(videoWrapper);
+}
+
+
+function setProduct(productName){
+    $('#selectedPro').val(productName); 
 }

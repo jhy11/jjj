@@ -1,3 +1,4 @@
+from itertools import count
 from django.http import HttpRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.base import View
@@ -10,6 +11,9 @@ class ChatView(View):
     def get(self, request: HttpRequest):
         context={}
         Shop = shop.objects.get(manager__user__id=request.user.id)
+        
+        shopcnt = shop.objects.count() # 현재 28
+        print(shopcnt)
 
         context['shop'] = Shop
         
