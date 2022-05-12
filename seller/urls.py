@@ -44,6 +44,7 @@ urlpatterns=[
     path('product-delete/<str:id>', info_seller_views.ProductDeleteView.as_view(), name='product-delete'),
     path('product-reapply/<str:id>', info_seller_views.ProductReapplyView.as_view(), name='product-reapply'),
     path('product-edit-submit', info_seller_views.ProductEditView.as_view(), name='product-edit-submit'),
+    path('recommend', info_seller_views.recommendView.as_view(), name='recommend'),
   
 
     #문의/리뷰
@@ -53,5 +54,6 @@ urlpatterns=[
     path('review', info_review_views.ReviewView.as_view(), name='review'),
     path('review-post/<str:id>', info_review_views.ReviewPostView.as_view(), name='review-post'),
     path('review-edit/<str:id>', info_review_views.ReviewEditView.as_view(), name='review-edit'),
+
 
 ]

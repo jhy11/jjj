@@ -1,0 +1,228 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+    </ol>
+  </div>
+
+  <div class="row mb-3">
+    <?xml version="1.0" encoding="utf-8"?>
+    <rMateMapChart>
+      <MapChart id="mainMap" drillDownEnabled="true" rootCode="200">
+        <series>
+          <MapSeries id="mapseries" rollOverFill="#62bfea">
+            <showDataEffect>
+              <SeriesInterpolate duration="1000" />
+            </showDataEffect>
+            <!--
+    선택된 이미지를 표현하는 색상을 selectionFill, selectionStroke에 넣어줍니다
+    -->
+            <selectionFill>
+              <SolidColor color="#f6b149" />
+            </selectionFill>
+            <selectionStroke>
+              <Stroke color="#f6b149" weight="0.25" alpha="0.25" />
+            </selectionStroke>
+            <rollOverStroke>
+              <Stroke color="#CAD7E0" weight="0.8" alpha="1" />
+            </rollOverStroke>
+            <stroke>
+              <Stroke color="#CAD7E0" weight="0.8" alpha="1" />
+            </stroke>
+          </MapSeries>
+        </series>
+      </MapChart>
+    </rMateMapChart>
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Earnings (Monthly)</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+              <div class="chart-area">
+                <canvas id="pieChart" width="1000" height="1000"></canvas>
+              </div>
+              <div class="mt-2 mb-0 text-muted text-xs">
+                <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
+                <span>Since last month</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-calendar fa-2x text-primary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Earnings (Annual) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Sales</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">650</div>
+
+              <div class="mt-2 mb-0 text-muted text-xs">
+                <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
+                <span>Since last years</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-shopping-cart fa-2x text-success"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New User Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">New User</div>
+              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">366</div>
+              <div class="mt-2 mb-0 text-muted text-xs">
+                <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 20.4%</span>
+                <span>Since last month</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-users fa-2x text-info"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Pending Requests</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+              <div class="mt-2 mb-0 text-muted text-xs">
+                <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
+                <span>Since yesterday</span>
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-comments fa-2x text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-4 col-md-12 mb-3">
+      <div class="card h-100 py-2">
+        <div class="card-header">
+          <div class="row mx-2">
+            <span class="fas fa-ban text-primary mr-2 pt-1"></span>
+            <div class="h6 mr-3 pt-1 font-weight-bold text-primary">취소/반품</div>
+            <span class="fas fa-sync-alt text-secondary pt-1" data-fa-transform="shrink-3 down-2"
+              style="cursor:pointer;"></span>
+          </div>
+        </div>
+        <div class="card-body px-3 py-0">
+          <div class="col">
+            <div class="chart-area">
+              <canvas id="barChart" width="400" height="400"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Logout -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to logout?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+          <a href="/logout" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+
+
+<script>
+
+  var chartArea = document.getElementById('myChart').getContext('2d');
+  // 차트를 생성한다. 
+  var myChart = new Chart(chartArea, {
+    // ①차트의 종류(String)
+    type: 'pie',
+    // ②차트의 데이터(Object)
+    data: {
+      // ③x축에 들어갈 이름들(Array)
+      labels: ['Void', 'Surface', 'Corona', 'Noise'],
+      // ④실제 차트에 표시할 데이터들(Array), dataset객체들을 담고 있다.
+      datasets: [{
+        // ⑤dataset의 이름(String)
+        label: '# of Votes',
+        // ⑥dataset값(Array)
+        data: [60, 11, corona, noise],
+        // ⑦dataset의 배경색(rgba값을 String으로 표현)
+        //backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        backgroundColor: ['rgb(54, 162, 235)', 'rgb(255, 159, 64)', 'rgb(192, 192, 192)', 'rgb(255, 205, 86)',],
+        // ⑧dataset의 선 색(rgba값을 String으로 표현)
+        borderColor: '#ffffff',
+        // ⑨dataset의 선 두께(Number)
+        borderWidth: 1
+      }]
+    },
+    // ⑩차트의 설정(Object)
+    options: {
+      // ⑪축에 관한 설정(Object)
+      scales: {
+        // ⑫y축에 대한 설정(Object)
+        y: {
+          // ⑬시작을 0부터 하게끔 설정(최소값이 0보다 크더라도)(boolean)
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+
+<script src="{% static 'jsmeta/seller/script_analysis.js' %}"></script>
+
+{% endblock javascripts %}

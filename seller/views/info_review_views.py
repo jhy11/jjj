@@ -32,9 +32,10 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
         if self.request.user.groups.filter(name='seller').exists():
             context['seller'] = True
       
-        review = get_review(kwargs.get('id'), self.request.user.id)
-
-        context['review'] = review[0]
+        #review = get_review(kwargs.get('id'), self.request.user.id)
+        #context['review'] = review[0]
+        id = kwargs.get('id')
+        context['review'] = comment.objects.get(id=id)
         content = list(comment.objects.filter(id=kwargs.get('id')).values('reply_flag'))[0]
         reply_flag = content['reply_flag']
         if reply_flag == '1':

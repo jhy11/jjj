@@ -13,8 +13,12 @@ from PIL import Image
 import os,io
 from django.core.files.base import ContentFile
 from django.shortcuts import render
-from management.models import product
+from management.models import product,order_product
 from seller.forms import ProjectForm,ProjectSecondForm
+import pandas as pd
+import mlxtend
+from mlxtend.frequent_patterns import fpgrowth, association_rules, apriori
+from mlxtend.preprocessing import TransactionEncoder
 
 from management.models import member, product, pro_category, shop
 class ProductImageView(LoginRequiredMixin, View):
@@ -155,6 +159,23 @@ class ProductReapplyView(LoginRequiredMixin, View):
             status = constants.REQUESTED
         )
         return redirect('seller:product-approval')
+
+class recommendView(LoginRequiredMixin, View):
+    template_name = 'analysis.html'
+   
+    
+    def get(self, request: HttpRequest, *args, **kwargs):
+        context={}
+       
+     
+       
+        return render(request, self.template_name, context)
+
+    
+    
+
+
+    
 
 
 
