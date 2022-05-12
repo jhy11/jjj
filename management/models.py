@@ -253,3 +253,14 @@ class address(BaseModel):
 
     class Meta:
             db_table = 'address'
+
+
+#쿠폰
+class coupon(BaseModel):
+    member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
+    product = models.ForeignKey(product, on_delete=models.CASCADE, verbose_name='product', blank=True, null=True)
+    shop = models.ForeignKey(shop, on_delete=models.CASCADE, verbose_name='shop', blank=True, null=True)
+    rate = models.IntegerField(db_column='rate', blank=True, null=True)
+
+    class Meta:
+            db_table = 'coupon'
