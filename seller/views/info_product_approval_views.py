@@ -9,7 +9,7 @@ from django.core.files.storage import FileSystemStorage, default_storage
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import constants
 
-from management.models import member, product, pro_category, shop
+from management.models import member, product, pro_subcategory, shop
 
 class ApprovalView(LoginRequiredMixin, View):
     template_name = 'product_approval.html' 
@@ -21,7 +21,7 @@ class ApprovalView(LoginRequiredMixin, View):
         context = {
             'requestTable': product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0'),
             'rejectedTable': product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0'),
-            'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
+            'ProCategories': pro_subcategory.objects.filter(DeleteFlag='0'),
             }
         requestTable = product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0')
         
@@ -39,14 +39,14 @@ class ApprovalView(LoginRequiredMixin, View):
         memberId = member.objects.get(user=request.user).id
         memberShopId  = shop.objects.get(manager__id=memberId).id
         ProCategoryId = request.POST.get('ProductCategoryId')
-        ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
+        ProCategory = pro_subcategory.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
         Name = request.POST.get('ProductName')
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
         Description = request.POST.get('ProductDescription')
 
         product.objects.create(
-            pro_category=ProCategory,      
+            pro_subcategory=ProCategory,      
             name = Name,
             price = Price,
             stock = Stock,
@@ -54,7 +54,7 @@ class ApprovalView(LoginRequiredMixin, View):
             shop_id = memberShopId,
             status = constants.REQUESTED,
         )
-        context['products'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED,DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED,DeleteFlag='0').values('id', 'pro_subcategory__name', 'name', 'price', 'stock', 'description'))
         context['success']=True
         return JsonResponse(context, content_type='application/json')
 
@@ -66,14 +66,14 @@ class ApprovalView(LoginRequiredMixin, View):
         memberShopId  = shop.objects.get(manager__id=memberId).id
         Id = request.PUT.get('Id')
         ProCategoryId = request.PUT.get('ProductCategoryId')
-        ProCategory = pro_category.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
+        ProCategory = pro_subcategory.objects.filter(DeleteFlag='0',id=ProCategoryId).first()
         Name = request.PUT.get('ProductName')
         Price = request.PUT.get('ProductPrice')
         Stock = request.PUT.get('ProductStock')
         Description = request.PUT.get('ProductDescription')
     
         product.objects.filter(id=Id).update(
-            pro_category=ProCategory,      
+            pro_subcategory=ProCategory,      
             name = Name,
             price = Price,
             stock = Stock,
@@ -85,8 +85,8 @@ class ApprovalView(LoginRequiredMixin, View):
         else: 
             context['statusValue'] = 2
         
-        context['products'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
-        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0').values('id', 'pro_category__name', 'name', 'price', 'stock', 'description'))
+        context['products'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0').values('id', 'pro_subcategory__name', 'name', 'price', 'stock', 'description'))
+        context['products2'] = list(product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0').values('id', 'pro_subcategory__name', 'name', 'price', 'stock', 'description'))
         context['success'] = True
         
         return JsonResponse(context, content_type='application/json')
@@ -144,7 +144,7 @@ class ProductPostView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['ProCategories'] = pro_subcategory.objects.filter(DeleteFlag='0')
 
         return render(request, self.template_name, context)
         
@@ -156,7 +156,7 @@ class ProductPostView(LoginRequiredMixin, View):
     
         mainImg = request.FILES.getlist('mainImg')
         ProductCategoryId = request.POST.get('ProductCategoryId')
-        ProductCategory = pro_category.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
+        ProductCategory = pro_subcategory.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
         Name = request.POST.get('ProductName')
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
@@ -164,7 +164,7 @@ class ProductPostView(LoginRequiredMixin, View):
 
         for image in mainImg:
             product.objects.create(
-                pro_category=ProductCategory,      
+                pro_subcategory=ProductCategory,      
                 name = Name,
                 price = Price,
                 stock = Stock,
@@ -186,7 +186,7 @@ class ProductEditView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['ProCategories'] = pro_subcategory.objects.filter(DeleteFlag='0')
         context['product'] = product.objects.get(id=id)
 
         return render(request, self.template_name, context)
@@ -197,7 +197,7 @@ class ProductEditView(LoginRequiredMixin, View):
         mainImg = request.FILES.getlist('mainImg')
 
         ProductCategoryId = request.POST.get('ProductCategoryId')
-        ProductCategory = pro_category.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
+        ProductCategory = pro_subcategory.objects.filter(DeleteFlag='0',id=ProductCategoryId).first()
         Name = request.POST.get('ProductName')
         Price = request.POST.get('ProductPrice')
         Stock = request.POST.get('ProductStock')
@@ -209,7 +209,7 @@ class ProductEditView(LoginRequiredMixin, View):
 
         if not mainImg:
             product.objects.filter(id=ProductId).update(
-                pro_category=ProductCategory,      
+                pro_subcategory=ProductCategory,      
                 name = Name,
                 price = Price,
                 stock = Stock,
@@ -225,7 +225,7 @@ class ProductEditView(LoginRequiredMixin, View):
                 image_url = "product/main/" + uploadImgName
     
                 product.objects.filter(id=ProductId).update(
-                    pro_category=ProductCategory,      
+                    pro_subcategory=ProductCategory,      
                     name = Name,
                     price = Price,
                     stock = Stock,

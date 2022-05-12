@@ -20,7 +20,7 @@ import mlxtend
 from mlxtend.frequent_patterns import fpgrowth, association_rules, apriori
 from mlxtend.preprocessing import TransactionEncoder
 
-from management.models import member, product, pro_category, shop
+from management.models import member, product, pro_subcategory, shop
 class ProductImageView(LoginRequiredMixin, View):
     template_name = 'product_image.html' 
 
@@ -42,7 +42,7 @@ class SellerProductView(LoginRequiredMixin, View):
         context = {
             'requestTable': product.objects.filter(shop_id =memberShopId, status=constants.REQUESTED, DeleteFlag='0'),
             'rejectedTable': product.objects.filter(shop_id =memberShopId, status=constants.REJECTED, DeleteFlag='0'),
-            'ProCategories': pro_category.objects.filter(DeleteFlag='0'),
+            'ProCategories': pro_subcategory.objects.filter(DeleteFlag='0'),
             }
         if request.user.is_staff:
             context['staff'] = True
@@ -62,7 +62,7 @@ class ProductDetailView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['ProCategories'] = pro_subcategory.objects.filter(DeleteFlag='0')
         context['product'] = product.objects.filter(DeleteFlag='0')
 
         pk = kwargs.get('id')
@@ -88,7 +88,7 @@ class ProductPostView(LoginRequiredMixin, View):
         secondform = ProjectSecondForm
       
         context['secondform'] = secondform
-        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['ProCategories'] = pro_subcategory.objects.filter(DeleteFlag='0')
 
         return render(request, self.template_name, context)
    
@@ -120,7 +120,7 @@ class ProductEditView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-        context['ProCategories'] = pro_category.objects.filter(DeleteFlag='0')
+        context['ProCategories'] = pro_subcategory.objects.filter(DeleteFlag='0')
         context['product'] = product.objects.filter(DeleteFlag='0')
         
         pk = kwargs.get('id')

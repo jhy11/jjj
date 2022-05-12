@@ -56,9 +56,9 @@
             class="row g-3 needs-validation"
             novalidate=""
             {% if answer %}
-            action="/seller/qna-edit/{{answer.id}}"
+            action="/management/qna-edit/{{answer.id}}"
             {% else %}
-            action="/seller/qna-post/{{question.id}}"
+            action="/manament/qna-post/{{question.id}}"
             {% endif %}
             method="post"
             enctype="multipart/form-data"

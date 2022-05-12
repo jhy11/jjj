@@ -16,11 +16,11 @@ class QnaView(LoginRequiredMixin, View):
             context['staff'] = True
         if request.user.groups.filter(name='seller').exists():
             context['seller'] = True
+        
         context['qnaCategories'] = qna_category.objects.values('name')
-        context['qnas'] = qna.objects.values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'created_at', 'answer_flag')
+        context['qnas'] = qna.objects.values('id', 'member__mem_name', 'category__name', 'title', 'created_at', 'answer_flag')
 
         return render(request, self.template_name, context)
-#회원번호
 
 class QnaPostView(LoginRequiredMixin, TemplateView):
     template_name = 'qna-post.html'
@@ -35,7 +35,6 @@ class QnaPostView(LoginRequiredMixin, TemplateView):
         return context
 
     def post(self, request: HttpRequest, **kwargs: Any) -> Dict[str, Any]:
-        print(request.POST)
         context = {}
         id = kwargs.get('id')
         content = request.POST.get('Content', None)
@@ -61,7 +60,7 @@ class QnaEditView(LoginRequiredMixin, View):
 
         if content is not None:
           # update content of answer
-          qna_answer.objects.filter(id=id).update(
+          qna_answer.objects.filter(qna__id=id).update(
             content=content,
             updated_at=datetime.now(),
           )
@@ -69,4 +68,4 @@ class QnaEditView(LoginRequiredMixin, View):
         return redirect('/management/qna')
   
 def get_question(id):
-    return list(qna.objects.filter(id=id).values('id', 'member__mem_name', 'product__name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))
+    return list(qna.objects.filter(id=id).values('id', 'member__mem_name', 'category__name', 'title', 'content', 'created_at', 'answer_flag'))

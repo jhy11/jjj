@@ -61,17 +61,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
-#NUMB_TURN_CREDENTIAL = config('NUMB_TURN_CREDENTIAL', default=None)
-#NUMB_TURN_USERNAME = config('NUMB_TURN_USERNAME', default=None)
-
-
 # set storage for media files
 DEFAULT_FILE_STORAGE = 'config.asset_storage.MediaStorage' 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,10 +76,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'config',
-    'webrtc',
     'products',
     'management',
     'seller',
+    'chat',
     'storages',
     'django_quill',
 ]
@@ -177,6 +173,31 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATIC_URL = '/static/'
+
+
+# Channels
+ASGI_APPLICATION = 'config.asgi.application'
+# 오류
+# 그냥 asgi.application 시도해볼 것
+# 예제는 mysite.routing.application
+# channels runserver 명령 제어 -> 
+# 표준 장고 개발 서버를 채널 개발 서버로 대체
+
+
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         'CONFIG': {
+#             "hosts": [('127.0.0.1', 6379)]
+#         },
+#     }
+# }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Default primary key field type

@@ -8,6 +8,8 @@ from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 from seller.views import constants
 
@@ -50,6 +52,11 @@ class LoginView(View):
     '''
     로그인 기능
     '''
+
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request: HttpRequest, *args, **kwargs):
+        return super(LoginView, self).dispatch(request, *args, **kwargs)
+
     def get(self, request: HttpRequest, *args, **kwargs):
         #이미 로그인한 상태
         if request.user.id:

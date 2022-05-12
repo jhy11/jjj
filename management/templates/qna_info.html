@@ -59,7 +59,6 @@
             <thead class="thead-light">
               <tr>
                 <th>문의 종류</th>
-                <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
                 <th>날짜</th>
@@ -71,7 +70,6 @@
               {% for i in qnas %}
               <tr class="list-order-row" onclick="location.href='/management/qna-post/{{i.id}}'">
                 <td class="align-middle" id="Category">{{ i.category__name }}</td>
-                <td class="align-middle" id="Product">{{ i.product__name }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Title">{{ i.title }}</td>
                 <td class="align-middle" id="Date">{{ i.created_at|date:'Y-m-d' }}</td>
@@ -85,14 +83,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
                 <th>문의 종류</th>
-                <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
                 <th>날짜</th>

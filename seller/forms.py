@@ -1,7 +1,6 @@
-from socket import fromshare
 from django_quill.forms import QuillFormField
 from django import forms
-from management.models import product, pro_category
+from management.models import product, pro_subcategory
 from django.forms import HiddenInput
 
 
@@ -16,7 +15,7 @@ class ProjectSecondForm(forms.ModelForm):
         exclude = ['DeleteFlag', 'shop', 'deleted_at']
       
         labels = {
-            'pro_category': '상품카테고리',
+            'pro_subcategory': '상품카테고리',
             'name': '상품명',
             'price': '상품 가격',
             'stock': '재고 보유량',
