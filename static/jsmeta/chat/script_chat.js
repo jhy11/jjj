@@ -37,25 +37,19 @@ userMedia = navigator.mediaDevices.getUserMedia(constraints)
 });
 
 
-const runHandpose = async() => {    
+const runHandpose = async(peerUsername) => {    
     const model = await handpose.load();
     console.log("Handpose model loaded");
 
     //Loop and detect hands
     let detectTimer = setInterval(() => {
-        detect(model, detectTimer);
+        detect(model, detectTimer, peerUsername);
     }, 10);
 };
-/*
-const secondRunHandpose = async(model) => {    
-    //Loop and detect hands
-    let secondDetectTimer = setInterval(() => {
-        secondDetect(model, secondDetectTimer);
-    }, 10);
-};
-*/
-/*
-const secondDetect = async (model, secondDetectTimer) => {
+
+
+
+const detect = async (model, detectTimer, peerUsername) => {
     //Make detections
     const hand = await model.estimateHands(localVideo);
 
@@ -79,114 +73,60 @@ const secondDetect = async (model, secondDetectTimer) => {
                 return (p.score > c.score) ? p : c;
             });
             if (result.name == 'thumbs_up' && result.score > 9) {
-                console.log("재인식 완료");
-                clearInterval(secondDetectTimer);
-                return;
-            }
-        }
-    }
-}
-*/
-
-const detect = async (model, detectTimer) => {
-    //Make detections
-    const hand = await model.estimateHands(localVideo);
-
-    if (hand.length > 0) {
-        const GE = new fp.GestureEstimator([
-            fp.Gestures.VictoryGesture,
-            fp.Gestures.ThumbsUpGesture,
-        ]);
-        const gesture = await GE.estimate(hand[0].landmarks, 4);
-        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-
-            const confidence = gesture.gestures.map(
-                (prediction) => prediction.confidence
-            );
-                
-            const maxConfidence = confidence.indexOf(
-                Math.max.apply(null, confidence)
-            );
-
-            let result = gesture.gestures.reduce((p, c) => { 
-                return (p.score > c.score) ? p : c;
-            });
-            if (result.name == 'thumbs_up' && result.score > 9) {
-                testfunction(model, result);
+                testfunction(model, result, peerUsername);
                 clearInterval(detectTimer);
             }
         }
     }
 }
 
-function testfunction(model, result){
+function testfunction(model, result, peerUsername){
     console.log('result: ', result);
     
-    if(confirm(result.name + '이 감지되었습니다. 쿠폰 발행을 위해 5초 이내에 재인식 시켜주세요')) {
+    if(confirm(result.name + '이 감지되었습니다. 쿠폰을 발행하려면 확인을, 아니라면 취소를 누르세요')) {
+        console.log("Promise Resolved");
+        bargainResult = 'Accepted';
+        console.log(bargainResult);
+
+        //쿠폰 발행
+        memberName = peerUsername;
+        productId = document.getElementById('selectedPro').getAttribute('data-id');
+
+        console.log('Coupon for (member name): ', memberName);
+        console.log('Coupon for (product id): ', productId);
+
+        issueCoupon(productId, memberName);
+
+        async function issueCoupon(productId, memberName){
+            const url = '/chat/issue-coupon?proId=' + productId + "&memName="+ memberName;
+
+            const response = await fetch(url, {
+                method: 'GET',
+            })
+            .catch((error) => {
+                alert(error);
+            });
         
-        var PTest = function () {
-            return new Promise(function (resolve, reject) {
-            setTimeout(function() {
-              reject();
-            }, 5000)
-
-            //Loop and detect hands
-            let secondDetectTimer = setInterval(() => {
-                const detect2 = async (model, secondDetectTimer) => {
-                    const hand = await model.estimateHands(localVideo);
-
-                    if (hand.length > 0) {
-                        const GE = new fp.GestureEstimator([
-                            fp.Gestures.VictoryGesture,
-                            fp.Gestures.ThumbsUpGesture,
-                        ]);
-                        const gesture = await GE.estimate(hand[0].landmarks, 4);
-                        if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
-
-                            const confidence = gesture.gestures.map(
-                                (prediction) => prediction.confidence
-                            );
-                                
-                            const maxConfidence = confidence.indexOf(
-                                Math.max.apply(null, confidence)
-                            );
-
-                            let result = gesture.gestures.reduce((p, c) => { 
-                                return (p.score > c.score) ? p : c;
-                            });
-                            if (result.name == 'thumbs_up' && result.score > 9) {
-                                console.log("재인식 완료");
-                                clearInterval(secondDetectTimer);
-                                resolve();
-                            }
-                        }
-                    }
-                }
-            },10);
-          });
+            const result = await response.json();
+        
+            if (result.success === true) {
+                alert(result.message);
+            }
+            else{
+                console.log('쿠폰 발행에 실패했습니다');
+            }
         }
-
-        var myfunc = PTest();
-        myfunc.then(function () {
-            console.log("Promise Resolved");
-            bargainResult = 'Accepted';
-            console.log(bargainResult);
-
-            //쿠폰 발행
-            
-        }).catch(function () {
-            console.log("Promise Rejected");
-            bargainResult = 'Rejected';
-            console.log(bargainResult);
-        });
-
+        
+    }else{
+        console.log("Promise Rejected");
+        bargainResult = 'Rejected';
+        console.log(bargainResult);
     }
 
     // if bargain is over, send message
     sendSignal('end-bargain', {
         'bargain_result': bargainResult,
     });
-
 }
 
 
@@ -217,6 +157,7 @@ let username = document.getElementById('username').textContent;
 console.log('Username: ',username);
 
 const btnJoin = document.getElementById('startButton');
+const btnHangup = document.getElementById('hangupButton');
 
 // join room (initiate websocket connection)
 btnJoin.onclick = () => {
@@ -235,7 +176,7 @@ btnJoin.onclick = () => {
     webSocket.onmessage = webSocketOnMessage;
     
     webSocket.onclose = function(e){
-        alert("연결이 해제되었습니다!");
+        alert("연결이 해제되었습니다");
         console.log('Connection closed! ', e);
     }
      
@@ -248,6 +189,22 @@ btnJoin.onclick = () => {
     messageInput.disabled = false;
 }
 
+btnHangup.onclick = () => {
+    btnJoin.disabled = false;
+    //맞? 
+    btnJoin.style.visibility = 'show';
+    btnSendMsg.disabled = true;
+    messageInput.disabled = true;
+
+    WwbSocket.close()
+
+    webSocket.onclose = function(e){
+        alert("통화가 종료되었습니다");
+        console.log('Connection closed! ', e);
+    }
+    //redirect
+    location.href='/chat/chat-page';
+}
 
 function webSocketOnMessage(event){
     var parsedData = JSON.parse(event.data);
@@ -312,9 +269,9 @@ function webSocketOnMessage(event){
         var selectedProId = parsedData['message']['selected_product'];
         var selectedProName = parsedData['message']['selected_product_name'];
 
-        console.log('Selected Product: ', selectedProName);
-        setProduct(selectedProName)
-        
+        console.log('Selected Product name: ', selectedProName);
+
+        setProduct(selectedProName, selectedProId);
         return;
     }
 
@@ -322,7 +279,7 @@ function webSocketOnMessage(event){
 
         console.log('Buyer asks for a bargain');
         alert('Bargain start');
-        runHandpose();
+        runHandpose(peerUsername);
         
         return;
     }
@@ -595,6 +552,8 @@ function removeVideo(video){
 }
 
 
-function setProduct(productName){
-    $('#selectedPro').val(productName); 
+function setProduct(productName, productId){
+    document.getElementById('selectedPro').setAttribute('value', productName);
+    document.getElementById('selectedPro').setAttribute('data-id', productId);
 }
+
