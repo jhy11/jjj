@@ -30,19 +30,17 @@ class IssueCoupon(View):
         memberName = request.GET.get('memName')
 
         Member  = member.objects.get(user__username = memberName)
-        Product = product.objects.get(id=productId)
-        #Shop = Product.shop
+        Product = product.objects.get(id = productId)
+        ShopId = product.objects.get(id=productId).shop.id
+        Shop = shop.objects.get(id = ShopId)
 
-        print(Member)
-        print(Product)
-        #print(Shop)
-        '''
+        # 10프로 할인 쿠폰 발급
         coupon.objects.create(
             member = Member,
             product = Product,
+            shop = Shop,
             rate=10,
-        )s
-        '''
+        )
 
 
 
