@@ -249,7 +249,10 @@ class address(BaseModel):
     member = models.ForeignKey(member, on_delete=models.CASCADE, verbose_name='member', default=1)
     ad_name = models.CharField(db_column='ad_name', max_length=50, blank=True, null=True)
     code = models.CharField(db_column='code', max_length=50, blank=True, null=True)
+    road_ad = models.CharField(db_column='road_ad', max_length=50, blank=True, null=True)
     ad_detail = models.CharField(db_column='ad_detail', max_length=50, blank=True, null=True)
+    name = models.CharField(db_column='name', max_length=50, blank=True, null=True)
+    call = models.CharField(db_column='call', max_length=50, blank=True, null=True)
 
     class Meta:
             db_table = 'address'
