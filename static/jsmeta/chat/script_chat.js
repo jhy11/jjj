@@ -191,19 +191,19 @@ btnJoin.onclick = () => {
 
 btnHangup.onclick = () => {
     btnJoin.disabled = false;
-    //맞? 
     btnJoin.style.visibility = 'show';
     btnSendMsg.disabled = true;
     messageInput.disabled = true;
 
-    WwbSocket.close()
-
+    webSocket.close()
+    
     webSocket.onclose = function(e){
         alert("통화가 종료되었습니다");
         console.log('Connection closed! ', e);
     }
-    //redirect
-    location.href='/chat/chat-page';
+
+    //use replace instead of href
+    location.replace('/');
 }
 
 function webSocketOnMessage(event){
