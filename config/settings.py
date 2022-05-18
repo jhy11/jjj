@@ -82,6 +82,7 @@ INSTALLED_APPS = [
     'chat',
     'storages',
     'django_quill',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
