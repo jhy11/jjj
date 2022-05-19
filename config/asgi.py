@@ -30,16 +30,13 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
-    #아래 한 줄 추가 테스트
     #"https": get_default_application(),
-    #테스트
     "https": get_asgi_application(),
 
 
     # Just HTTP for now. (We can add other protocols later.)
     "websocket": AuthMiddlewareStack(
         URLRouter(
-            #imported from chat.routing
             chat.routing.websocket_urlpatterns
         )
     ),
