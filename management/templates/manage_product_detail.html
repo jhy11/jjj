@@ -19,45 +19,52 @@
   </div>
     
   <div class="row">
-    <div class="col-xl-6 col-lg-6">
+    <div class="col-xl-4 col-lg-6">
       <div class="card mb-4">
         <div class="card-body">
-          <div class ="needs-validation px-3 pt-3 pb-4">
-            <div class="py-4 px-5">대표 이미지</div>
-            <div class="py-4 px-5">
-              <img src="{{product.main_img.url}}" width="300" height="400"><br>
-            </div>
-          </div>
+              <img src="{{product.main_img.url}}"><br>
         </div>
       </div>
     </div>
-    <div class="col-xl-6 col-lg-6">
+    <div class="col-xl-8 col-lg-6">
         <div class="card mb-4">
           <div class="card-body">
             <div class ="needs-validation px-3 pt-3 pb-4">
-              <div class="py-4 px-5">점포명<span class="py-4 px-5"></span>{{product.shop.shop_name}}</div>
-              <div class="py-4 px-5">상품 카테고리<span class="py-4 px-5"></span>{{product.pro_subcategory.name}}</div>
-              <div class="py-4 px-5">상품명<span class="py-4 px-5"></span>{{product.name}}</div>
-              <div class="py-4 px-5">상품 가격<span class="py-4 px-5"></span>{{product.price}}</div>
-              <div class="py-4 px-5">재고 보유량<span class="py-4 px-5"></span>{{product.stock}}</div>
+              <div class="col-12 mb-2">
+                <label class="col-3">점포명</label>
+                <span class="col-9">{{ product.shop.shop_name }}</span>
+              </div>
+              <div class="col-12 mb-2">
+                <label class="col-3">상품 카테고리</label>
+                <span class="col-9">{{ product.pro_subcategory.name }}</span>
+              </div>
+              <div class="col-12 mb-2">
+                <label class="col-3">상품 가격</label>
+                <span class="col-9">{{ product.name }}</span>
+              </div>
+              <div class="col-12 mb-2">
+                <label class="col-3">재고 보유량</label>
+                <span class="col-9">{{ product.stock }}</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
   <div class="row">
     <div class="col">
       <div class="card mb-4 p-3">
         <div class="card-body">
-            <div class="py-4 px-5">상세 설명 {{product.description}}</div>
+            <div class="mb-5">상세 설명:  {{product.description}}</div>
+            {{ product.content.html | safe}}
 
             {% if product.status == '0' %}
-            <div class="py-4 px-5">
+            <div>
                 <button class="btn btn-outline-primary pb-1" type="button" onclick="approvePro('{{product.id}}')">승인</button>
                 <button class="btn btn-outline-danger pb-1" type="button" onclick="rejectPro('{{product.id}}')">반려</button>
             </div>
             {% elif product.status == '1' %}
-            <div class="py-4 px-5">
+            <div>
                 <button class="btn btn-outline-danger pb-1" type="button" onclick="stopPro('{{product.id}}')">판매중지</button>
                 <button class="btn btn-outline-danger pb-1" type="button" onclick="deletePro('{{product.id}}')">삭제</button>
             </div>
