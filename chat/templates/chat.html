@@ -26,7 +26,8 @@
 
 			<h1 id="shopname">{{ shopName }}</h1>
 			<br>
-			<h1 id="username">{{request.user.username}}</h1>
+			<h3 id="username">{{request.user.username}}</h3>
+			<label for="selectedPro">현재 흥정 중인 상품</label>
 			<input id="selectedPro"/>
 			<div hidden>
 				<h1 id="shopId">{{ shop.id }}</h1>
@@ -36,13 +37,13 @@
 		<main class="container-fluid">
 			<div class="row">
 				<section class="col-md-8">
-					<video id="localVideo" autoplay playsinline></video>
-					<video id="remoteVideo" autoplay playsinline></video>
+					<video id="localVideo" height="320" autoplay playsinline></video>
+					<video id="remoteVideo" height="320" autoplay playsinline></video>
+				</section>
 
-					<div>
-						<button class="btn btn-primary btn-sm" id="startButton">Start</button>
-						<button class="btn btn-danger btn-sm" id="hangupButton">Hang Up</button>
-					</div>
+				<section class="col-md-4">
+						<button class="btn btn-primary btn-sm" id="startButton">시작</button>
+						<button class="btn btn-danger btn-sm" id="hangupButton">종료</button>
 				</section>
 				<section class="col-md-4">
                     <div id="messages">
