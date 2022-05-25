@@ -1,3 +1,18 @@
+const ThumbsDownGesture = new fp.GestureDescription('thumbs_down');
+
+ThumbsDownGesture.addCurl(fp.Finger.Thumb, fp.FingerCurl.NoCurl, 1.0);
+ThumbsDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.VerticalDown, 1.0);
+ThumbsDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownLeft, 0.9);
+ThumbsDownGesture.addDirection(fp.Finger.Thumb, fp.FingerDirection.DiagonalDownRight, 0.9);
+
+// all other fingers
+for(let finger of [fp.Finger.Index, fp.Finger.Middle, fp.Finger.Ring, fp.Finger.Pinky]) {
+    ThumbsDownGesture.addCurl(finger, fp.FingerCurl.FullCurl, 1.0);
+    ThumbsDownGesture.addCurl(finger, fp.FingerCurl.HalfCurl, 0.9);
+}
+
+
+
 var mapPeers = {};
 
 //Get video properties
@@ -57,6 +72,7 @@ const detect = async (model, detectTimer, peerUsername) => {
         const GE = new fp.GestureEstimator([
             fp.Gestures.VictoryGesture,
             fp.Gestures.ThumbsUpGesture,
+            ThumbsDownGesture,
         ]);
         const gesture = await GE.estimate(hand[0].landmarks, 4);
         if (gesture.gestures !== undefined && gesture.gestures.length > 0) {
@@ -74,6 +90,14 @@ const detect = async (model, detectTimer, peerUsername) => {
             });
             if (result.name == 'thumbs_up' && result.score > 9) {
                 testfunction(model, result, peerUsername);
+                clearInterval(detectTimer);
+            }
+            if(result.name == 'thumbs_down' && result.score > 5){
+                console.log("Bargain Rejected");
+                bargainResult = 'Rejected';
+                sendSignal('end-bargain', {
+                    'bargain_result': bargainResult,
+                });
                 clearInterval(detectTimer);
             }
         }
