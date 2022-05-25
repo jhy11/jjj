@@ -34,8 +34,8 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>{{ review.orderproduct__product__name }}</td>
-                  <td>{{ review.member__mem_name }}</td>
+                  <td>{{ productname }}</td>
+                  <td>{{ memname }}</td>
                   <td>{{ review.content }}</td>
                   <td>{{ review.rate }}</td>
                   <td>{{ review.created_at|date:'Y-m-d' }}</td>
@@ -44,7 +44,9 @@
             </table>
           </div>
           <div class="py-4 px-5">
+            {% if review.comment_img %}
             <img src="{{review.comment_img.url}}" width="300" height="400"><br>
+            {% endif %}
           </div>
         </div>
       </div>

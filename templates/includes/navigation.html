@@ -62,6 +62,19 @@
     </div>
   </li>
   <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ai_engineering" aria-expanded="true"
+      aria-controls="ai_engineering">
+      <i class="fas fa-fw fa-table"></i>
+      <span>정산 관리</span>
+    </a>
+    <div id="ai_engineering" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">정산</h6>
+        <a class="collapse-item" href="{% url 'management:analysis' %}">점포 매출 현황</a>
+      </div>
+    </div>
+  </li>
+  <li class="nav-item">
     <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#analysis" aria-expanded="true"
       aria-controls="analysis">
       <i class="fas fa-fw fa-table"></i>
@@ -79,21 +92,6 @@
           <a class="collapse-item" href="#">할인 행사</a>
           <a class="collapse-item" href="#">공연 안내?</a>
         </div>
-      </div>
-    </div>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ai_engineering" aria-expanded="true"
-      aria-controls="ai_engineering">
-      <i class="fas fa-fw fa-table"></i>
-      <span>정산 관리</span>
-    </a>
-    <div id="ai_engineering" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
-      <div class="bg-white py-2 collapse-inner rounded">
-        <h6 class="collapse-header">정산</h6>
-        <a class="collapse-item" href="#">매출 현황</a>
-        <a class="collapse-item" href="#">매입 관리</a>
-        <a class="collapse-item" href="{% url 'seller:recommend' %}">고객 분석</a>
       </div>
     </div>
   </li>
@@ -148,6 +146,19 @@
         <a class="collapse-item" href="{% url 'chat:chat-page' %}">화상 문의</a>
         <a class="collapse-item" href="{% url 'seller:qna' %}">문의 관리</a>
         <a class="collapse-item" href="{% url 'seller:review' %}">리뷰 관리</a>
+    </div>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#ai_engineering" aria-expanded="true"
+      aria-controls="ai_engineering">
+      <i class="fas fa-fw fa-table"></i>
+      <span>정산 관리</span>
+    </a>
+    <div id="ai_engineering" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">정산</h6>
+        <a class="collapse-item" href="{% url 'seller:recommend' %}">매출 현황</a>
+      </div>
     </div>
   </li>
   <li class="nav-item">

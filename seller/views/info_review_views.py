@@ -31,11 +31,17 @@ class ReviewPostView(LoginRequiredMixin, TemplateView):
             context['staff'] = True
         if self.request.user.groups.filter(name='seller').exists():
             context['seller'] = True
-      
-        #review = get_review(kwargs.get('id'), self.request.user.id)
-        #context['review'] = review[0]
         id = kwargs.get('id')
+
+        name = comment.objects.filter(id=id).values('orderproduct__product__name','member__mem_name')
+        for n in name:
+            productname = n['orderproduct__product__name']
+            memname = n['member__mem_name']
+
+        context['productname'] = productname
+        context['memname'] = memname
         context['review'] = comment.objects.get(id=id)
+        
         content = list(comment.objects.filter(id=kwargs.get('id')).values('reply_flag'))[0]
         reply_flag = content['reply_flag']
         if reply_flag == '1':
