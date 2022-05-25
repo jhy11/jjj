@@ -2,7 +2,7 @@ from django.urls import path
 
 from . import views
 from .views import info_product_views, info_member_views, info_order_views, info_qna_views, info_shop_views,\
-                info_delivery_views
+                info_delivery_views,info_analysis_views
 
 app_name = 'management'
 
@@ -43,5 +43,8 @@ urlpatterns=[
     path('qna', info_qna_views.QnaView.as_view(), name='qna'),
     path('qna-post/<str:id>', info_qna_views.QnaPostView.as_view(), name='qna-post'),
     path('qna-edit/<str:id>', info_qna_views.QnaEditView.as_view(), name='qna-edit'),
+
+    #점포 분석
+    path('analysis', info_analysis_views.analysisView.as_view(), name='analysis'),
 
 ]

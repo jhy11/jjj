@@ -1,0 +1,192 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<style>
+  .today_name{
+    display:none 
+  }
+  .today_count{
+    display:none 
+  }
+  .week_name{
+    display:none 
+  }
+  .week_count{
+    display:none 
+  }
+  .price{
+    display:none 
+  }
+  .numbers{
+    display:none 
+  }
+  .month{
+    display:none
+  }
+  .chart-wrap{
+    width: 350px;
+    height: 400px;
+  }
+  .chart-area{
+    width: 1000px;
+    height: 400px;
+  }
+
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+    </ol>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-xl-4 col-md-6 mb-4">
+      <div class="card h-200">
+        <div class="card-body justify-content-center">
+          <div class="row align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">상위 품목 5개</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">하루</div>
+              <div class="chart-wrap">
+                <canvas id="myChart"></canvas>
+                {% for name in today_name %}
+                <ul class="today_name">
+                  <li>{{ name }}</li>
+                </ul>
+                {% endfor %}
+                {% for count in today_count %}
+                <ul class="today_count">
+                  <li>{{ count }}</li>
+                </ul>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body justify-content-center">
+          <div class="row align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">상위 품목 5개</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">일주일</div>
+              <div class="chart-wrap">
+                <canvas id="myChart2"></canvas>
+                {% for name in week_name %}
+                <ul class="week_name">
+                  <li>{{ name }}</li>
+                </ul>
+                {% endfor %}
+                {% for count in week_count %}
+                <ul class="week_count">
+                  <li>{{ count }}</li>
+                </ul>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-4 col-md-6 mb-4">
+      <div class="card h-200 py-2">
+        <div class="card-header">
+          <div class="row mx-2">
+            <span class="fas fa-ban text-primary mr-2 pt-1"></span>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">오늘 매출 현황</div>
+            <div class="h6 mr-3 pt-1 font-weight-bold text-primary">주문/취소 금액</div>
+          </div>
+        </div>
+        <div class="card-body px-3 py-0">
+          <div class="col">
+            <div class="chart-wrap">
+              <canvas id="myChart3"></canvas>
+                {% for p in price %}
+                <ul class="price">
+                  <li>{{ p }}</li>
+                </ul>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  <div class="row">
+    
+    </div>
+    <div class="col-xl-8 col-md-12 mb-3">
+      <div class="card h-100 py-2">
+        <div class="card-header">
+          <div class="row mx-2">
+            <span class="fas fa-ban text-primary mr-2 pt-1"></span>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">1년 매출 현황</div>
+          </div>
+        </div>
+        <div class="card-body px-3 py-0">
+          <div class="col">
+            <div class="chart-area">
+              <canvas id="mixedChart" width="400" height="166"></canvas>
+                {% for m in month %}
+                <ul class="month">
+                  <li>{{ m }}</li>
+                </ul>
+                {% endfor %}
+                {% for n in numbers %}
+                <ul class="numbers">
+                  <li>{{ n }}</li>
+                </ul>
+                {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Logout -->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelLogout"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelLogout">Ohh No!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to logout?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+          <a href="/logout" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>
+
+
+<script src="chartjs-plugin-doughnutlabel.js"></script>
+<script src="{% static 'jsmeta/management/script_analysis.js' %}"></script>
+
+{% endblock javascripts %}
