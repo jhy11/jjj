@@ -147,7 +147,7 @@ class ProductEditView(LoginRequiredMixin, View):
         secondform = ProjectSecondForm(request.POST, request.FILES, instance=order)
         if secondform.is_valid():
             secondform.save()
-            return redirect('seller:product-approval')
+            return redirect('seller:product-list')
            
         context['secondform'] = secondform
         return render(request,self.template_name, context)

@@ -17,7 +17,7 @@
       <li class="breadcrumb-item active" aria-current="page">문의 관리</li>
     </ol>
   </div>
-    
+<!--     
   <div class="row">
     <div class="col">
       <div class="card mb-4">
@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-
+-->
   <div class="row">
     <div class="col">
       <div class="card mb-3 p-3">
@@ -52,7 +52,6 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-qna">
             <thead class="thead-light">
               <tr>
-                <th>문의 종류</th>
                 <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
@@ -64,7 +63,6 @@
               {% if qnas %} 
               {% for i in qnas %}
               <tr class="list-order-row" onclick="location.href='/seller/qna-post/{{i.id}}'">
-                <td class="align-middle" id="Category">{{ i.category__name }}</td>
                 <td class="align-middle" id="Product">{{ i.product__name }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Title">{{ i.title }}</td>
@@ -83,13 +81,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
-                <th>문의 종류</th>
                 <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
@@ -113,7 +109,6 @@
           <table class="table align-items-center table-flush table-hover" id="dataTableHover-answered">
             <thead class="thead-light">
               <tr>
-                <th>문의 종류</th>
                 <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
@@ -125,7 +120,6 @@
               {% if qnas %} 
               {% for i in qnas %}
               <tr class="list-order-row" onclick="location.href='/seller/qna-post/{{i.id}}'">
-                <td class="align-middle" id="Category">{{ i.category__name }}</td>
                 <td class="align-middle" id="Product">{{ i.product__name }}</td>
                 <td class="align-middle" id="MemName">{{ i.member__mem_name }}</td>
                 <td class="align-middle" id="Title">{{ i.title }}</td>
@@ -140,13 +134,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
               </tr>
               {% endif %}
             </tbody>
             <tfoot>
               <tr>
-                <th>문의 종류</th>
                 <th>상품명</th>
                 <th>회원명</th>
                 <th>제목</th>
